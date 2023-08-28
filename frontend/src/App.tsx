@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Loading from "./components/common/Loading";
 import About from "./pages/About";
+import SignIn from "./components/auth/SignIn";
 
 const Home = lazy(async () => {
   const [moduleExports] = await Promise.all([
@@ -27,6 +28,7 @@ const App = (): React.ReactElement => {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<SignIn csrfToken="123456"  providers={["github", "facebook"]} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>

@@ -7,3 +7,8 @@
   - Leader board - compare your result to others
 [] Privacy
 [] Terms of service
+
+### Redux
+```sh
+  npm i @reduxjs/toolkit react-redux redux-thunk redux-devtools-extension
+```
