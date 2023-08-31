@@ -3,7 +3,7 @@ import * as songController from "@controllers/songControllers";
 
 const router = express.Router();
 
-router.get('/', songController.getAllSongs);
-router.get('/:id/stream', songController.streamSong);
+router.get('/api/songs', songController.getAllSongs);
+router.get('/api/songs/:id/stream', songController.streamSong);
 
 export default router;

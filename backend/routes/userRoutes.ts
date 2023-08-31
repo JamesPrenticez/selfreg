@@ -3,7 +3,7 @@ import * as userController from "@controllers/userControllers";
 
 const router = express.Router();
 
-router.get('/', userController.getAllUsers);
-router.get('/:id/stream', userController.getUserById);
+router.get('/api/users', userController.getAllUsers);
+router.get('/api/users/:id', userController.getUserById);
 
 export default router;

@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 import User, { type IUser } from '@models/userModel';
 
 // Get all users

@@ -8,7 +8,8 @@
     "dev": "nodemon -r tsconfig-paths/register --watch ./**/*.ts --exec ts-node index.ts",
     "build": "tsc",
     "seed": "npx ts-node ./seeds/000_seed.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "swagger": "npx ts-node swagger.ts"
   },
   "keywords": [],
   "author": "",
@@ -24,8 +25,13 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.5.7",
     "nodemon": "^3.0.1",
+    "swagger-autogen": "^2.23.5",
+    "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
+  },
+  "nodemonConfig": {
+    "ext": "ts,js,html"
   }
 }
