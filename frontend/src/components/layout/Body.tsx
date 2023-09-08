@@ -6,7 +6,7 @@ interface Props {
 
 const Body = ({ children }: Props): ReactElement => {
   return (
-    <div className="flex w-full max-w-7xl mx-auto min-h-screenNav bg-white">
+    <div className="flex w-full max-w-7xl mx-auto p-2 min-h-screenNav bg-white">
       {children}
     </div>
   );

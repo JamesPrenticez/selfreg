@@ -25,6 +25,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20.5.7",
     "nodemon": "^3.0.1",
+    "serverless-offline": "^12.0.4",
     "swagger-autogen": "^2.23.5",
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.1",

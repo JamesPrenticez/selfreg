@@ -5,9 +5,7 @@
   "type": "module",
   "proxy": "http://localhost:3001",  
   "scripts": {
-    "client": "cd frontend && vite",
-    "server": "cd server && node app.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ignore-path .eslintignore --ext js,ts,jsx,tsx --fix",
     "lint-check": "eslint . --ignore-path .eslintignore --ext js,ts,jsx,tsx",

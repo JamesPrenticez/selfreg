@@ -1,5 +1,5 @@
 export const project = {
-  name: "SELF REGULATOR",
+  name: "Self Regulator",
 };
 
 export const pages = [

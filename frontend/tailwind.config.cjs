@@ -19,6 +19,7 @@ module.exports = {
       "6xl": ['3.75rem', '4.25rem'],
       "7xl": ['4.5rem', '5.2rem'],
     },
+    
     extend:{
 			height:{
         screenNav: "calc(100vh - 5rem)",
@@ -27,7 +28,10 @@ module.exports = {
         screenNav: "calc(100vh - 5rem)",
       },
 			fontFamily: {
-				montserrat: ['Montserrat'],
+        'sans': ['Arial']
+      },
+      gridTemplateColumns: {
+        'todos': '1fr repeat(7, 32px)',
       },
       colors:{
         theme: {

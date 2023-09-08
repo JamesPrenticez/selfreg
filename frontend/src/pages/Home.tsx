@@ -1,10 +1,11 @@
 import React, { type ReactElement } from "react";
 import Body from "../components/layout/Body";
+import Todos from "../components/todos/Todos";
 
 const Home = (): ReactElement => {
   return (
     <Body>
-      <h1>Home</h1>
+      <Todos />
     </Body>
   );
 };
