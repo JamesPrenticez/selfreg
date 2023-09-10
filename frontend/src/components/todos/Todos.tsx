@@ -27,6 +27,13 @@ function Todos(): ReactElement {
 
   // Update the status of a recurring task
   const updateTaskStatus = (id: string, date: string) => {
+
+    // Check if todos is null
+    if (todos === null) {
+      // Handle the null case (e.g., return, throw an error, etc.)
+      return;
+    }
+
     // Clone the todos to avoid mutating state directly
     const updatedTodos = [...todos];
 
