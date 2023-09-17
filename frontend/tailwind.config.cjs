@@ -22,10 +22,10 @@ module.exports = {
     
     extend:{
 			height:{
-        screenNav: "calc(100vh - 5rem)",
+        screenNav: "calc(100vh - 4rem)",
       },
 			minHeight:{
-        screenNav: "calc(100vh - 5rem)",
+        screenNav: "calc(100vh - 4rem)",
       },
 			fontFamily: {
         'sans': ['Arial']
