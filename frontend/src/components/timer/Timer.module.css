@@ -1,0 +1,30 @@
+.cont {
+  padding: 15px;
+}
+.inputBox {
+  font-size: 70px;
+  height: 70px;
+  width: 80px;
+  border: 0px;
+}
+.but {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+.but>button {
+  border: 0.5px solid grey;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: grey;
+  padding: 10px 25px;
+  font-weight: 500;
+}
+.but>button:hover {
+  border: 0.5px solid rgb(10, 137, 216);
+  background-color: rgb(10, 137, 216);
+  color: #fff;
+}
