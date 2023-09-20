@@ -1,8 +1,9 @@
 import React from 'react'
+import Test from '../components/timer/Test'
 
 function Meditation() {
   return (
-    <div>Meditation</div>
+    <div><Test /></div>
   )
 }
 
