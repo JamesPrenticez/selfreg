@@ -3,7 +3,7 @@ import { useFocusBlur } from '../../hooks';
 
 type Timer = ReturnType<typeof setTimeout>;
 
-function CountdowTimer(): ReactElement {
+function CountdownTimer(): ReactElement {
   const {
     inputRef,
     containerRef,
@@ -21,15 +21,10 @@ function CountdowTimer(): ReactElement {
   useEffect(() => {
     let timerId: Timer | null = null;
   
-    // Convert inputValue to total seconds
-    const totalSeconds = parseInt(inputValue, 10) || 0;
-    const hours = Math.floor(totalSeconds / 10000);
-    const minutes = Math.floor((totalSeconds - hours * 10000) / 100);
-    const seconds = totalSeconds % 100;
-    const totalTimeInSeconds = hours * 3600 + minutes * 60 + seconds;
-  
     if (!isRunning) {
-      setRemainingTime(totalTimeInSeconds);
+      const normalized = normalizeTimeString(inputValue);
+      const seconds = timeStringToSeconds(normalized)
+      setRemainingTime(seconds);
     }
   
     if (isRunning && remainingTime >= 0) {
@@ -60,16 +55,12 @@ function CountdowTimer(): ReactElement {
 
   // Decrement inputValue while isRunning 
   useEffect(() => {
-    if (isRunning ) {
-      const hours = Math.floor(remainingTime / 3600);
-      const minutes = Math.floor((remainingTime - hours * 3600) / 60);
-      const seconds = remainingTime % 60;
-
-      const newInputValue = `${hours > 0 ? hours : ''}${minutes > 0 || hours > 0 ? minutes : ''}${seconds}`;
-  
-      setInputValue(newInputValue);
+    if (isRunning) {
+      const formattedInputValue = secondsToTimeString(remainingTime);
+      setInputValue(formattedInputValue);
     }
-  })
+  }, [isRunning, remainingTime]);
+
 
   // Handle Placeholder
   // useEffect(() => {
@@ -186,4 +177,72 @@ function CountdowTimer(): ReactElement {
   );
 }
 
-export default CountdowTimer;
+export default CountdownTimer;
+
+function normalizeTimeString(timeString: string): string {
+  // Pad the string with leading zeros to make it of length 6
+  const paddedString = timeString.padStart(6, '0');
+
+  // Extract hours, minutes, and seconds from the string
+  let hours = parseInt(paddedString.substring(0, 2), 10);
+  let minutes = parseInt(paddedString.substring(2, 4), 10);
+  let seconds = parseInt(paddedString.substring(4, 6), 10);
+
+  // Cap the initial hours to its maximum
+  if (hours > 99) {
+    hours = 99;
+  }
+
+  // Normalize the time
+  let normalizedMinutes = minutes + Math.floor(seconds / 60);
+  let normalizedSeconds = seconds % 60;
+
+  let normalizedHours = hours + Math.floor(normalizedMinutes / 60);
+  normalizedMinutes %= 60;
+
+  // Cap the normalized hours to its maximum
+  if (normalizedHours > 99) {
+    normalizedHours = 99;
+    normalizedMinutes = 60;
+    normalizedSeconds = 60;
+  }
+
+  const result = `${normalizedHours}` + `${normalizedMinutes}` + `${normalizedSeconds}`
+  // const result = parseInt(String(normalizedHours) + String(normalizedMinutes) + String(normalizedSeconds));
+  return result
+}
+
+function timeStringToSeconds(timeString: string): number {
+  const paddedString = timeString.padStart(6, '0');
+
+  // Extract hours, minutes, and seconds from the string
+  const hours = parseInt(paddedString.substring(0, 2), 10);
+  const minutes = parseInt(paddedString.substring(2, 4), 10);
+  const seconds = parseInt(paddedString.substring(4, 6), 10);
+
+  // Convert to seconds
+  const totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+
+  return totalSeconds;
+}
+
+function secondsToTimeString(totalSeconds: number): string {
+  let hours = Math.floor(totalSeconds / 3600);
+  let remainingSecondsAfterHours = totalSeconds % 3600;
+  let minutes = Math.floor(remainingSecondsAfterHours / 60);
+  let seconds = remainingSecondsAfterHours % 60;
+
+  // Cap hours at 99
+  if (hours > 99) {
+      hours = 99;
+      minutes = Math.min(Math.floor((totalSeconds - (99 * 3600)) / 60), 60);
+      seconds = remainingSecondsAfterHours % 60 === 0 ? remainingSecondsAfterHours : remainingSecondsAfterHours % 60;
+  }
+
+  // Convert to HH MM SS format
+  const hoursString = hours.toString().padStart(2, '0');
+  const minutesString = minutes.toString().padStart(2, '0');
+  const secondsString = seconds.toString().padStart(2, '0');
+
+  return hoursString + minutesString + secondsString;
+}
