@@ -24,6 +24,10 @@ function CountdownTimer(): ReactElement {
     if (!isRunning) {
       const normalized = normalizeTimeString(inputValue);
       const seconds = timeStringToSeconds(normalized)
+      const backAgain = secondsToTimeString(remainingTime)
+
+      console.table([normalized, seconds, backAgain])
+
       setRemainingTime(seconds);
     }
   
@@ -88,8 +92,10 @@ function CountdownTimer(): ReactElement {
       if (value.length > 6) {
         // Remove the first character if the length exceeds 6
         const newValue = value.substring(1);
+        console.log(newValue)
         setInputValue(newValue);
       } else {
+        console.log(value)
         setInputValue(value);
       }
     }
@@ -104,6 +110,8 @@ function CountdownTimer(): ReactElement {
     const index = value.length - position
     return value.charAt(index) ? { color: 'green' } : { color: 'red' };
   };
+
+  // TODO backspace eventlistener to clear inputValue
 
  return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -155,7 +163,7 @@ function CountdownTimer(): ReactElement {
             className={`py-2 px-8 rounded-md font-bold tracking-wide text-white w-32 ml-auto ${isRunning ? "bg-red-500" : "bg-green-500"}`}
             onClick={() => setIsRunning(prev => !prev)}
             disabled={inputValue === "000000"} // TODO
-            >
+          >
             {isRunning ? "STOP" : "START"}
           </button>
         </div>
@@ -203,12 +211,16 @@ function normalizeTimeString(timeString: string): string {
   // Cap the normalized hours to its maximum
   if (normalizedHours > 99) {
     normalizedHours = 99;
-    normalizedMinutes = 60;
-    normalizedSeconds = 60;
+    normalizedMinutes = 59;
+    normalizedSeconds = 59;
   }
 
-  const result = `${normalizedHours}` + `${normalizedMinutes}` + `${normalizedSeconds}`
-  // const result = parseInt(String(normalizedHours) + String(normalizedMinutes) + String(normalizedSeconds));
+  // Convert to strings and pad with leading zeros
+  const hoursStr = String(normalizedHours).padStart(2, '0');
+  const minutesStr = String(normalizedMinutes).padStart(2, '0');
+  const secondsStr = String(normalizedSeconds).padStart(2, '0');
+
+  const result = `${hoursStr}` + `${minutesStr}` + `${secondsStr}`
   return result
 }
 
