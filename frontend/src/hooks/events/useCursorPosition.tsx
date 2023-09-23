@@ -1,30 +1,5 @@
 import {  useCallback, useState, useEffect, useRef, type RefObject,} from "react";
 
-// export function useCaretPosition<
-//   T extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement
-// >() {
-//   const node = useRef<T>(null);
-//   const [start, setStart] = useState(0);
-//   const [end, setEnd] = useState(0);
-
-//   const updateCaret = useCallback(() => {
-//     if (node.current) {
-//       const { selectionStart, selectionEnd } = node.current;
-
-//       setStart(selectionStart!);
-//       setEnd(selectionEnd!);
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     if (node.current) {
-//       node.current.setSelectionRange(start, end);
-//     }
-//   });
-
-//   return { start, end, ref: node, updateCaret };
-// }
-
 type RefType<T extends HTMLInputElement | HTMLTextAreaElement = HTMLInputElement> = RefObject<T>;
 
 export function useCursorPosition<
@@ -35,7 +10,6 @@ export function useCursorPosition<
   const [realCursorPosition, setRealCursorPosition] = useState(0);
 
   const updateCaret = useCallback(() => {
-    console.log("fire")
     // Use a timeout to delay the reading of selectionStart and selectionEnd
     const timeoutId = setTimeout(() => {
       if (ref.current) {
@@ -49,6 +23,7 @@ export function useCursorPosition<
     return () => clearTimeout(timeoutId);
   }, [ref]);
 
+  // handle keyboard
   useEffect(() => {
     if (ref.current) {
       ref.current.setSelectionRange(start, end);
@@ -56,13 +31,14 @@ export function useCursorPosition<
     }
   }, [start, end, ref]);
 
-  return { realCursorPosition, start, end, updateCaret };
-}
+  // handle click
+  useEffect(() => {
+    if (ref.current) {
+      const invertRealCursorPosition = ref.current.value.length - realCursorPosition
+      ref.current.focus();
+      ref.current.setSelectionRange(invertRealCursorPosition, invertRealCursorPosition);
+    }
+  }, [realCursorPosition, ref]);
 
-export const setCaretPosition = (ref: RefObject<HTMLInputElement>, position: number) => {
-  const input = ref.current;
-  if (input) {
-    input.focus();
-    input.setSelectionRange(position, position);
-  }
-};
+  return { realCursorPosition, start, end, updateCaret, setRealCursorPosition };
+}

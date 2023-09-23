@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactElement } from 'react';
-import { setCaretPosition, useCursorPosition, useFocusBlur, useKeyPressed } from '../../hooks';
+import { useCursorPosition, useFocusBlur, useKeyPressed } from '../../hooks';
 import { Button } from '../common';
 
 type Timer = ReturnType<typeof setTimeout>;
@@ -16,11 +16,12 @@ function CountdownTimer(): ReactElement {
   const [inputValue, setInputValue] = useState<string>("");
   const [placeholderValue, setPlaceholderValue] = useState<string>("123456");
   const [isRunning, setIsRunning] = useState<boolean>(false)
-  // New state to keep track of the remaining time in seconds
   const [remainingTime, setRemainingTime] = useState<number>(0);
-  const isBackspacePressed = useKeyPressed("backspace")
 
-  const { start, end, realCursorPosition, updateCaret } = useCursorPosition(inputRef);
+  const isEnterKeyPressed = useKeyPressed("enter")
+  const isDeleteKeyPressed = useKeyPressed("delete")
+
+  const { realCursorPosition, updateCaret, setRealCursorPosition } = useCursorPosition(inputRef);
 
   useEffect(() => {
     let timerId: Timer | null = null;
@@ -84,13 +85,23 @@ function CountdownTimer(): ReactElement {
   // }, [isActive]);
 
   // Handle Delete Key
-  // useEffect(() => {
-  //   if(!isRunning){
-  //     if(isBackspacePressed && inputValue.length === 6) console.log("backspaced")
-  //   }
-  // }, [isRunning, isBackspacePressed ])
+  useEffect(() => {
+    if(isActive){
+      if(isDeleteKeyPressed){
+        setRealCursorPosition(realCursorPosition - 1)
+      } 
+    }
+  }, [isActive, isDeleteKeyPressed ])
 
+  // Handle Enter Key
+  useEffect(() => {
 
+    if(isEnterKeyPressed){
+      console.log("enter")
+      // TODO handle blur / is active
+      setIsRunning(true)
+    } 
+  }, [isEnterKeyPressed])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -110,10 +121,7 @@ function CountdownTimer(): ReactElement {
   };
 
   const handelUpdateCursorPosition = (position: number): void => {
-    // setCaretPosition(inputRef, position)
-    // updateCaret
-    setCaretPosition(inputRef, position);
-    setTimeout(updateCaret, 0); 
+    setRealCursorPosition(position)
   }
   
 
@@ -135,14 +143,14 @@ function CountdownTimer(): ReactElement {
           { 
             inputValue.length > 0 ? (
               <div>
-                <SpanNumber value={inputValue} position={5} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition} />
-                <SpanNumber value={inputValue} position={4} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <SpanNumber value={inputValue} position={5} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={() => handelUpdateCursorPosition(5)} />
+                <SpanNumber value={inputValue} position={4} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={() => handelUpdateCursorPosition(4)}/>
                 <span className="text-4xl" style={getStyle(inputValue, 4)}>h&nbsp;</span>
-                <SpanNumber value={inputValue} position={3} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
-                <SpanNumber value={inputValue} position={2} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <SpanNumber value={inputValue} position={3} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={() => handelUpdateCursorPosition(3)}/>
+                <SpanNumber value={inputValue} position={2} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={() => handelUpdateCursorPosition(2)}/>
                 <span className="text-4xl" style={getStyle(inputValue, 2)}>m&nbsp;</span>
-                <SpanNumber value={inputValue} position={1} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
-                <SpanNumber value={inputValue} position={0} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <SpanNumber value={inputValue} position={1} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={() => handelUpdateCursorPosition(1)}/>
+                <SpanNumber value={inputValue} position={0} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={() => handelUpdateCursorPosition(0)}/>
                 <span className="text-4xl" style={getStyle(inputValue, 0)}>s&nbsp;</span>
               </div>
             ) : (
@@ -184,7 +192,6 @@ function CountdownTimer(): ReactElement {
           onKeyDown={updateCaret} 
         />
         </div>
-        <Button onClick={() => setCaretPosition(inputRef, 3)}>Set Cursor Position</Button>
         <Button onClick={updateCaret}>Update Caret Position</Button>
       </div>
     </div>
@@ -213,8 +220,8 @@ const SpanNumber = ({
       className='relative'
       style={{
         borderRight: "solid 2px transparent",
-        // borderColor: (realCursorPosition === position) && isActive ? "black" : "transparent",
-        borderColor: (realCursorPosition === position) ? "black" : "transparent",
+        borderColor: (realCursorPosition === position) && isActive ? "black" : "transparent",
+        // borderColor: (realCursorPosition === position) ? "black" : "transparent",
         ...getStyle(value, position)}
       }
       onClick={() => handelUpdateCursorPosition(position)}
