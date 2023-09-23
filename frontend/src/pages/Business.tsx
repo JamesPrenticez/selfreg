@@ -1,10 +1,15 @@
 import React from 'react'
+import { useCursorPosition } from '../hooks';
 
 function Business() {
+  const ref = React.useRef(null);
+  const { updateCaret } = useCursorPosition(ref);
+
   return (
-    <>
-      bizzzzz
-    </>
+    <div>
+      <input ref={ref} type="text" />
+      <button onClick={updateCaret}>Update Caret Position</button>
+    </div>
   )
 }
 

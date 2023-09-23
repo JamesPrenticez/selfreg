@@ -28,7 +28,7 @@ export function Button({
           variant === "success" ? "bg-green-500 hover:bg-green-600 text-white" 
           : variant === "error" ? "bg-red-500 hover:bg-red-600 text-white" 
           : variant === "secondary" ? "bg-slate-900 hover:bg-slate-800 text-white"
-          : "bg-gray-400 hover:bg-gray-500 text-slate-900"
+          : "bg-gray-700 hover:bg-gray-800 text-white"
         }
         ${ csx }
       `}

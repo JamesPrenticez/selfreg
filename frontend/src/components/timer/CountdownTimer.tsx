@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactElement } from 'react';
-import { useFocusBlur } from '../../hooks';
+import { setCaretPosition, useCursorPosition, useFocusBlur, useKeyPressed } from '../../hooks';
+import { Button } from '../common';
 
 type Timer = ReturnType<typeof setTimeout>;
 
@@ -17,6 +18,9 @@ function CountdownTimer(): ReactElement {
   const [isRunning, setIsRunning] = useState<boolean>(false)
   // New state to keep track of the remaining time in seconds
   const [remainingTime, setRemainingTime] = useState<number>(0);
+  const isBackspacePressed = useKeyPressed("backspace")
+
+  const { start, end, realCursorPosition, updateCaret } = useCursorPosition(inputRef);
 
   useEffect(() => {
     let timerId: Timer | null = null;
@@ -26,7 +30,7 @@ function CountdownTimer(): ReactElement {
       const seconds = timeStringToSeconds(normalized)
       const backAgain = secondsToTimeString(remainingTime)
 
-      console.table([normalized, seconds, backAgain])
+      // console.table([normalized, seconds, backAgain])
 
       setRemainingTime(seconds);
     }
@@ -68,19 +72,25 @@ function CountdownTimer(): ReactElement {
 
   // Handle Placeholder
   // useEffect(() => {
-  //   if (isActive) {
-  //     inputValue === "" ? setPlaceholderValue("123456") : setPlaceholderValue(inputValue)
+  //   if (!isActive) {
+  //     inputValue === "" ? setPlaceholderValue("") : setPlaceholderValue(inputValue)
   //     setInputValue('');
   //   }
 
-  //   if (!isActive) {
-  //     inputValue === "" ? setInputValue(placeholderValue) : setPlaceholderValue("123456")
+  //   if (isActive) {
+  //     inputValue === "" ? setInputValue(placeholderValue) : setPlaceholderValue("")
   //   }
 
   // }, [isActive]);
 
-  // onKey press backspace
-  // if(isActive) {setInputValue("") }
+  // Handle Delete Key
+  // useEffect(() => {
+  //   if(!isRunning){
+  //     if(isBackspacePressed && inputValue.length === 6) console.log("backspaced")
+  //   }
+  // }, [isRunning, isBackspacePressed ])
+
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -92,26 +102,21 @@ function CountdownTimer(): ReactElement {
       if (value.length > 6) {
         // Remove the first character if the length exceeds 6
         const newValue = value.substring(1);
-        console.log(newValue)
         setInputValue(newValue);
       } else {
-        console.log(value)
         setInputValue(value);
       }
     }
   };
+
+  const handelUpdateCursorPosition = (position: number): void => {
+    // setCaretPosition(inputRef, position)
+    // updateCaret
+    setCaretPosition(inputRef, position);
+    setTimeout(updateCaret, 0); 
+  }
   
-  const getValue = (value: string, position: number) => {
-    const index = value.length - position
-    return value.charAt(index) || '0';
-  };
 
-  const getStyle = (value: string, position: number) => {
-    const index = value.length - position
-    return value.charAt(index) ? { color: 'green' } : { color: 'red' };
-  };
-
-  // TODO backspace eventlistener to clear inputValue
 
  return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -124,33 +129,32 @@ function CountdownTimer(): ReactElement {
             relative w-[500px] text-6xl rounded-md p-2 font-black"
             ${inputValue.length > 0 ? "bg-green-300" : "bg-pink-300"}`
           }
-          
           onClick={() => setIsActive(true)}
         >
 
           { 
             inputValue.length > 0 ? (
               <div>
-                <span style={getStyle(inputValue, 6)}>{getValue(inputValue, 6)}</span>
-                <span style={getStyle(inputValue, 5)}>{getValue(inputValue, 5)}</span>
-                <span className="text-4xl" style={getStyle(inputValue, 5)}>h&nbsp;</span>
-                <span style={getStyle(inputValue, 4)}>{getValue(inputValue, 4)}</span>
-                <span style={getStyle(inputValue, 3)}>{getValue(inputValue, 3)}</span>
-                <span className="text-4xl" style={getStyle(inputValue, 3)}>m&nbsp;</span>
-                <span style={getStyle(inputValue, 2)}>{getValue(inputValue, 2)}</span>
-                <span style={getStyle(inputValue, 1)}>{getValue(inputValue, 1)}</span>
-                <span className="text-4xl" style={getStyle(inputValue, 1)}>s&nbsp;</span>
+                <SpanNumber value={inputValue} position={5} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition} />
+                <SpanNumber value={inputValue} position={4} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <span className="text-4xl" style={getStyle(inputValue, 4)}>h&nbsp;</span>
+                <SpanNumber value={inputValue} position={3} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <SpanNumber value={inputValue} position={2} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <span className="text-4xl" style={getStyle(inputValue, 2)}>m&nbsp;</span>
+                <SpanNumber value={inputValue} position={1} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <SpanNumber value={inputValue} position={0} isActive={isActive} realCursorPosition={realCursorPosition} handelUpdateCursorPosition={handelUpdateCursorPosition}/>
+                <span className="text-4xl" style={getStyle(inputValue, 0)}>s&nbsp;</span>
               </div>
             ) : (
               <div className='text-gray-300'>
-                <span>{getValue(placeholderValue, 6)}</span>
                 <span>{getValue(placeholderValue, 5)}</span>
+                <span>{getValue(placeholderValue, 4)}</span>
                 <span className="text-4xl">h&nbsp;</span>
-                <span >{getValue(placeholderValue, 4)}</span>
                 <span >{getValue(placeholderValue, 3)}</span>
-                <span className="text-4xl">m&nbsp;</span>
                 <span >{getValue(placeholderValue, 2)}</span>
+                <span className="text-4xl">m&nbsp;</span>
                 <span >{getValue(placeholderValue, 1)}</span>
+                <span >{getValue(placeholderValue, 0)}</span>
                 <span className="text-4xl">s&nbsp;</span>
               </div>
             )
@@ -177,15 +181,58 @@ function CountdownTimer(): ReactElement {
           onChange={handleChange}
           onBlur={handleBlur}
           className="bg-red-300"
+          onKeyDown={updateCaret} 
         />
         </div>
-
+        <Button onClick={() => setCaretPosition(inputRef, 3)}>Set Cursor Position</Button>
+        <Button onClick={updateCaret}>Update Caret Position</Button>
       </div>
     </div>
   );
 }
 
 export default CountdownTimer;
+
+interface ISpanNumber {
+  value: string;
+  position: number;
+  isActive: boolean;
+  realCursorPosition: number | null;
+  handelUpdateCursorPosition: (position: number) => void;
+}
+
+const SpanNumber = ({
+  value,
+  position,
+  isActive,
+  realCursorPosition,
+  handelUpdateCursorPosition
+}: ISpanNumber ) => {
+  return (
+    <span 
+      className='relative'
+      style={{
+        borderRight: "solid 2px transparent",
+        // borderColor: (realCursorPosition === position) && isActive ? "black" : "transparent",
+        borderColor: (realCursorPosition === position) ? "black" : "transparent",
+        ...getStyle(value, position)}
+      }
+      onClick={() => handelUpdateCursorPosition(position)}
+    >
+      {getValue(value, position)}
+    </span>
+  )
+}
+
+const getValue = (value: string, position: number) => {
+  const index = (value.length - 1) - position
+  return value.charAt(index) || '0';
+};
+
+const getStyle = (value: string, position: number) => {
+  const index = (value.length - 1) - position
+  return value.charAt(index) ? { color: 'green' } : { color: 'red' };
+};
 
 function normalizeTimeString(timeString: string): string {
   // Pad the string with leading zeros to make it of length 6
