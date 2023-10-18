@@ -33,7 +33,6 @@ export function getWeekDetails(dateString: string): IWeekDetails {
   return {
     year: year.toString(),
     week: weekNumber.toString(),
-    days
   };
 }
 
