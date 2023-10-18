@@ -3,7 +3,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import alias from '@rollup/plugin-alias';
-// import { VitePWA } from 'vite-plugin-pwa'
+import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
   server: {
@@ -19,7 +19,9 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    // VitePWA(),
+    VitePWA({
+      registerType: 'autoUpdate'
+    }),
     alias({
       entries: [
         { find: '@api', replacement: '/src/api' },

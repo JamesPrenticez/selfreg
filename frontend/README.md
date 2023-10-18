@@ -103,3 +103,13 @@ npm install -g serve
 ```bash
 serve dist
 ```
+
+### Step 8: Auto update cashe when deploying new version of code 
+https://css-tricks.com/vitepwa-plugin-offline-service-worker/#versioning-and-manifests
+https://vite-pwa-org.netlify.app/guide/auto-update.html
+
+```vite.config.ts
+    VitePWA({
+      registerType: 'autoUpdate'
+    }),
+```
