@@ -4,12 +4,12 @@ import {
   type ITodo 
 } from '../../models';
 import { mockTodos } from '../../mocks'
+import WeekNumberOfYear from './WeekOfYear';
 // import { getWeekDetails } from '../../utils/getWeekDetails';
 
 function Todos(): ReactElement {
   // Initialize state with mock data
   const [todos, setTodos] = useState<ITodo[] | null>(null);
-  // const [weekDetails, setWeekDetails] = useState<IWeekDetails | null>(null)
 
   // Simulate an API call
   useEffect(() => {
@@ -19,11 +19,6 @@ function Todos(): ReactElement {
       setTodos(mockTodos);  // Replace mockTodos with actual data from API
     }, 2000);
   }, []);
-
-  // useEffect(() => {
-  //   if (!todos || todos.length === 0 || !todos[0].days || todos[0].days.length === 0) return;
-  //   setWeekDetails(getWeekDetails(todos[0].days[0].date));
-  // }, [todos]);
 
   // Update the status of a recurring task
   const updateTaskStatus = (id: string, date: string) => {
@@ -65,7 +60,9 @@ function Todos(): ReactElement {
     <div className="w-full flex flex-col gap-y-2">
 
       <div className="grid grid-cols-todos gap-x-2 w-full h-[32px] items-center">
-        <h1 className='font-bold'>Week: 32</h1>
+        <WeekNumberOfYear />
+
+
         {daysOfTheWeek.map((day, index) => (
           <DayLabelBox 
             key={`${day}-${index}`}

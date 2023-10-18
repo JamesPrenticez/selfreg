@@ -6,5 +6,5 @@ interface IDayDetail {
 export interface IWeekDetails {
   year: string;
   week: string;
-  days: IDayDetail[];
+  // days: IDayDetail[];
 }

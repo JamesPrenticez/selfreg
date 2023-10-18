@@ -2,6 +2,7 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import alias from '@rollup/plugin-alias';
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
@@ -18,6 +19,17 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    VitePWA()
+    VitePWA(),
+    alias({
+      entries: [
+        { find: '@api', replacement: '/src/api' },
+        { find: '@components', replacement: '/src/components' },
+        { find: '@models', replacement: '/src/models' },
+        { find: '@hooks', replacement: '/src/hooks' },
+        { find: '@assets', replacement: '/src/assets' },
+        { find: '@mocks', replacement: '/src/mocks' },
+        { find: '@redux', replacement: '/src/mocks' },
+      ],
+    }),
   ],
 });

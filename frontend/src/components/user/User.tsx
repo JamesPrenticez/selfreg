@@ -1,21 +1,20 @@
 import React, { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks'
-import { fetchUser } from './userAPI'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { getUser } from '../../redux/thunk/userThunk'
 
 const User = () => {
   const dispatch = useAppDispatch()
-  const data = useAppSelector((state) => state.userStore.payload)
+  const data = useAppSelector((state) => state.user.payload)
 
   useEffect(() => {
-    void dispatch(fetchUser());
-    console.log("fire - server request")
+    void dispatch(getUser());
   }, [dispatch])
 
   return (
     <div>
       {data !== null &&
       <p>
-        Hello, {data.username}
+        Hello, {data.firstName}
       </p>
       }
     </div>

@@ -67,6 +67,10 @@ function CountdownTimer(): ReactElement {
     if (isRunning) {
       const formattedInputValue = secondsToTimeString(remainingTime);
       setInputValue(formattedInputValue);
+
+      // TODO turn this into a function and add some emojies
+      const formattedTime = `${formattedInputValue.slice(0, 2)}h ${formattedInputValue.slice(2, 4)}m ${formattedInputValue.slice(4, 6)}s`;
+      document.title = `${formattedTime} - Self Regulator`;
     }
   }, [isRunning, remainingTime]);
 
@@ -124,8 +128,6 @@ function CountdownTimer(): ReactElement {
     setRealCursorPosition(position)
   }
   
-
-
  return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="mb-4 space-y-2">
@@ -192,7 +194,6 @@ function CountdownTimer(): ReactElement {
           onKeyDown={updateCaret} 
         />
         </div>
-        <Button onClick={updateCaret}>Update Caret Position</Button>
       </div>
     </div>
   );
