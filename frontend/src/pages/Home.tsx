@@ -15,15 +15,13 @@ const Home = (): ReactElement => {
   return (
     <Body>
       <div className="grid grid-cols-2 min-h-screenNav bg-red-500">
-        No Cashdfadsfa
-        {/* {data.map((item) => (
+        {data.map((item) => (
           <NavLink key={item.id} to={item.url} className="flex flex-col justify-center items-center cursor-pointer" style={{background: item.bgcolor}}>
             <h1 className="text-white font-bold text-2xl md:text-5xl" style={{color: item.color}}>
               {item.name}
             </h1>
           </NavLink>
-        ))} */}
-
+        ))}
       </div>
     </Body>
   );

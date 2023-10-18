@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import { Provider as ReduxProvider } from "react-redux";
 import { store } from "./redux/store";
 
-
 import Layout from "./components/layout/Layout";
 import Loading from "./components/common/Loading";
 
