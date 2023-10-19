@@ -1,2 +1,2 @@
 export * from './ITodos'
-export * from './IValidTasks'
+export * from './ITask'

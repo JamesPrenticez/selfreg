@@ -23,6 +23,7 @@ const Sleep = lazy(() => import("./pages/Sleep"));
 const Exercise = lazy(() => import("./pages/Exercise"));
 const Meditation = lazy(() => import("./pages/Meditation"));
 const Business = lazy(() => import("./pages/Business"));
+const Settings = lazy(() => import("./pages/Settings"));
 
 const NotFound = (): ReactElement  => <h1>404 - Not Found</h1>;
 
@@ -48,6 +49,7 @@ function App(): ReactElement {
 
             <Route path="/admin" element={<Admin />} />
             <Route path="/login" element={<SignIn csrfToken="123456"  providers={["github", "facebook"]} />} />
+            <Route path="/settings" element={<Settings />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

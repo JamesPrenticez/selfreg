@@ -113,3 +113,7 @@ https://vite-pwa-org.netlify.app/guide/auto-update.html
       registerType: 'autoUpdate'
     }),
 ```
+
+### Emojis
+https://codesandbox.io/s/emoji-picker-react-4-z2gkzp
+https://www.npmjs.com/package/emoji-picker-react

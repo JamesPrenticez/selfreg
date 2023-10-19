@@ -9,3 +9,4 @@ export const mockUser: IUser = {
   phone: "123456789",
   profilePicture: undefined
 }
+

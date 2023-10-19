@@ -7,4 +7,5 @@ export const pages = [
   { name: "ABOUT", url: "/about", requiresAuth: false },
   { name: "LOGIN", url: "/login", requiresAuth: false },
   { name: "PROFILE", url: "/profile", requiresAuth: false },
+  { name: "SETTINGS", url: "/settings", requiresAuth: false },
 ];
