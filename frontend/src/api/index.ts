@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { mockUser, mockTodos, mockDays } from '@mocks';
+import { mockUsers, mockTodos, mockDays } from '@mocks';
 import type { ISuccessResult, IErrorResult } from '@models';
 import mockSQL from './mockSQL';
 
@@ -19,14 +19,28 @@ const axiosInstance = axios.create({
 const mockAxiosInstance = new MockAdapter(axiosInstance, { delayResponse: 2000 });
 
 if (useMockData) {
+  //=============================================================================
+  // GET
+  //=============================================================================
+  // USER
+  mockAxiosInstance.onGet('/user').reply((config) => {
+    const { params } = config;
+    
+    // GET user by _id
+    if (params && params._id) {
+      return mockSQL.WHERE_ONE(mockUsers, "_id", params._id)
+    }
 
+    return [204, undefined];
+  });
 
+  // TOODOOS
   mockAxiosInstance.onGet('/todos').reply((config) => {
     const { params } = config;
 
     // GET todos by user_id
     if (params && params.user_id && !params.start_date) {
-      return mockSQL.WHERE(mockTodos, "user_id", params.user_id)
+      return mockSQL.WHERE_MANY(mockTodos, "user_id", params.user_id)
     }
 
     // GET todos by user_id and days between date range
@@ -37,65 +51,65 @@ if (useMockData) {
     return [200, mockTodos];
   });
 
-
-
+  //=============================================================================
+  // POST
+  //=============================================================================
   mockAxiosInstance.onPost('/your-post-endpoint').reply(200, { success: true });
 }
 
-
-// TODO can simplify these two functions into api.get and api.post
 // GET request version of the api function
-const apiGet = async <T>(
-  endpoint: string,
-  params?: any // Optional parameters for GET requests
-): Promise<ISuccessResult<T>> => {
-  const config: AxiosRequestConfig = {
-    method: 'GET',
-    url: endpoint,
-  };
+const api = {
+  get: async <T>(
+    endpoint: string,
+    params?: any // Optional parameters for GET requests
+  ): Promise<ISuccessResult<T>> => {
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      url: endpoint,
+    };
 
-  if (params) {
-    config.params = params;
-  }
-
-  try {
-    const response = await axiosInstance.request(config);
-    return { data: response.data } as ISuccessResult<T>;
-  } catch (error) {
-    // Handle errors
-    if (error instanceof Error && typeof error.message === 'string') {
-      throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
-    } else {
-      throw { message: 'Failed to fetch data from API' } as IErrorResult;
+    if (params) {
+      config.params = params;
     }
-  }
+
+    try {
+      const response = await axiosInstance.request(config);
+      return { data: response.data } as ISuccessResult<T>;
+    } catch (error) {
+      // Handle errors
+      if (error instanceof Error && typeof error.message === 'string') {
+        throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
+      } else {
+        throw { message: 'Failed to fetch data from API' } as IErrorResult;
+      }
+    }
+  },
+
+  post: async <T>(
+    endpoint: string,
+    data?: any, // Data payload for POST requests
+  ): Promise<ISuccessResult<T>> => {
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: endpoint,
+    };
+
+    if (data) {
+      config.data = data;
+    }
+
+    try {
+      const response = await axiosInstance.request(config);
+      return { data: response.data } as ISuccessResult<T>;
+    } catch (error) {
+      // Handle errors
+      if (error instanceof Error && typeof error.message === 'string') {
+        throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
+      } else {
+        throw { message: 'Failed to fetch data from API' } as IErrorResult;
+      }
+    }
+  },
 };
 
-// POST request version of the api function
-const apiPost = async <T>(
-  endpoint: string,
-  data?: any, // Data payload for POST requests
-): Promise<ISuccessResult<T>> => {
-  const config: AxiosRequestConfig = {
-    method: 'POST',
-    url: endpoint,
-  };
-
-  if (data) {
-    config.data = data;
-  }
-
-  try {
-    const response = await axiosInstance.request(config);
-    return { data: response.data } as ISuccessResult<T>;
-  } catch (error) {
-    // Handle errors
-    if (error instanceof Error && typeof error.message === 'string') {
-      throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
-    } else {
-      throw { message: 'Failed to fetch data from API' } as IErrorResult;
-    }
-  }
-};
-
-export { apiGet, apiPost };
+export default api;

@@ -1,11 +1,16 @@
 import { ITodo, IDay } from "@models";
 
 const mockSQL = {
-  WHERE(data: any[], key: string, value: string){
+  WHERE_ONE(data: any[], key: string, value: string){
+    const filteredData = data.find((x) =>
+      x[key].toLowerCase() === value.toLowerCase()
+    );
+    return [200, filteredData];
+  },
+  WHERE_MANY(data: any[], key: string, value: string){
     const filteredData = data.filter((x) =>
       x[key].toLowerCase() === value.toLowerCase()
     );
-
     return [200, filteredData];
   },
   JOIN_TODO_AND_DAYS(

@@ -6,7 +6,7 @@ import TodoLayout from "@components/todos/TodoLayout";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
 // import { getUser } from "@redux/thunk/userThunk";
-import { apiGet } from "@api";
+import api from "@api";
 import { ITodo } from "@models";
 
 const Home = (): ReactElement => {
@@ -38,7 +38,7 @@ const Home = (): ReactElement => {
   };
 
   useEffect(() => {
-    apiGet<ITodo[]>('/todos', params)
+    api.get<ITodo[]>('/todos', params)
       .then((res) => {
         setTodos(res.data)
       })
