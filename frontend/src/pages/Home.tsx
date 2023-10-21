@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "@redux/hooks";
 // import { getUser } from "@redux/thunk/userThunk";
 import api from "@api";
 import { ITodo } from "@models";
+import { getTodos } from "@redux/thunk/todosThunk";
 
 const Home = (): ReactElement => {
   const today = dayjs() // TODO add this to global state
@@ -17,43 +18,35 @@ const Home = (): ReactElement => {
   // Returns list of todos that fall within the given week/year
   // If there is no todo with the 'task_name' then create it
 
-  // const dispatch = useAppDispatch()
-  // const data = useAppSelector((state) => state.user.payload)
+  const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   void dispatch(getUser());
-  // }, [dispatch])
-  const [todos, setTodos] = useState<ITodo[] | undefined>(undefined)
-
-  interface Todo {
-    id: number;
-    title: string;
-    completed: boolean;
-  }
-
-  const params = {
-    user_id: "123456",
-    start_date: "2023-09-14",
-    end_date: "2023-09-16",
-  };
+  const todos = useAppSelector((state) => state.todos);
 
   useEffect(() => {
-    api.get<ITodo[]>('/todos', params)
-      .then((res) => {
-        setTodos(res.data)
-      })
-      .catch((error) => {
-        console.error('Error:', error.message);
-      });
-  }, []); 
+    dispatch(getTodos({ user_id: '123456' }));
+  }, [dispatch]);
 
-  console.log(todos)
+  // const params = {
+  //   user_id: "123456",
+  // };
+
+  // useEffect(() => {
+  //   api.get<ITodo[]>('/todos', params)
+  //     .then((res) => {
+  //       setTodos(res.data)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error:', error.message);
+  //     });
+  // }, []); 
+
+  // console.log(todos)
 
   return (
     <div className="w-full mx-auto min-h-screenNav bg-white"> 
       <div className="grid grid-col min-h-screenNav bg-red-500">
-        {todos? (
-          todos.map((todo) => (
+        {todos.payload ? (
+          todos.payload.map((todo) => (
             <NavLink key={todo._id} to={todo.slug ?? "/"} className="flex cursor-pointer px-4" style={{background: todo.bgcolor}}>
               <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto">
 

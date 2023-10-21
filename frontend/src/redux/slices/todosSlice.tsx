@@ -2,11 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { ITodo } from '@models';
-import { getUser } from '../thunk/userThunk';
+import { getTodos } from '../thunk/todosThunk';
 
 interface TodosState {
   status: 'idle' | 'pending' | 'success' | 'failed';
-  payload: ITodo[];
+  payload: ITodo[] | undefined;
   isLoading: boolean;
   isSaving: boolean;
   error: string | null;
@@ -14,33 +14,20 @@ interface TodosState {
 
 const initialState: TodosState = {
   status: 'idle',
-  payload: [
-    {
-      _id: undefined,
-      user_id: undefined,
-      task_name: undefined,
-      slug: undefined,
-      color: undefined,
-      bgcolor: undefined,
-      icon: undefined,
-      successIcon: undefined,
-      errorIcon: undefined,
-      description: undefined,
-      created_at: undefined,
-      days: undefined,
-    }
-  ],
+  payload: undefined,
   isLoading: false,
   isSaving: false,
   error: null,
 };
 
-export const userSlice = createSlice({
+export const todosSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    updateUserDetails: (state, action: PayloadAction<Partial<ITodo>>) => {
-      state.payload = { ...state.payload, ...action.payload };
+    updateTodosPayload: (state, action: PayloadAction<ITodo[]>) => {
+      if (state.payload) {
+        state.payload = { ...state.payload, ...action.payload };
+      }
     },
   },
   extraReducers: (builder) => {
@@ -50,14 +37,13 @@ export const userSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(getUser.fulfilled, (state, action: PayloadAction<IUser>) => {
-        // console.log("Fulfilled action:", action);
+      .addCase(getTodos.fulfilled, (state, action: PayloadAction<ITodo[]>) => {
         state.status = "success";
         state.payload = action.payload;
         state.isLoading = false;
         state.error = null;
       })
-      .addCase(getUser.rejected, (state, action) => {
+      .addCase(getTodos.rejected, (state, action) => {
         state.status = "failed";
         state.isLoading = false;
         state.error = 'An error occurred';
@@ -65,6 +51,7 @@ export const userSlice = createSlice({
   }
 });
 
-export const accountActions = userSlice.actions;
+// export const accountActions = todosSlice.actions;
+export const { updateTodosPayload } = todosSlice.actions;
 
-export default userSlice;
+export default todosSlice;

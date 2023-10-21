@@ -24,7 +24,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    updateUserDetails: (state, action: PayloadAction<Partial<IUser>>) => {
+    updateUserPayload: (state, action: PayloadAction<Partial<IUser>>) => {
       if (state.payload) {
         state.payload = { ...state.payload, ...action.payload };
       }
@@ -51,7 +51,7 @@ export const userSlice = createSlice({
   }
 });
 
-export const accountActions = userSlice.actions;
-// export const { updateUserDetails } = userSlice.actions;
+// export const accountActions = userSlice.actions;
+export const { updateUserPayload } = userSlice.actions;
 
 export default userSlice;

@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import {
-  userSlice
+  userSlice,
+  todosSlice
 } from "./slices"
 
 export const store = configureStore({
     reducer: {
         user: userSlice.reducer,        
+        todos: todosSlice.reducer,        
     },
     devTools:  process.env.NODE_ENV !== "development" ? false : true,
   })
