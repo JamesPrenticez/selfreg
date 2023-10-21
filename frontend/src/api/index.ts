@@ -1,94 +1,101 @@
-import axios from 'axios';
-import { mockUser, mockTodos } from '@mocks';
+import axios, { AxiosRequestConfig } from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { mockUser, mockTodos, mockDays } from '@mocks';
 import type { ISuccessResult, IErrorResult } from '@models';
+import mockSQL from './mockSQL';
 
 const development = true; // !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 const useMockData = true;
 
-// Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: development ? "http://localhost:3000/" : "http://selfregulator.com/",
+  baseURL: development ? 'http://localhost:3000/' : 'http://selfregulator.com/',
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   },
   withCredentials: false,
 });
 
-const api = {
-  async get<T>(endpoint: string): Promise<ISuccessResult<T>> {
-    if (useMockData) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          switch (endpoint) {
-            case 'user':
-              resolve({ data: mockUser } as ISuccessResult<T>);
-              break;
-            case 'todos':
-              resolve({ data: mockTodos } as ISuccessResult<T>);
-              break;
-            default:
-              reject(new Error(`Mock data not found for endpoint: ${endpoint}`));
-          }
-        }, 500); // Simulated delay (optional)
-      });
-    } else {
-      // You can use axiosInstance for real API requests
-      try {
-        const response = await axiosInstance.get(endpoint);
-        return ({ data: response.data } as ISuccessResult<T>);
-      } catch (error: unknown) {
-        // Error from server
-        if (error instanceof Error && typeof error.message === 'string') {
-          throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
-        // Axios error
-        } else {
-          throw { message: 'Failed to fetch data from API' } as IErrorResult;
-        }
-      }
-    }
-  },
+const mockAxiosInstance = new MockAdapter(axiosInstance, { delayResponse: 2000 });
 
-  async post<T>(endpoint: string, data: any): Promise<ISuccessResult<T> | IErrorResult> {
-    if (useMockData) {
-      // Simulate a POST request with a delay
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // You can add mock response logic here
-          resolve({ data: {"message": "post request made to mock"} } as ISuccessResult<T>);
-        }, 500); // Simulated delay (optional)
-      });
-    } else {
-      // You can use axiosInstance for real API POST requests
-      try {
-        const response = await axiosInstance.post(endpoint, data);
-        return ({ data: response.data } as ISuccessResult<T>);
-      } catch (error) {
-        // Error from server
-        if (error instanceof Error && typeof error.message === 'string') {
-          throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
-        // Axios Error
-        } else {
-          throw { message: 'Failed to fetch data from API' } as IErrorResult;
-        }
-      }
+if (useMockData) {
+
+
+  mockAxiosInstance.onGet('/todos').reply((config) => {
+    const { params } = config;
+
+    // GET todos by user_id
+    if (params && params.user_id && !params.start_date) {
+      return mockSQL.WHERE(mockTodos, "user_id", params.user_id)
     }
-  },
+
+    // GET todos by user_id and days between date range
+    if (params && params.user_id && params.start_date && params.end_date) {
+      return mockSQL.JOIN_TODO_AND_DAYS(params.user_id, params.start_date, params.end_date, mockTodos, mockDays)
+    }
+
+    return [200, mockTodos];
+  });
+
+
+
+  mockAxiosInstance.onPost('/your-post-endpoint').reply(200, { success: true });
+}
+
+
+// TODO can simplify these two functions into api.get and api.post
+// GET request version of the api function
+const apiGet = async <T>(
+  endpoint: string,
+  params?: any // Optional parameters for GET requests
+): Promise<ISuccessResult<T>> => {
+  const config: AxiosRequestConfig = {
+    method: 'GET',
+    url: endpoint,
+  };
+
+  if (params) {
+    config.params = params;
+  }
+
+  try {
+    const response = await axiosInstance.request(config);
+    return { data: response.data } as ISuccessResult<T>;
+  } catch (error) {
+    // Handle errors
+    if (error instanceof Error && typeof error.message === 'string') {
+      throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
+    } else {
+      throw { message: 'Failed to fetch data from API' } as IErrorResult;
+    }
+  }
 };
 
-export default api
+// POST request version of the api function
+const apiPost = async <T>(
+  endpoint: string,
+  data?: any, // Data payload for POST requests
+): Promise<ISuccessResult<T>> => {
+  const config: AxiosRequestConfig = {
+    method: 'POST',
+    url: endpoint,
+  };
 
-// Mertle example
-// export const getErrorMessage = (e: unknown): string => {
-//   let message: string;
-//   if (axios.isAxiosError<ErrorResult>(e)) {
-//     if (e.response != null) {
-//       message = `Response from Server: ${e.response?.data.message}`;
-//     } else {
-//       message = `Axios Error: ${e.message}`;
-//     }
-//   } else {
-//     message = "An unexpected error occurred";
-//   }
-//   return message;
-// };
+  if (data) {
+    config.data = data;
+  }
+
+  try {
+    const response = await axiosInstance.request(config);
+    return { data: response.data } as ISuccessResult<T>;
+  } catch (error) {
+    // Handle errors
+    if (error instanceof Error && typeof error.message === 'string') {
+      throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
+    } else {
+      throw { message: 'Failed to fetch data from API' } as IErrorResult;
+    }
+  }
+};
+
+export { apiGet, apiPost };

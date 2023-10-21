@@ -1,5 +1,5 @@
 import React from 'react'
-import { mockTasks } from '@mocks'
+import { mockTodos } from '@mocks'
 import { Button } from '@components/common'
 import Body from '@components/layout/Body'
 import EmojiSelector from '@components/emoji/EmojiSelector'
@@ -13,17 +13,17 @@ const Settings = () => {
 
       <div className='grid grid-cols-1 gap-4 text-[24px] bg-red-500 p-4'>
       {
-        mockTasks.map((task) => {
+        mockTodos.map((todo) => {
           return (
-            <div key={task._id} className='grid grid-cols-5 gap-4' >
-              <p className="bg-white">{task.task_name}</p>
-              <p className="bg-white">{task.color}</p>
-              <p className="bg-white">{task.bgcolor}</p>
+            <div key={todo._id} className='grid grid-cols-5 gap-4' >
+              <p className="bg-white">{todo.title}</p>
+              <p className="bg-white">{todo.color}</p>
+              <p className="bg-white">{todo.bgcolor}</p>
               <p className="bg-white">
-                <EmojiWrapper unified={task.successIcon}/>
+                <EmojiWrapper unified={todo.successIcon ?? ""} size={50}/>
               </p>
               <p className="bg-white">
-                <EmojiWrapper unified={task.errorIcon}/>
+                <EmojiWrapper unified={todo.errorIcon ?? ""} size={50}/>
               </p>
             </div>
               )
