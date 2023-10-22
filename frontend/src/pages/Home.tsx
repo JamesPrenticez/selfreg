@@ -26,22 +26,6 @@ const Home = (): ReactElement => {
     dispatch(getTodos({ user_id: '123456' }));
   }, [dispatch]);
 
-  // const params = {
-  //   user_id: "123456",
-  // };
-
-  // useEffect(() => {
-  //   api.get<ITodo[]>('/todos', params)
-  //     .then((res) => {
-  //       setTodos(res.data)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error:', error.message);
-  //     });
-  // }, []); 
-
-  // console.log(todos)
-
   return (
     <div className="w-full mx-auto min-h-screenNav bg-white"> 
       <div className="grid grid-col min-h-screenNav bg-red-500">

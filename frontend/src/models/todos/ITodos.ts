@@ -1,21 +1,21 @@
 export interface ITodo {
-  _id: string | undefined;
-  user_id: string | undefined;
-  title: string | undefined;
-  slug: string | undefined;
-  color: string | undefined;
-  bgcolor: string | undefined;
-  icon: string | undefined;
-  successIcon: string | undefined;
-  errorIcon: string | undefined;
-  description: string | undefined;
-  created_at: string | undefined;
+  _id: string;
+  user_id: string;
+  title: string;
+  slug: string;
+  color?: string;
+  bgcolor?: string;
+  icon?: string;
+  successIcon?: string;
+  errorIcon?: string;
+  description?: string;
+  created_at: string;
   days: IDay[] | undefined;
 }
 
 export interface IDay {
-  _id: string | undefined;
-  todo_id: string | undefined
+  _id: string;
+  todo_id: string;
   date: string;
   status: boolean | null;
 }

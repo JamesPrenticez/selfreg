@@ -38,14 +38,12 @@ if (useMockData) {
   mockAxiosInstance.onGet('/todos').reply((config) => {
     const { params } = config;
 
-    // GET todos by user_id
-    if (params && params.user_id && !params.start_date) {
+    if (params && params.user_id && !params.todo_ids) {
       return mockSQL.WHERE_MANY(mockTodos, "user_id", params.user_id)
     }
 
-    // GET todos by user_id and days between date range
-    if (params && params.user_id && params.start_date && params.end_date) {
-      return mockSQL.JOIN_TODO_AND_DAYS(params.user_id, params.start_date, params.end_date, mockTodos, mockDays)
+    if (params && params.user_id && params.todo_ids && params.start_date && params.end_date) {
+      return mockSQL.GET_DAYS_FOR_TODO_ID_LIST_BETWEEN_DATE_RANGE(params.user_id, params.todo_ids, params.start_date, params.end_date)
     }
 
     return [200, mockTodos];
