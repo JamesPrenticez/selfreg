@@ -7,9 +7,7 @@ interface Props {
   todo: ITodo;
 }
 
-function TodoLayout({
-  todo,
-}: Props) {
+function TodoLayout({todo}: Props) {
 
   const renderTodoBoxes = () => {
     const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -31,7 +29,7 @@ function TodoLayout({
       const renderTodoStatusIcon = () => {
         if (day.status === null) {
           // const dayOfWeek = dayjs(day.date).day() // for certainty we could replace dayLabel[index] with dayjs calc which returns a number
-          return <span style={{ fontSize: 50, color: todo.color ?? "fuchsia", fontWeight: 500}}>{dayLabels[index]}</span>
+          return <span style={{ fontSize: 50, color: todo.bgcolor ?? "white", fontWeight: 500}}>{dayLabels[index]}</span>
         } 
         else if(day.status === true) {
           return todo.successIcon !== "" ? <EmojiWrapper unified={todo.successIcon ?? ""} size={50} /> : null
@@ -60,4 +58,4 @@ function TodoLayout({
   )
 }
 
-export default TodoLayout
+export default React.memo(TodoLayout);

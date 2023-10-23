@@ -14,7 +14,16 @@ interface UserState {
 
 const initialState: UserState = {
   status: 'idle',
-  payload: undefined,
+  // TODO - Set this back to undefinded once we have implemented a authentication flow
+  payload: {
+    _id: "123456",
+    email: "james.prentice@gmail.com",
+    firstName: "james",
+    lastName: "prentice",
+    location: "nz",
+    phone: "123456789",
+    profilePicture: undefined
+  },
   isLoading: false,
   isSaving: false,
   error: null,

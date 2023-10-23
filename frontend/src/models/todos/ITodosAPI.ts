@@ -3,7 +3,6 @@ export interface IGetTodosParams {
 }
 
 export interface IGetDaysParams {
-  todo_id: string;
   start_date: string;
   end_date: string;
 }

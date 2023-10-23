@@ -2,10 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { IDay, ITodo } from '@models';
-import { getTodos } from '../thunk/todosThunk';
+import { getDaysForTodos, getTodos } from '../thunk/todosThunk';
 
 interface TodosState {
-  status: 'idle' | 'pending' | 'success' | 'failed';
+  todosStatus: 'idle' | 'pending' | 'success' | 'failed';
+  daysStatus: 'idle' | 'pending' | 'success' | 'failed';
   payload: ITodo[] | undefined;
   isLoading: boolean;
   isSaving: boolean;
@@ -13,7 +14,8 @@ interface TodosState {
 }
 
 const initialState: TodosState = {
-  status: 'idle',
+  todosStatus: 'idle',
+  daysStatus: 'idle',
   payload: undefined,
   isLoading: false,
   isSaving: false,
@@ -24,89 +26,84 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState: initialState,
   reducers: {
-    updateTodosPayload: (state, action: PayloadAction<ITodo[]>) => {
-      if (state.payload) {
-        state.payload = { ...state.payload, ...action.payload };
-      }
-    },
-    // updateTodoWithDays: (state, action: PayloadAction<{ todo_id: string; days: IDay[] }>) => {
-    //   const { todo_id, days } = action.payload;
-    //   const todoToUpdate = state.payload?.find((todo) => todo._id === todo_id);
-
-    //   if (days === undefined || days === null) {
-    //     return;
-    //   }
-
-    //   // Check if 'days' and initialize it to and empty arry before trying to preform concat on it..
-    //   if (todoToUpdate) {
-    //     if (!todoToUpdate.days) {
-    //       todoToUpdate.days = [];
-    //     }
-
-    //     // Append the new data to the existing 'days' array 
-    //     const newDaysArray = [...todoToUpdate.days, ...days];
-    //     todoToUpdate.days = newDaysArray;
-    //   }
+    // updateDayStatus: (state, action: PayloadAction<IDays[]>) => {
+    //   state.payload = { ...state.payload, ...action.payload };
     // },
-    updateTodosWithDays: (state, action: PayloadAction<{ days: IDay[] }>) => {
-      const { days } = action.payload;
-    
-      if (days === undefined || days === null) {
-        return;
-      }
-    
-      // Create a mapping of todo IDs to their respective days
-      const todoDaysMap: Record<string, IDay[]> = {};
-    
-      days.forEach((day) => {
-        if (day.todo_id) {
-          if (!todoDaysMap[day.todo_id]) {
-            todoDaysMap[day.todo_id] = [];
-          }
-          todoDaysMap[day.todo_id].push(day);
-        }
-      });
-    
-      // Update todos based on the mapping
-      state.payload?.forEach((todo) => {
-        const todo_id = todo._id;
-        const daysToUpdate = todoDaysMap[todo_id];
-        
-        if (daysToUpdate && daysToUpdate.length > 0) {
-          // Check if 'days' is defined and initialize it to an empty array before trying to perform concat on it.
-          if (!todo.days) {
-            todo.days = [];
-          }
-          
-          // Append the new data to the existing 'days' array
-          const newDaysArray = [...todo.days, ...daysToUpdate];
-          todo.days = newDaysArray;
-        }
-      });
-    }
   },
   extraReducers: (builder) => {
     builder
       .addCase(getTodos.pending, (state, action) => {
-        state.status = "pending";
+        state.todosStatus = "pending";
         state.isLoading = true;
         state.error = null;
       })
       .addCase(getTodos.fulfilled, (state, action: PayloadAction<ITodo[]>) => {
-        state.status = "success";
-        state.payload = action.payload;
+        const newTodosMap = action.payload.reduce((acc, todo) => {
+          acc[todo._id] = todo;
+          return acc;
+        }, {} as Record<string, ITodo>);
+      
+        state.todosStatus = "success";
+        state.payload = state.payload ? state.payload.map(todo => ({
+          ...todo, 
+          ...newTodosMap[todo._id]
+      })) : action.payload;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(getTodos.rejected, (state, action) => {
-        state.status = "failed";
+        state.todosStatus = "failed";
         state.isLoading = false;
         state.error = 'An error occurred';
-      });
+      })
+      .addCase(getDaysForTodos.pending, (state, action) => {
+        state.daysStatus = "pending";
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getDaysForTodos.fulfilled, (state, action: PayloadAction<IDay[]>) => {
+        const days = action.payload;
+  
+        // Create a mapping of todo IDs to their respective days
+        const todoDaysMap: Record<string, IDay[]> = {};
+  
+        days.forEach((day) => {
+          if (day.todo_id) {
+            if (!todoDaysMap[day.todo_id]) {
+              todoDaysMap[day.todo_id] = [];
+            }
+            todoDaysMap[day.todo_id].push(day);
+          }
+        });
+  
+        // Update todos based on the mapping
+        if (state.payload) {
+          state.payload = state.payload.map((todo) => {
+              const newTodoDays = todoDaysMap[todo._id] || [];
+              const existingDayIds = new Set(todo.days?.map(day => day._id));
+              
+              const mergedDays = [
+                  ...(todo.days || []),
+                  ...newTodoDays.filter(day => !existingDayIds.has(day._id))
+              ];
+              
+              return {
+                  ...todo,
+                  days: mergedDays
+              };
+          });
+
+        state.daysStatus = "success";
+      }
+      })
+      .addCase(getDaysForTodos.rejected, (state, action) => {
+        state.daysStatus = "failed";
+        state.isLoading = false;
+        state.error = 'An error occurred';
+      })
   }
 });
 
-// export const accountActions = todosSlice.actions;
-export const { updateTodosPayload, updateTodosWithDays } = todosSlice.actions;
+export const { } = todosSlice.actions;
 
 export default todosSlice;
