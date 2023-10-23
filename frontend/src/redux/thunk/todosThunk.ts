@@ -16,14 +16,14 @@ export const getTodos = createAsyncThunk<ITodo[], IGetTodosParams, {}>('todos', 
 export const getDaysForTodos = createAsyncThunk<IDay[], IGetDaysParams, { state: RootState }>('todos/days', async (params, { getState }) => {
     const state = getState();
 
-    if (!state.todos.payload || !state.user.payload) {
+    if (!state.todos.data || !state.user.data) {
       console.log("Error: state undefined in todos thunk");
       return [];
     }
 
     const requestParams = {
-      user_id: state.user.payload._id,
-      todo_ids: state.todos.payload.flatMap((todo) => todo._id),
+      user_id: state.user.data._id,
+      todo_ids: state.todos.data.flatMap((todo) => todo._id),
       start_date: "2023-09-11",
       end_date: "2023-09-17"
     };

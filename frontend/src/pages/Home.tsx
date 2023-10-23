@@ -25,8 +25,8 @@ const Home = (): ReactElement => {
   return (
     <div className="w-full mx-auto min-h-screenNav bg-white"> 
       <div className="grid grid-col min-h-screenNav bg-red-500">
-      {todos.payload ? (
-        todos.payload.map((todo) => (
+      {todos.data ? (
+        todos.data.map((todo) => (
           <NavLink key={todo._id} to={todo.slug ?? "/"} className="flex cursor-pointer px-4" style={{background: todo.bgcolor}}>
             <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto">
 

@@ -7,7 +7,7 @@ import { getDaysForTodos, getTodos } from '../thunk/todosThunk';
 interface TodosState {
   todosStatus: 'idle' | 'pending' | 'success' | 'failed';
   daysStatus: 'idle' | 'pending' | 'success' | 'failed';
-  payload: ITodo[] | undefined;
+  data: ITodo[] | undefined;
   isLoading: boolean;
   isSaving: boolean;
   error: string | null;
@@ -16,7 +16,7 @@ interface TodosState {
 const initialState: TodosState = {
   todosStatus: 'idle',
   daysStatus: 'idle',
-  payload: undefined,
+  data: undefined,
   isLoading: false,
   isSaving: false,
   error: null,
@@ -26,9 +26,22 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState: initialState,
   reducers: {
-    // updateDayStatus: (state, action: PayloadAction<IDays[]>) => {
-    //   state.payload = { ...state.payload, ...action.payload };
-    // },
+    updateDayStatusByTodoId: (
+      state,
+      action: PayloadAction<{ todo_id: string; day_id: string; new_status: boolean | null }>
+    ) => {
+      const { todo_id, day_id, new_status } = action.payload;
+
+      if(state.data){
+        const todo = state.data.find((todo) => todo._id === todo_id);
+        if (todo && todo.days) {
+          const day = todo.days.find((day) => day._id === day_id);
+          if (day) {
+            day.status = new_status;
+          }
+        }
+      }
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -44,7 +57,7 @@ export const todosSlice = createSlice({
         }, {} as Record<string, ITodo>);
       
         state.todosStatus = "success";
-        state.payload = state.payload ? state.payload.map(todo => ({
+        state.data = state.data ? state.data.map(todo => ({
           ...todo, 
           ...newTodosMap[todo._id]
       })) : action.payload;
@@ -77,8 +90,8 @@ export const todosSlice = createSlice({
         });
   
         // Update todos based on the mapping
-        if (state.payload) {
-          state.payload = state.payload.map((todo) => {
+        if (state.data) {
+          state.data = state.data.map((todo) => {
               const newTodoDays = todoDaysMap[todo._id] || [];
               const existingDayIds = new Set(todo.days?.map(day => day._id));
               
@@ -104,6 +117,6 @@ export const todosSlice = createSlice({
   }
 });
 
-export const { } = todosSlice.actions;
+export const { updateDayStatusByTodoId } = todosSlice.actions;
 
 export default todosSlice;

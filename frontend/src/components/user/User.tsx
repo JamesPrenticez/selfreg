@@ -16,9 +16,9 @@ const User = () => {
     <div>
       {user.isLoading ? (
         <p>Loading...</p>
-      ) : user.payload ? (
+      ) : user.data ? (
         <p>
-          Hello, {capitalizeWords(user.payload.firstName)}
+          Hello, {capitalizeWords(user.data.firstName)}
         </p>
       ) : (
         <p>No user data available.</p>

@@ -9,3 +9,5 @@ export const pages = [
   { name: "PROFILE", url: "/profile", requiresAuth: false },
   { name: "SETTINGS", url: "/settings", requiresAuth: false },
 ];
+
+export const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];

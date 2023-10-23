@@ -2,12 +2,30 @@ import React from 'react'
 import type { ITodo } from '@models';
 import dayjs from 'dayjs';
 import EmojiWrapper from '@components/emoji/EmojiWrapper';
+import { useDispatch } from 'react-redux';
+import { updateDayStatusByTodoId } from '@redux/slices';
 
 interface Props {
   todo: ITodo;
 }
 
 function TodoLayout({todo}: Props) {
+
+  const dispatch = useDispatch();
+
+  // Example function to update status
+  const handleUpdateStatus = (todo_id: string, day_id: string, current_status: boolean | null) => {
+    console.log(current_status);
+    let new_status = current_status === null 
+      ? true 
+    : current_status === true 
+      ? false 
+    : current_status === false
+      ? true
+    : null;
+    dispatch(updateDayStatusByTodoId({ todo_id, day_id, new_status }));
+  };
+
 
   const renderTodoBoxes = () => {
     const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -18,6 +36,7 @@ function TodoLayout({todo}: Props) {
         <p 
           key={index}
           className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center'
+          // TODO add shine animation to this
         >
           {index}
         </p>
@@ -28,7 +47,6 @@ function TodoLayout({todo}: Props) {
 
       const renderTodoStatusIcon = () => {
         if (day.status === null) {
-          // const dayOfWeek = dayjs(day.date).day() // for certainty we could replace dayLabel[index] with dayjs calc which returns a number
           return <span style={{ fontSize: 50, color: todo.bgcolor ?? "white", fontWeight: 500}}>{dayLabels[index]}</span>
         } 
         else if(day.status === true) {
@@ -42,14 +60,14 @@ function TodoLayout({todo}: Props) {
       return (
         <div 
           key={day.date}
-          className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center '
+          className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center'
+          onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
         >
           {renderTodoStatusIcon()}
         </div>
       )
     })
   }
-
 
   return (
     <div className='grid grid-cols-7 h-full items-center justify-center w-full gap-x-2'>
@@ -58,4 +76,4 @@ function TodoLayout({todo}: Props) {
   )
 }
 
-export default React.memo(TodoLayout);
+export default TodoLayout;

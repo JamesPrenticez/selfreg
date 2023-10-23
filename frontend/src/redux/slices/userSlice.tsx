@@ -6,7 +6,7 @@ import { getUser } from '../thunk/userThunk';
 
 interface UserState {
   status: 'idle' | 'pending' | 'success' | 'failed';
-  payload: IUser | undefined;
+  data: IUser | undefined;
   isLoading: boolean;
   isSaving: boolean;
   error: string | null;
@@ -15,7 +15,7 @@ interface UserState {
 const initialState: UserState = {
   status: 'idle',
   // TODO - Set this back to undefinded once we have implemented a authentication flow
-  payload: {
+  data: {
     _id: "123456",
     email: "james.prentice@gmail.com",
     firstName: "james",
@@ -34,8 +34,8 @@ export const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     updateUserPayload: (state, action: PayloadAction<Partial<IUser>>) => {
-      if (state.payload) {
-        state.payload = { ...state.payload, ...action.payload };
+      if (state.data) {
+        state.data = { ...state.data, ...action.payload };
       }
     },
   },
@@ -48,7 +48,7 @@ export const userSlice = createSlice({
       })
       .addCase(getUser.fulfilled, (state, action: PayloadAction<IUser>) => {
         state.status = "success";
-        state.payload = action.payload;
+        state.data = action.payload;
         state.isLoading = false;
         state.error = null;
       })
