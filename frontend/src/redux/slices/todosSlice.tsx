@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { IDay, ITodo } from '@models';
+import type { IDay, ITodo, IStatus } from '@models';
 import { getDaysForTodos, getTodos } from '../thunk/todosThunk';
 
 interface TodosState {
-  todosStatus: 'idle' | 'pending' | 'success' | 'failed';
-  daysStatus: 'idle' | 'pending' | 'success' | 'failed';
+  todosStatus: IStatus;
+  daysStatus: IStatus;
   data: ITodo[] | undefined;
   isLoading: boolean;
   isSaving: boolean;

@@ -24,8 +24,8 @@ export const getDaysForTodos = createAsyncThunk<IDay[], IGetDaysParams, { state:
     const requestParams = {
       user_id: state.user.data._id,
       todo_ids: state.todos.data.flatMap((todo) => todo._id),
-      start_date: "2023-09-11",
-      end_date: "2023-09-17"
+      start_date: params.start_date, // "2023-09-11",
+      end_date: params.end_date // "2023-09-17"
     };
 
     const response = await api.get<IDay[]>('/todos', requestParams);

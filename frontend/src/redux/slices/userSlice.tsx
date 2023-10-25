@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { IUser } from '@models';
+import type { IStatus, IUser } from '@models';
 import { getUser } from '../thunk/userThunk';
 
 interface UserState {
-  status: 'idle' | 'pending' | 'success' | 'failed';
+  status: IStatus;
   data: IUser | undefined;
   isLoading: boolean;
   isSaving: boolean;
@@ -15,14 +15,16 @@ interface UserState {
 const initialState: UserState = {
   status: 'idle',
   // TODO - Set this back to undefinded once we have implemented a authentication flow
+  // need to handle a get locale also
   data: {
     _id: "123456",
     email: "james.prentice@gmail.com",
     firstName: "james",
     lastName: "prentice",
-    location: "nz",
     phone: "123456789",
-    profilePicture: undefined
+    profilePicture: undefined,
+    locale: 'en-gb',
+    country: "New Zealand",
   },
   isLoading: false,
   isSaving: false,
@@ -33,11 +35,16 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    updateUserPayload: (state, action: PayloadAction<Partial<IUser>>) => {
-      if (state.data) {
-        state.data = { ...state.data, ...action.payload };
+    // updateUserPayload: (state, action: PayloadAction<Partial<IUser>>) => {
+    //   if (state.data) {
+    //     state.data = { ...state.data, ...action.payload };
+    //   }
+    // },
+    setLocale: (state, action) => {
+      if(state.data){
+        state.data.locale = action.payload;
       }
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -61,6 +68,9 @@ export const userSlice = createSlice({
 });
 
 // export const accountActions = userSlice.actions;
-export const { updateUserPayload } = userSlice.actions;
+export const { 
+  setLocale,
+  // updateUserPayload
+} = userSlice.actions;
 
 export default userSlice;

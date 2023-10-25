@@ -2,13 +2,15 @@ import { configureStore } from '@reduxjs/toolkit'
 
 import {
   userSlice,
-  todosSlice
+  todosSlice,
+  weekSlice
 } from "./slices"
 
 export const store = configureStore({
     reducer: {
         user: userSlice.reducer,        
         todos: todosSlice.reducer,        
+        week: weekSlice.reducer,        
     },
     devTools:  process.env.NODE_ENV !== "development" ? false : true,
   })
