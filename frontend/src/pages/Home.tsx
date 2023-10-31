@@ -23,12 +23,7 @@ const Home = (): ReactElement => {
       });
   }, [week.data]); 
 
-  // if(todos.data){
-  //   console.log(todos.data[0].days)
-  // }
-  // if(todos.data){
-  //   console.log(todos.data[0].days)
-  // }
+  console.log(todos.data)
 
   return (
     <div className="w-full mx-auto min-h-screenNav bg-white"> 

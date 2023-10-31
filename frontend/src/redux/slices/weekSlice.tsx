@@ -19,7 +19,7 @@ const getWeekData = (): IWeek => {
     week_number: today.week(),
     start_date: today.startOf('week').format('YYYY-MM-DD'),
     end_date: today.endOf('week').format('YYYY-MM-DD'),
-    current_day: today.day()
+    current_date: today.format('YYYY-MM-DD')
   };
 }
 

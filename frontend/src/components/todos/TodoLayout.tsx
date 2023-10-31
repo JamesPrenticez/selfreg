@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import type { IDay, ITodo } from '@models';
 import dayjs from 'dayjs';
 import { dayLabels } from '@constants'
 import EmojiWrapper from '@components/emoji/EmojiWrapper';
 
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '@redux/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { updateDayStatusByTodoId } from '@redux/slices';
+import { addDay } from '@redux/thunk/todosThunk';
+import  weekday from 'dayjs/plugin/weekday'
+dayjs.extend(weekday)
 
 interface Props {
   todo: ITodo;
@@ -16,12 +18,37 @@ function TodoLayout({
   todo,
 }: Props) {
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const week = useAppSelector((state) => state.week);
+
+  function getDateOfSpecificWeekday(weekdayIndex: number) {
+    // today's date
+    const today = dayjs();
+  
+    // find the difference between today's weekday and the desired weekday
+    const diff = weekdayIndex - today.weekday();
+  
+    // calculate the date of the desired weekday
+    const targetDate = today.add(diff, 'day');
+  
+    return targetDate.format('YYYY-MM-DD')
+  }
+
+  const handleAddDay = (day_index: number) => {
+    console.log("add");
+
+    const new_day: Omit<IDay, '_id'> = {
+      todo_id: todo._id,
+      date: getDateOfSpecificWeekday(day_index),
+      status: true
+    };
+
+    // Dispatch the addDay thunk with the todo_id and newDay data
+    dispatch(addDay({ todo_id: todo._id, new_day: new_day }));
+  };
 
   // Example function to update status
   const handleUpdateStatus = (todo_id: string, day_id: string, current_status: boolean | null) => {
-    console.log(current_status);
     let new_status = current_status === null 
       ? true 
     : current_status === true 
@@ -29,6 +56,7 @@ function TodoLayout({
     : current_status === false
       ? true
     : null;
+
     dispatch(updateDayStatusByTodoId({ todo_id, day_id, new_status }));
   };
 
@@ -57,57 +85,91 @@ function TodoLayout({
   }
 
   const renderTodoBoxes = () => {
-    let weekArray: IDay[] = []
+    let weekArrayOfObjects: IDay[] = []
 
     if(todo.days === undefined){
       return <div>loading...</div>
     } 
 
-    if(todo.days.length < 7){
-      if(!week.data) return <div>Error - no week data</div>
-      weekArray = buildWeekArray(todo.days, week.data.start_date, week.data.end_date);
-    } 
+     if (week.data) {
+        const startDate = new Date(week.data.start_date);
+        const endDate = new Date(week.data.end_date);
 
-    if(todo.days.length > 7){
-      const filteredDays = todo.days.filter(
-        (day) => {
-          if(week.data){
-            day.date >= week.data.start_date &&
-            day.date <= week.data.end_date
-          }
+        weekArrayOfObjects = todo.days.filter(day => {
+            const date = new Date(day.date);
+            return date >= startDate && date <= endDate;
+        });
+
+        if (todo.days.length < 7 && weekArrayOfObjects.length < 7) {
+          weekArrayOfObjects = buildWeekArray(todo.days, week.data.start_date, week.data.end_date);
         }
-      );
-          
-      weekArray = filteredDays
+    } else {
+      return <div>Error - no week data</div>;
     }
 
-    if(todo.days.length === 7){
-      weekArray = todo.days
-    }
+    const sortedWeekObjects = weekArrayOfObjects.sort((a, b) => {
+      return dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1;
+    });
 
-    return weekArray.map((day, index) => {
+    console.log(sortedWeekObjects)
+
+    return sortedWeekObjects.map((day) => {
 
       const renderTodoStatusIcon = () => {
         if (day.status === null) {
-          return <span style={{ fontSize: 50, color: todo.bgcolor ?? "white", fontWeight: 500}}>{dayLabels[index]}</span>
+          return (
+            <TodoContainer  
+              date={day.date}
+              bgcolor={todo.bgcolor ?? ""}
+              onClick={() => handleAddDay(dayjs(day.date).weekday())}
+            >
+              <div 
+                className='pointer-events-none select-none w-full h-full flex flex-col items-center justify-center relative'
+                style={{ 
+                  fontSize: 50, 
+                  color: todo.bgcolor ?? "white",
+                  fontWeight: 500,
+                }}
+              >
+                <p>{dayLabels[dayjs(day.date).weekday()]}</p>
+                <p className='absolute bottom-1 text-[16px]'>{dayjs(day.date).format("D MMM")}</p>
+              </div>
+            </TodoContainer>
+          )
         } 
-        else if(day.status === true) {
-          return todo.successIcon !== "" ? <EmojiWrapper unified={todo.successIcon ?? ""} size={50} /> : null
+        else if (day.status === true) {
+          return (
+            <TodoContainer 
+              date={day.date}
+              bgcolor={todo.bgcolor ?? ""}
+              onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
+            >
+              {todo.successIcon !== "" ? (
+                <EmojiWrapper unified={todo.successIcon ?? ""} size={50} /> 
+              ) : (
+                <div>Handle a default case</div>
+              )}
+            </TodoContainer>
+          )
         }
         else if (day.status === false) {
-          return todo.errorIcon !== "" ? <EmojiWrapper unified={todo.errorIcon ?? ""} size={50} /> : null
+          return (
+            <TodoContainer 
+              date={day.date}
+              bgcolor={todo.bgcolor ?? ""}
+              onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
+            >
+              {todo.errorIcon !== "" ? (
+                <EmojiWrapper unified={todo.errorIcon ?? ""} size={50} />
+              ) : (
+                <div>Handle a default case</div>
+              )}
+            </TodoContainer>
+          )
         } 
       }
       
-      return (
-        <div 
-          key={day.date}
-          className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center cursor-pointer'
-          onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
-        >
-          {renderTodoStatusIcon()}
-        </div>
-      )
+      return renderTodoStatusIcon()
     })
   }
 
@@ -120,45 +182,27 @@ function TodoLayout({
 
 export default TodoLayout;
 
+interface TodoContainerProps {
+  date: string,
+  bgcolor: string,
+  onClick: () => void,
+  children: ReactNode
+}
 
-// const renderTodoBoxes = () => {
-//   const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-
-  // // Effectivly a loading state
-  // if(todo.days === undefined || todo.days.length < 7){
-  //   return Array.from({ length: 7 }, (_, index) => (
-  //     <p 
-  //       key={index}
-  //       className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center'
-  //       // TODO add shine animation to this
-  //     >
-  //       {index}
-  //     </p>
-  //   ));
-  // }
-  
-//   return todo.days.map((day, index) => {
-
-//     const renderTodoStatusIcon = () => {
-//       if (day.status === null) {
-//         return <span style={{ fontSize: 50, color: todo.bgcolor ?? "white", fontWeight: 500}}>{dayLabels[index]}</span>
-//       } 
-//       else if(day.status === true) {
-//         return todo.successIcon !== "" ? <EmojiWrapper unified={todo.successIcon ?? ""} size={50} /> : null
-//       }
-//       else if (day.status === false) {
-//         return todo.errorIcon !== "" ? <EmojiWrapper unified={todo.errorIcon ?? ""} size={50} /> : null
-//       } 
-//     }
-    
-//     return (
-//       <div 
-//         key={day.date}
-//         className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center'
-//         onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
-//       >
-//         {renderTodoStatusIcon()}
-//       </div>
-//     )
-//   })
-// }
+function TodoContainer({
+  date,
+  bgcolor,
+  onClick,
+  children
+}: TodoContainerProps ){
+  return (
+    <div
+      key={date} 
+      className='bg-white/40 hover:bg-white/80 rounded-lg w-full aspect-square flex items-center justify-center cursor-pointer relative'
+      onClick={() => onClick()}
+    >
+      {children}
+      <p className='absolute bottom-1 text-[16px]' style={{color: bgcolor}}>{dayjs(date).format("D MMM")}</p>
+    </div>
+  )
+}

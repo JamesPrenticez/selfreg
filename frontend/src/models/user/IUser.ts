@@ -7,4 +7,9 @@ export interface IUser {
   profilePicture?: string;
   locale: string;
   country?: string;
+  permissions: IUserPermissions[];
+}
+
+export enum IUserPermissions {
+  ADMIN = 'ADMIN',
 }

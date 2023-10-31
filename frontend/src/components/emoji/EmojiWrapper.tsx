@@ -15,8 +15,8 @@ function EmojiWrapper ({unified, size="16px"}: Props){
   const emojiText = unifiedToText(unified)
 
   return (
-    <span
-      className=""
+    <p
+      className='pointer-events-none select-none'
       style={{
         fontSize: size
       }}
@@ -25,7 +25,7 @@ function EmojiWrapper ({unified, size="16px"}: Props){
       data-unified={emojiText}
     >
       {emojiText ? emojiText : null}
-    </span>
+    </p>
 )};
 
 export default EmojiWrapper;

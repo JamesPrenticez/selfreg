@@ -12,6 +12,7 @@ import { setLocale } from "@redux/slices";
 import dayjs from "dayjs";
 import 'dayjs/locale/en-nz'
 import 'dayjs/locale/en-gb'
+import { getUser } from "@redux/thunk/userThunk";
 
 const Admin = lazy(async () => {
   const [moduleExports] = await Promise.all([
@@ -34,9 +35,11 @@ function App(): ReactElement {
   const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
-    const fetchedLocale = user.data?.locale; // e.g., fetch from an API or localStorage
-    dayjs.locale(fetchedLocale); // this must be set first before the dispatch
-    dispatch(setLocale(fetchedLocale));
+      // dispatch(getUser({ _id: '123456' }));
+    // .then() ???
+      const fetchedLocale = user.data?.locale; // e.g., fetch from an API or localStorage
+      dayjs.locale(fetchedLocale); // this must be set first before the dispatch
+      dispatch(setLocale(fetchedLocale));
   }, [dispatch]);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ function App(): ReactElement {
   return (
     <Suspense
       fallback={
-        <Loading fullScreen={true} backgroundColor="rgb(249 250 251)" />
+        <Loading fullScreen={true} backgroundColor="#FF00FF" />
       }
     >
       <Layout>

@@ -1,6 +1,6 @@
 import { useEffect, useState, RefObject } from 'react';
 
-function useClickAwayListener(ref: RefObject<HTMLElement>): boolean {
+export function useClickAwayListener(ref: RefObject<HTMLElement>): boolean {
   const [isClickedAway, setIsClickedAway] = useState(false);
 
   useEffect(() => {
@@ -29,5 +29,3 @@ function useClickAwayListener(ref: RefObject<HTMLElement>): boolean {
 
   return isClickedAway;
 }
-
-export default useClickAwayListener;

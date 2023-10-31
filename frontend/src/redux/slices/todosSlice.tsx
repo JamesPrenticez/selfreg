@@ -1,8 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit'
-
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { addDay, getDaysForTodos, getTodos } from '../thunk/todosThunk';
 import type { IDay, ITodo, IStatus } from '@models';
-import { getDaysForTodos, getTodos } from '../thunk/todosThunk';
+import { PURGE } from 'redux-persist';
 
 interface TodosState {
   todosStatus: IStatus;
@@ -26,6 +25,7 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState: initialState,
   reducers: {
+    // TODO this should be a thunk
     updateDayStatusByTodoId: (
       state,
       action: PayloadAction<{ todo_id: string; day_id: string; new_status: boolean | null }>
@@ -114,6 +114,55 @@ export const todosSlice = createSlice({
         state.isLoading = false;
         state.error = 'An error occurred';
       })
+      // Optamistic Updating 
+      // we add the item to state while in the pending status from redux thunk
+      // Always make sure that the temporary IDs you generate are distinctly different from the format of actual backend IDs, so there's no risk of collision.
+      .addCase(addDay.pending, (state, action) => {
+        if (state.data) {
+          const { todo_id, new_day } = action.meta.arg;
+          const todoIndex = state.data?.findIndex((todo) => todo._id === todo_id);
+
+          if (todoIndex !== -1) {
+            const tempId = `temp-${Date.now()}`; // Generating a temporary ID
+            const updatedDay = {
+              ...new_day,
+              _id: tempId,
+              todo_id,
+            };
+      
+            const updatedTodo = {
+              ...state.data[todoIndex],
+              days: [...(state.data[todoIndex].days || []), updatedDay],
+            };
+            state.data[todoIndex] = updatedTodo;
+          }
+        }
+      })
+      .addCase(addDay.fulfilled, (state, action) => {
+        // This reducer case will run when the API call succeeds,
+        // but the optimistic update will already be in place
+        // from the pending case.
+      })
+      .addCase(addDay.rejected, (state, action) => {
+        // Handle the error if the API call fails.
+        // You can revert the optimistic update here if needed.
+      });
+
+      // .addCase(addDay.fulfilled, (state, action) => {
+      //   // Update the state with the newly added day
+      //   if (state.data) {
+      //     const { todo_id, ...new_day } = action.payload;
+      //     const todoIndex = state.data.findIndex((todo) => todo._id === todo_id);
+      
+      //     if (todoIndex !== -1) {
+      //       const updatedTodo = {
+      //         ...state.data[todoIndex],
+      //         days: [...(state.data[todoIndex].days || []), { ...new_day, todo_id }],
+      //       };
+      //       state.data[todoIndex] = updatedTodo;
+      //     }
+      //   }
+      // });
   }
 });
 

@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { IStatus, IUser } from '@models';
 import { getUser } from '../thunk/userThunk';
+import { mockUsers } from '@mocks';
 
 interface UserState {
   status: IStatus;
@@ -14,18 +15,10 @@ interface UserState {
 
 const initialState: UserState = {
   status: 'idle',
+  // IMPORTANT !!!
   // TODO - Set this back to undefinded once we have implemented a authentication flow
   // need to handle a get locale also
-  data: {
-    _id: "123456",
-    email: "james.prentice@gmail.com",
-    firstName: "james",
-    lastName: "prentice",
-    phone: "123456789",
-    profilePicture: undefined,
-    locale: 'en-gb',
-    country: "New Zealand",
-  },
+  data: mockUsers[0],
   isLoading: false,
   isSaving: false,
   error: null,

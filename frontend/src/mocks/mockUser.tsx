@@ -1,4 +1,4 @@
-import { type IUser } from "@models";
+import { IUserPermissions, type IUser } from "@models";
 
 export const mockUsers: IUser[] = [
   {
@@ -6,8 +6,10 @@ export const mockUsers: IUser[] = [
     email: "james.prentice@gmail.com",
     firstName: "james",
     lastName: "prentice",
-    location: "nz",
     phone: "123456789",
-    profilePicture: undefined
+    profilePicture: undefined,
+    country: "New Zealand",
+    locale: "en-gb",
+    permissions: [IUserPermissions.ADMIN]
   }
 ]

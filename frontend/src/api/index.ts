@@ -19,9 +19,9 @@ const axiosInstance = axios.create({
 const mockAxiosInstance = new MockAdapter(axiosInstance, { delayResponse: 2000 });
 
 if (useMockData) {
-  //=============================================================================
+  //==========================================================
   // GET
-  //=============================================================================
+  //==========================================================
   // USER
   mockAxiosInstance.onGet('/user').reply((config) => {
     const { params } = config;
@@ -49,13 +49,16 @@ if (useMockData) {
     return [200, mockTodos];
   });
 
-  //=============================================================================
+  //==========================================================
   // POST
-  //=============================================================================
-  mockAxiosInstance.onPost('/your-post-endpoint').reply(200, { success: true });
+  //==========================================================
+  mockAxiosInstance.onPost('/todo/days').reply((config) => {
+    console.log("post")
+    return [200, { success: true }];
+  })
 }
 
-// GET request version of the api function
+// API
 const api = {
   get: async <T>(
     endpoint: string,

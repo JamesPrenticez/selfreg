@@ -32,3 +32,26 @@ export const getDaysForTodos = createAsyncThunk<IDay[], IGetDaysParams, { state:
     return response.data;
   }
 );
+
+export const addDay = createAsyncThunk<Omit<IDay, '_id'>, { todo_id: string, new_day: Omit<IDay, '_id'> }, { state: RootState }>('todos/add_day', async ({ todo_id, new_day }, { getState }) => {
+    try {
+      const state = getState();
+
+      if (!state.user.data) {
+        console.log("Error: User data is missing.");
+        throw new Error("User data is missing.");
+      }
+
+      const dayData = {
+        ...new_day,
+        user_id: state.user.data._id,
+        todo_id,
+      };
+
+      const response = await api.post<Omit<IDay, '_id'>>('/todos/days', dayData);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
