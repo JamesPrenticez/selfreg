@@ -10,7 +10,9 @@ const Layout = ({ children }: LayoutProps): ReactElement => {
   return (
     <>
       <Navbar />
-      <main className="min-h-screenNav w-full bg-gray-50">{children}</main>
+      <main className="min-h-screen-4rem md:min-h-screen-5rem flex flex-col bg-gray-50">
+        {children}
+      </main>
       <Footer />
     </>
   );

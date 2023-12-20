@@ -23,7 +23,6 @@ const Home = (): ReactElement => {
       });
   }, [week.data]); 
 
-  console.log(todos.data)
 
   return (
     <div className="w-full mx-auto min-h-screenNav bg-white"> 
@@ -34,9 +33,9 @@ const Home = (): ReactElement => {
         <div key={todo._id} className="flex px-4" style={{background: todo.bgcolor}}>
           <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto">
 
-              <div className="w-full md:w-[500px] flex items-center py-4">
+              <div className="w-full md:w-[500px] flex items-center pt-2 md:py-4">
                 <NavLink key={todo._id} to={todo.slug ?? "/"} className="cursor-pointer">
-                  <h1 className="text-white font-bold text-2xl md:text-5xl" style={{color: todo.color}}>
+                  <h1 className="text-white font-bold text-5xl md:text-5xl" style={{color: todo.color}}>
                     {todo.title}
                   </h1>
                 </NavLink>

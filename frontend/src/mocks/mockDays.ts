@@ -19,7 +19,7 @@ export const mockDays: IDay[] = [
   { _id:"dae99336b0ff620727f85a9c", todo_id: "d746d674af5d9ca20be219e0", date: "2023-09-15", status: true },
   { _id:"e5f98ae6b7738ecb33a0c186", todo_id: "d746d674af5d9ca20be219e0", date: "2023-09-16", status: true },
   { _id:"5dfd7472aa553fe2d1f5fe17", todo_id: "d746d674af5d9ca20be219e0", date: "2023-09-17", status: null },
-  { _id: "ddd4334b7ca4d6d6fd275526", todo_id: "d746d674af5d9ca20be219e0", date: "2023-10-25", status: true },
+  { _id:"ddd4334b7ca4d6d6fd275526", todo_id: "d746d674af5d9ca20be219e0", date: "2023-10-25", status: true },
 
 
   // Meditation

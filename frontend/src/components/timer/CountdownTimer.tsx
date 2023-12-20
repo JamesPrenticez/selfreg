@@ -174,7 +174,7 @@ function CountdownTimer(): ReactElement {
 
         <div className="flex mt-6">
           <button 
-            className={`py-2 px-8 rounded-md font-bold tracking-wide text-white w-32 ml-auto ${isRunning ? "bg-red-500" : "bg-green-500"}`}
+            className={`py-2 px-8 rounded-md font-bold tracking-wide text-white w-32 ml-auto cursor-pointer ${isRunning ? "bg-red-500" : "bg-green-500"}`}
             onClick={() => setIsRunning(prev => !prev)}
             disabled={inputValue === "000000"} // TODO
           >

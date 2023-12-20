@@ -21,11 +21,13 @@ module.exports = {
     },
     
     extend:{
-			height:{
-        screenNav: "calc(100vh - 4rem)",
+      height: {
+        "screen-5rem": "calc(100vh - 5rem)",
+        "screen-4rem": "calc(100vh - 4rem)",
       },
 			minHeight:{
-        screenNav: "calc(100vh - 4rem)",
+        "screen-5rem": "calc(100vh - 5rem)",
+        "screen-4rem": "calc(100vh - 4rem)",
       },
 			fontFamily: {
         'sans': ['Arial']

@@ -1,12 +1,11 @@
 import React from 'react'
-import User from '@components/user/User';
-import WeekOfYear from '@components/todos/WeekOfYear';
+import { PauseIcon, PlayIcon } from '@components/icons'
 
 function Exercise() {
   return (
     <div>
-      <User />
-      <WeekOfYear />
+      <PlayIcon width={50}/>
+      <PauseIcon width={50}/>
     </div>
   )
 }

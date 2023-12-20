@@ -10,7 +10,7 @@ import { setLocale } from './userSlice';
 // This works without any asynchronous operations (no thunk)
 
 interface WeekState {
-  data: IWeek | undefined;
+  data: IWeek;
 }
 
 const getWeekData = (): IWeek => {

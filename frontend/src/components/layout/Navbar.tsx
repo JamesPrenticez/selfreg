@@ -24,9 +24,9 @@ const Navbar = (): ReactElement => {
       <div className="flex justify-between items-center max-w-7xl w-full mx-auto">
 
         <CompanyLogo />
-
+        <WeekNumber />
         <div ref={menuContainerRef} className="relative" onClick={() => { setIsMenuOpen((prevState) => !prevState) }}>
-          <Avatar />
+          <Avatar {...{isMenuOpen}} />
           <AvatarBadge />
           <Hamburger />
           <Menu {...{isMenuOpen}}/>
@@ -41,28 +41,41 @@ function CompanyLogo(){
   return (
     <NavLink to="/">
       <div className="flex items-center space-x-2 cursor-pointer">
-        <Logo className="w-10 md:w-8" />
-        <h1 className="hidden md:block text-2xl text-gray-50/80 hover:text-gray-300">
+        <Logo className="w-12 md:w-12" />
+        {/* <h1 className="hidden md:block text-2xl text-gray-50/80 hover:text-gray-300">
           {project.name.toUpperCase()}
-        </h1>
+        </h1> */}
       </div>
     </NavLink>
   )
 }
 
-function Avatar ({src}: {src?: string}) {
+function WeekNumber(){
+  const week = useAppSelector((state) => state.week)
+
+  return (
+    <div>
+      <h1 className="text-5xl text-gray-50/80">
+        WEEK {week.data?.week_number}
+      </h1>
+    </div>
+  )
+
+}
+
+function Avatar ({isMenuOpen}: {isMenuOpen: boolean}) {
   const user = useAppSelector((state) => state.user);
 
   return (
-    <div className="flex space-x-4 items-center">
-      <p className="text-gray-50/80">{dayjs.locale()}</p>
-      <p className="text-gray-50/80">{user.data?.email}</p>
-      <div className="block rounded-full bg-cover bg-center cursor-pointer border-2 border-gray-50/20 hover:border-[#00FF00CC] text-white w-12 h-12 overflow-hidden">
-        {src ? (
+    <div className="hidden md:flex space-x-4 items-center">
+      {/* <p className="text-gray-50/80">{dayjs.locale()}</p> */}
+      {/* <p className="text-gray-50/80">{user.data?.email}</p> */}
+      <div className={`block rounded-full bg-cover bg-center cursor-pointer border-2  hover:border-gray-50/60 ${isMenuOpen ? "border-gray-50/60" : "border-gray-50/20"} text-white w-12 h-12 overflow-hidden`}>
+        {user.data?.profilePicture ? (
             <img 
               width={48}
               height={48}
-              src="./public/avatar.svg"
+              src={user.data.profilePicture}
               alt=""
             />
           ) : (
@@ -87,7 +100,7 @@ function Avatar ({src}: {src?: string}) {
 function Hamburger(){
   const [isOpen, setIsOpen] = useState(false)
 
-  const baseClass = "bg-gray-50 block h-1 w-8 rounded transform transition-all duration-200 ease-in-out";
+  const baseClass = "bg-gray-50 block h-1 w-[32px] rounded transform transition-all duration-200 ease-in-out";
 
   return (
     <button 
@@ -116,7 +129,8 @@ function Menu({isMenuOpen}: {isMenuOpen: boolean}){
       className={`
     bg-gray-50
       absolute 
-      top-[65px]
+      top-[45px]
+      md:top-[65px]
       right-0
       w-[400px]
       h-[375px]
@@ -138,7 +152,8 @@ function Menu({isMenuOpen}: {isMenuOpen: boolean}){
          absolute
          fill-gray-50
          top-[-15px]
-         right-[12px]
+         right-[4px]
+         md:right-[12px]
         "
       >
         <path 
@@ -200,7 +215,7 @@ function AdminMenuItems(){
 
 function AvatarBadge(){
   return (
-    <div className="absolute -right-[10px] -bottom-[5px] w-6 h-6">
+    <div className="hidden md:absolute -right-[10px] -bottom-[5px] w-6 h-6">
       <img src="./badges/30day.svg" width="100%" height="100%" alt="" />
 
     </div>

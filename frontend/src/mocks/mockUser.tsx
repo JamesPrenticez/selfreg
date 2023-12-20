@@ -7,7 +7,7 @@ export const mockUsers: IUser[] = [
     firstName: "james",
     lastName: "prentice",
     phone: "123456789",
-    profilePicture: undefined,
+    profilePicture: "./avatar.png",
     country: "New Zealand",
     locale: "en-gb",
     permissions: [IUserPermissions.ADMIN]

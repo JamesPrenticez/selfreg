@@ -1,5 +1,6 @@
 import React from 'react'
 import { useCursorPosition } from '../hooks';
+import Stopwatch from '@components/timer/Stopwatch';
 
 function Business() {
   const ref = React.useRef(null);
@@ -7,8 +8,8 @@ function Business() {
 
   return (
     <div>
-      <input ref={ref} type="text" />
-      <button onClick={updateCaret}>Update Caret Position</button>
+      Stopwatch
+      <Stopwatch />
     </div>
   )
 }

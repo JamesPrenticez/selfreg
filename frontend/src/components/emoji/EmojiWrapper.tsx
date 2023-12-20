@@ -2,10 +2,10 @@ import React from 'react';
 
 interface Props {
   unified: string;
-  size: number | string;
+  size: string | number;
 }
 
-function EmojiWrapper ({unified, size="16px"}: Props){
+function EmojiWrapper ({unified, size}: Props){
 
   function unifiedToText(unified: string): string {
     const codePoints = unified.split('-').map((hex) => parseInt(hex, 16));
@@ -17,12 +17,10 @@ function EmojiWrapper ({unified, size="16px"}: Props){
   return (
     <p
       className='pointer-events-none select-none'
-      style={{
-        fontSize: size
-      }}
       role="img"
       aria-label={"emoji"}
       data-unified={emojiText}
+      style={{ fontSize: size }}
     >
       {emojiText ? emojiText : null}
     </p>
