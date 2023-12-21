@@ -7,7 +7,7 @@ import { mockUsers } from '@mocks';
 
 interface UserState {
   status: IStatus;
-  data: IUser | undefined;
+  data: IUser;
   isLoading: boolean;
   isSaving: boolean;
   error: string | null;

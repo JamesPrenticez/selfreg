@@ -1,47 +1,47 @@
 import React, { useState, type ReactElement, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { project, pages } from "../../constants";
+import { project, pages } from "@constants";
 import Logo from "../common/Logo";
 import { useClickAwayListener } from "@hooks";
 import { INavigationItem, IUserPermissions } from "@models";
 import { useAppSelector } from "@redux/hooks";
-import { userHasPermission } from "@utils";
+import { getInitials, userHasPermission } from "@utils";
 import { persistor } from "@redux/store";
 import dayjs from "dayjs";
+import RightNav from "./RightNav";
 // import { ReactComponent as FlagIcon } from "./badges/flag.svg";
+
 
 const Navbar = (): ReactElement => {
   const menuContainerRef = useRef(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const isClickedAway = useClickAwayListener(menuContainerRef); // return true or false
-
-  useEffect(() => {
-    if(isClickedAway) setIsMenuOpen(false)
-  }, [isClickedAway])
 
   return (
-    <div className="h-[4rem] md:h-[5rem] bg-gray-900 flex font-semibold px-4">
-      <div className="flex justify-between items-center max-w-7xl w-full mx-auto">
+    <>
+      <div className="h-[4rem] md:h-[5rem] bg-primary flex font-semibold px-4">
+        <div className="flex justify-between items-center max-w-7xl w-full mx-auto">
+          <CompanyLogo onClick={() => setIsMenuOpen(false)}/>
+          <WeekNumber />
+          <div ref={menuContainerRef} className="relative" onClick={() => { setIsMenuOpen((prevState) => !prevState) }}>
+            <Hamburger />
 
-        <CompanyLogo />
-        <WeekNumber />
-        <div ref={menuContainerRef} className="relative" onClick={() => { setIsMenuOpen((prevState) => !prevState) }}>
-          <Avatar {...{isMenuOpen}} />
-          <AvatarBadge />
-          <Hamburger />
-          <Menu {...{isMenuOpen}}/>
+          </div>
         </div>
-
       </div>
-    </div>
+      <RightNav
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen}
+        menuItems={pages}
+      />
+    </>
   );
 };
 
-function CompanyLogo(){
+function CompanyLogo({onClick}: {onClick: () => void}){
   return (
     <NavLink to="/">
       <div className="flex items-center space-x-2 cursor-pointer">
-        <Logo className="w-12 md:w-12" />
+        <Logo className="w-10 md:w-12" {...{onClick}}/>
         {/* <h1 className="hidden md:block text-2xl text-gray-50/80 hover:text-gray-300">
           {project.name.toUpperCase()}
         </h1> */}
@@ -55,7 +55,7 @@ function WeekNumber(){
 
   return (
     <div>
-      <h1 className="text-5xl text-gray-50/80">
+      <h1 className="text-3xl md:text-5xl text-muted">
         WEEK {week.data?.week_number}
       </h1>
     </div>
@@ -63,48 +63,19 @@ function WeekNumber(){
 
 }
 
-function Avatar ({isMenuOpen}: {isMenuOpen: boolean}) {
-  const user = useAppSelector((state) => state.user);
 
-  return (
-    <div className="hidden md:flex space-x-4 items-center">
-      {/* <p className="text-gray-50/80">{dayjs.locale()}</p> */}
-      {/* <p className="text-gray-50/80">{user.data?.email}</p> */}
-      <div className={`block rounded-full bg-cover bg-center cursor-pointer border-2  hover:border-gray-50/60 ${isMenuOpen ? "border-gray-50/60" : "border-gray-50/20"} text-white w-12 h-12 overflow-hidden`}>
-        {user.data?.profilePicture ? (
-            <img 
-              width={48}
-              height={48}
-              src={user.data.profilePicture}
-              alt=""
-            />
-          ) : (
-            <svg
-              viewBox="0 0 240 240" 
-              xmlns="http://www.w3.org/2000/svg"
-              // fill="#00ff00"
-              width="90%" height="90%"
-              className="mx-auto mt-[15%] fill-gray-50/60"
-            >
-              <path d=" M 110.50 12.80 C 125.87 10.23 142.19 14.07 154.83 23.17 C 164.42 30.03 171.94 39.75 176.08 50.79 C 181.37 64.54 181.25 80.28 175.79 93.95 C 170.63 107.17 160.59 118.41 148.03 125.02 C 137.09 130.85 124.27 133.14 112.00 131.42 C 95.76 129.35 80.65 120.12 71.18 106.80 C 60.74 92.37 57.34 73.16 62.19 56.02 C 68.06 33.83 87.80 16.18 110.50 12.80 Z" />
-              <path d=" M 46.31 169.28 C 72.25 153.16 103.80 148.21 133.89 150.57 C 160.01 152.64 186.35 161.27 206.37 178.63 C 215.06 186.29 222.73 195.65 226.41 206.77 C 228.79 213.60 227.79 220.92 228.00 228.00 C 156.00 228.00 84.00 228.00 12.00 228.00 C 12.18 220.38 11.13 212.46 14.11 205.21 C 20.02 189.80 32.62 177.96 46.31 169.28 Z" />
-            </svg>
-          )
-        }
 
-      </div>
-    </div>
-   );
-};
+
+
 
 function Hamburger(){
   const [isOpen, setIsOpen] = useState(false)
 
-  const baseClass = "bg-gray-50 block h-1 w-[32px] rounded transform transition-all duration-200 ease-in-out";
+  const baseClass = "bg-secondary-muted block h-1 w-[32px] rounded transform transition-all duration-200 ease-in-out";
 
   return (
     <button 
-      className="text-white md:hidden ml-auto outline-none" 
+      className="ml-auto outline-none" 
       onClick={() => setIsOpen((prev) => !prev)}
       aria-label="Navigation Menu"
     >
@@ -213,14 +184,6 @@ function AdminMenuItems(){
   )
 }
 
-function AvatarBadge(){
-  return (
-    <div className="hidden md:absolute -right-[10px] -bottom-[5px] w-6 h-6">
-      <img src="./badges/30day.svg" width="100%" height="100%" alt="" />
 
-    </div>
-  )
-
-}
 
 export default Navbar;

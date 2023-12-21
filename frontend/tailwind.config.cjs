@@ -19,8 +19,21 @@ module.exports = {
       "6xl": ['3.75rem', '4.25rem'],
       "7xl": ['4.5rem', '5.2rem'],
     },
-    
     extend:{
+      backgroundColor: {
+        primary: "#101010",
+        muted: "#212121",
+        ghost: "#303030",
+        secondary: "#fff",
+        "secondary-muted": "#d1d5db",
+        major: "#00FF00"
+      },
+      textColor: {
+        primary: "#fff",
+        muted: "#d1d5db",
+        secondary: "#101010",
+        major: "#00FF00"
+      },
       height: {
         "screen-5rem": "calc(100vh - 5rem)",
         "screen-4rem": "calc(100vh - 4rem)",

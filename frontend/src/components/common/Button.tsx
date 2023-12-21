@@ -5,7 +5,7 @@ import React, {
 } from 'react'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "success" | "error";
+  variant?: "primary" | "secondary" | "success" | "error" | "link";
   fullWidth?: boolean;
   children: ReactNode;
   csx?: string;
