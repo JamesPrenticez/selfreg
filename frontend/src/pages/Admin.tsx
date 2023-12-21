@@ -13,7 +13,7 @@ function Admin(): ReactElement {
   }, []);
 
   return (
-    <div>
+    <div className='text-primary'>
       <h1 className='text-2xl font-bold'>Generated Object IDs</h1>
       <ul>
         {ids.map((id, index) => (

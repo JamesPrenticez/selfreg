@@ -25,7 +25,7 @@ function Avatar ({
           }}
         />
       ) : (
-        <div className="flex justify-center items-center rounded-full border-2 overflow-hidden bg-major font-bold text-[18px]"
+        <div className="flex justify-center items-center rounded-full border-2 overflow-hidden bg-primary font-bold text-[18px]"
           style={{ 
             width: width,
             height: height,
