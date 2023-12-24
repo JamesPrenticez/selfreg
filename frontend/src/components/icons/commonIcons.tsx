@@ -43,7 +43,7 @@ export const SignOutIcon = (props: SVGProps<SVGSVGElement>): ReactElement => {
 
 export const SignInIcon = (props: SVGProps<SVGSVGElement>): ReactElement => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" stroke-lineJoin="round" fill="none" stroke="currentColor" {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" stroke="currentColor" {...props}>
       <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
       <polyline points="10 17 15 12 10 7"/>
       <line x1="15" x2="3" y1="12" y2="12"/>
@@ -53,8 +53,17 @@ export const SignInIcon = (props: SVGProps<SVGSVGElement>): ReactElement => {
 
 export const PlusCircleIcon = (props: SVGProps<SVGSVGElement>): ReactElement => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" stroke-lineJoin="round" fill="none" stroke="currentColor" {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" stroke="currentColor" {...props}>
       <circle cx="12" cy="12" r="10"/>
+      <path d="M8 12h8"/>
+      <path d="M12 8v8"/>
+    </svg>
+  )
+}
+
+export const PlusIcon = (props: SVGProps<SVGSVGElement>): ReactElement => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" stroke="currentColor" {...props}>
       <path d="M8 12h8"/>
       <path d="M12 8v8"/>
     </svg>
@@ -63,7 +72,7 @@ export const PlusCircleIcon = (props: SVGProps<SVGSVGElement>): ReactElement => 
 
 export const TickIcon = (props: SVGProps<SVGSVGElement>): ReactElement => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" stroke-lineJoin="round" fill="none" stroke="currentColor" {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" stroke="currentColor" {...props}>
       <path d="M20 6 9 17l-5-5"/>
     </svg>
   )

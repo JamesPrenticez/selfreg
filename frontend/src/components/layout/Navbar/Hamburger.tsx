@@ -6,7 +6,7 @@ interface Props {
 }
 
 function Hamburger({ isMenuOpen, setIsMenuOpen}: Props){
-  const baseClass = "bg-secondary-muted block h-1 w-[32px] rounded transform transition-all duration-200 ease-in-out";
+  const baseClass = "bg-secondary-muted group-hover:bg-secondary block h-[0.2rem]  rounded transform transition-all duration-200 ease-in-out";
 
   return (
     <button 
@@ -14,14 +14,14 @@ function Hamburger({ isMenuOpen, setIsMenuOpen}: Props){
       onClick={setIsMenuOpen}
       aria-label="Navigation Menu"
     >
-      <div className="block relative">
+      <div className="block relative group">
         {/* top */}
-        <span className={`${baseClass} mb-1 ${isMenuOpen && 'opacity-0'}`}></span>
+        <span className={`${baseClass} mb-1 w-[30px] ${isMenuOpen && 'opacity-0'}`}></span>
         {/* two in the middle */}
-        <span className={`${baseClass} absolute ${isMenuOpen && '-rotate-45'}`}></span>
-        <span className={`${baseClass} absolute ${isMenuOpen && 'rotate-45'}`}></span>
+        <span className={`${baseClass} absolute w-[30px] right-0 ${isMenuOpen && '-rotate-45'}`}></span>
+        <span className={`${baseClass} absolute w-[30px] right-0 ${isMenuOpen && 'rotate-45'}`}></span>
         {/* bottom */}
-        <span className={`${baseClass} mt-3 ${isMenuOpen && 'opacity-0'}`}></span>
+        <span className={`${baseClass} mt-3 ml-auto w-[22px] ${isMenuOpen && 'opacity-0'}`}></span>
       </div>
     </button>
   )
