@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import Stopwatch from '@components/timer/Stopwatch';
-import PulseRings from '@components/timer/PulseRings';
+import PulseRings from '@components/timer/PulseRings'
+import Stopwatch from '@components/timer/Stopwatch'
 
-function Business() {
+const Timer = () => {
   const [play, setPlay] = useState(false);
 
   return (
@@ -20,4 +20,4 @@ function Business() {
   )
 }
 
-export default Business
+export default Timer

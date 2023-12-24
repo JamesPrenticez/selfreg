@@ -15,6 +15,7 @@ function Avatar ({
 
   return (
     <div className="flex space-x-4 items-center relative text-muted">
+
       {user.data?.profilePicture ? (
         <div 
           className="block rounded-full bg-cover bg-center border-2 overflow-hidden"
@@ -24,7 +25,7 @@ function Avatar ({
             backgroundImage: `url("${user.data.profilePicture}")`
           }}
         />
-      ) : (
+      ) : (user.data?.firstName && user.data?.lastName) ? (
         <div className="flex justify-center items-center rounded-full border-2 overflow-hidden bg-primary font-bold text-[18px]"
           style={{ 
             width: width,
@@ -33,6 +34,23 @@ function Avatar ({
         >
           {getInitials(user.data.firstName, user.data.lastName)}
         </div>
+      ) : (
+        <div className="flex justify-center items-center rounded-full border-2 overflow-hidden bg-red-500 font-bold text-[18px]"
+          style={{ 
+            width: width,
+            height: height,
+          }}
+        >
+          N/A
+        </div>
+        // <div 
+        //   className="block rounded-full bg-cover bg-center border-2 overflow-hidden"
+        //   style={{ 
+        //     width: width,
+        //     height: height,
+        //     backgroundImage: `url("avatar.png")`
+        //   }}
+        // />
       )}
 
       <AvatarBadge />

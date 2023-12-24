@@ -6,10 +6,7 @@ interface Props {
 }
 
 function Hamburger({ isMenuOpen, setIsMenuOpen}: Props){
-
   const baseClass = "bg-secondary-muted block h-1 w-[32px] rounded transform transition-all duration-200 ease-in-out";
-  console.log(isMenuOpen)
-  console.log(setIsMenuOpen)
 
   return (
     <button 

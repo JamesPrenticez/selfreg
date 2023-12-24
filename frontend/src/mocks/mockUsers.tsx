@@ -4,7 +4,7 @@ export const mockUsers: IUser[] = [
   {
     _id: "123456",
     email: "james.prentice@gmail.com",
-    firstName: "james",
+    firstName: "jamesasdf",
     lastName: "prentice",
     phone: "123456789",
     profilePicture: "", //./avatar.png

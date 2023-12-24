@@ -19,10 +19,15 @@ import {
   weekSlice
 } from "./slices"
 
+import { 
+  userApi,
+} from "./services"
+
 const reducers = combineReducers({
   user: userSlice.reducer,        
   todos: todosSlice.reducer,        
   week: weekSlice.reducer,         
+  [userApi.reducerPath]: userApi.reducer,
  });
  
  const persistConfig = {
@@ -34,15 +39,15 @@ const reducers = combineReducers({
 const persistedReducer = persistReducer(persistConfig, reducers);
  
 export const store = configureStore({
-    reducer: persistedReducer,
-    devTools:  process.env.NODE_ENV !== "development" ? false : true,
-    middleware: (getDefaultMiddleware) =>
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== 'development' ? false : true,
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
-  })
+    }).concat(userApi.middleware), // Add the middleware for Redux Toolkit Query
+});
   
 // Not required for persistance but gives us utility to purge the store
 export const persistor = persistStore(store);

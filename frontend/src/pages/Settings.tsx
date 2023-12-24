@@ -4,13 +4,14 @@ import { Button } from '@components/common'
 import Body from '@components/layout/Body'
 import EmojiSelector from '@components/emoji/EmojiSelector'
 import EmojiWrapper from '@components/emoji/EmojiWrapper'
+import User from '@components/user/User'
 
 
 const Settings = () => {
   return (
     <Body>
       <h1 className='font-bold text-2xl'>Settings</h1>
-
+      <User />
       <div className='grid grid-cols-1 gap-4 text-[24px] bg-red-500 p-4'>
       {
         mockTodos.map((todo) => {

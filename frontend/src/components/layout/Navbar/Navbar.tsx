@@ -17,13 +17,14 @@ function Navbar() {
         <div className="flex justify-between items-center max-w-7xl w-full mx-auto">
           <CompanyLogo onClick={() => setIsMenuOpen(false)}/>
 
-          { user ? (
+          <WeekNumber />
+          {/* { !user.isAuthenticated ? (
             <WeekNumber />
           ) : (
-            <h1 className="text-major text-3xl md:text-5xl">
+            <h1 className="text-muted text-3xl md:text-5xl">
               {project.name}
             </h1>
-          )}
+          )} */}
           
           <Hamburger 
             isMenuOpen={isMenuOpen}

@@ -26,6 +26,7 @@ export default defineConfig({
     }),
     alias({
       entries: [
+        { find: '@pages', replacement: '/src/pages' },
         { find: '@api', replacement: '/src/api' },
         { find: '@components', replacement: '/src/components' },
         { find: '@models', replacement: '/src/models' },

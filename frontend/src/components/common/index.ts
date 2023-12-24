@@ -1,3 +1,3 @@
 export * from "./Logo"
 export * from "./Loading"
-export * from "./Button"
+export * from "../ui/Button"

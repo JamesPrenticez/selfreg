@@ -22,18 +22,6 @@ if (useMockData) {
   //==========================================================
   // GET
   //==========================================================
-  // USER
-  mockAxiosInstance.onGet('/user').reply((config) => {
-    const { params } = config;
-    
-    // GET user by _id
-    if (params && params._id) {
-      return mockSQL.WHERE_ONE(mockUsers, "_id", params._id)
-    }
-
-    return [204, undefined];
-  });
-
   // TOODOOS
   mockAxiosInstance.onGet('/todos').reply((config) => {
     const { params } = config;
