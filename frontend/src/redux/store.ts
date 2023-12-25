@@ -15,6 +15,7 @@ import {
 
 import {
   userSlice,
+  habitsSlice,
   todosSlice,
   weekSlice
 } from "./slices"
@@ -25,6 +26,7 @@ import {
 
 const reducers = combineReducers({
   user: userSlice.reducer,        
+  habits: habitsSlice.reducer,        
   todos: todosSlice.reducer,        
   week: weekSlice.reducer,         
   [userApi.reducerPath]: userApi.reducer,

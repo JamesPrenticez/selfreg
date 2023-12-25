@@ -41,7 +41,9 @@ module.exports = {
         muted: "#212121",
         ghost: "#303030",
         major: "#00FF00",
-        minor: "#7c3aed"
+        minor: "#7c3aed",
+        secondary: "#fff",
+        "secondary-muted": "#fff",
       },
       ringColor: {
         primary: "#fff",

@@ -2,10 +2,6 @@ import { CrossIcon } from "@components/icons";
 import React, { forwardRef, type ReactElement, type ReactNode, type HTMLProps, type ButtonHTMLAttributes } from "react";
 import { twMerge } from 'tailwind-merge'
 
-
-
-
-
 const Dialog = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
@@ -25,7 +21,6 @@ const DialogContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(({ c
         fixed
         left-[50%]
         top-[50%]
-        z-50
         grid
         w-full
         max-w-lg
@@ -40,6 +35,7 @@ const DialogContent = forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(({ c
         shadow-lg
         duration-200`, className
       )}
+      onClick={(e) => {e.stopPropagation()}}
       {...props}
     >
       {children}
