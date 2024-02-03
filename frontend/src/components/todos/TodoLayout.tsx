@@ -103,6 +103,7 @@ function TodoLayout({
         if (todo.days.length < 7 && weekArrayOfObjects.length < 7) {
           weekArrayOfObjects = buildWeekArray(todo.days, week.data.start_date, week.data.end_date);
         }
+
     } else {
       return <div>Error - no week data</div>;
     }
@@ -127,13 +128,11 @@ function TodoLayout({
                 className='pointer-events-none select-none w-full h-full flex flex-col items-center justify-center relative'
                 style={{ 
                   fontSize: 50, 
-                  color: day.date === week.data.current_date ? '#f9fafbD9' : todo.bgcolor,
-                  // color: todo.bgcolor ?? "white",
+                  color: "#f9fafbD9",
                   fontWeight: 500,
                 }}
               >
-                <p>{dayLabels[dayjs(day.date).weekday()]}</p>
-                <p className='absolute bottom-1 text-[16px]'>{dayjs(day.date).format("D MMM")}</p>
+-
               </div>
             </TodoContainer>
           )
@@ -145,11 +144,7 @@ function TodoLayout({
               bgcolor={todo.bgcolor ?? ""}
               onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
             >
-              {todo.successIcon !== "" ? (
-                <EmojiWrapper unified={todo.successIcon ?? ""} /> 
-              ) : (
-                <div>Handle a default case</div>
-              )}
+  X
             </TodoContainer>
           )
         }
@@ -160,11 +155,7 @@ function TodoLayout({
               bgcolor={todo.bgcolor ?? ""}
               onClick={() => { handleUpdateStatus(todo._id, day._id, day.status ) }}
             >
-              {todo.errorIcon !== "" ? (
-                <EmojiWrapper unified={todo.errorIcon ?? ""} />
-              ) : (
-                <div>Handle a default case</div>
-              )}
+O
             </TodoContainer>
           )
         } 
@@ -216,7 +207,7 @@ function TodoContainer({
           color: date === week.data.current_date ? '#f9fafbD9' : bgcolor
         }}
       >
-        {dayjs(date).format("D MMM")}
+
       </p>
     </div>
   )

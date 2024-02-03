@@ -53,13 +53,13 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
               .map((item: INavigationItem, index: any) => {
 
                 let slug 
+                slug = `/${item.slug}`;
+
                 if(user.data){
                   if (item.requiresAuth) {
                     slug = `/user/${user.data._id}/${item.slug}`;
                   } 
                 } 
-
-                slug = item.slug;
 
                 return (
                   <Link
@@ -68,6 +68,7 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
                     onClick={setIsMenuOpen}
                     className={`flex space-x-4 py-2 hover:text-white font-medium
                       ${location.pathname === slug ? 'text-major hover:text-major' : 'text-muted'}
+                      ${item.requiresAuth ? 'bg-red-500' : ''}
                     `}
                   >
                     <span className="flex items-center text-major">
@@ -84,7 +85,6 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
 
           {/* TODO - convert to button */}
           <div>
-
               {!user.isAuthenticated ? (
                 <Link to="/sign-in">
                   <Button 

@@ -17,6 +17,7 @@ import Habits from "@pages/Habits"; // dont want to lazy load
 import { useGetUserDetailsQuery } from "@redux/services";
 import RequiresAuth from "@components/auth/RequiresAuth";
 import Test from "@pages/Test";
+import Calendar from "@pages/Calendar";
 const Timer = lazy(() => import("./pages/Timer"));
 const Stats = lazy(() => import("./pages/Stats"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -46,6 +47,7 @@ function App(): ReactElement {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/calendar" element={<Calendar />} />
           
           <Route path="/home" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
@@ -69,8 +71,8 @@ function App(): ReactElement {
           <Route path="/stats" element={<Stats />} />
           <Route path="/settings" element={<Settings />} />
   
-          <Route path="/admin" element={<Admin />} />
         */}
+        <Route path="/admin" element={<Admin />} />
 
         </Routes>
       </Layout>

@@ -28,7 +28,6 @@ export const habitsSlice = createSlice({
         state.data = [newHabit];
       }
 
-
     },
   },
 });

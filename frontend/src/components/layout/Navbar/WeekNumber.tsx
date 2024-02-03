@@ -1,14 +1,13 @@
 import React from 'react'
-import { useAppSelector } from "@redux/hooks"
+import { getWeekData } from '@utils';
 
 function WeekNumber(){
-  const week = useAppSelector((state) => state.week)
+  const week = getWeekData()
 
   return (
     <div>
       <h1 className="text-3xl md:text-5xl text-muted select-none relative">
-        DAY {week.data?.day_number}
-        {/* WEEK {week.data?.week_number} */}
+        DAY {week.day_number}
       </h1>
     </div>
   )
