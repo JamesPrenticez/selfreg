@@ -1,13 +1,21 @@
-export interface IDays {
-  date: string;
-  status: boolean | null;
-}
-
 export interface ITodo {
   _id: string;
   user_id: string;
-  task_name: string;
-  description: string;
+  title: string;
+  slug: string;
+  color?: string;
+  bgcolor?: string;
+  icon?: string;
+  successIcon?: string;
+  errorIcon?: string;
+  description?: string;
   created_at: string;
-  days: IDays[];
+  days: IDay[] | undefined;
+}
+
+export interface IDay {
+  _id: string;
+  todo_id: string;
+  date: string;
+  status: boolean | null;
 }

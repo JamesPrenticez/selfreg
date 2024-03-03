@@ -1,1 +1,1 @@
-export * from './IWeekDetails'
+export * from './IWeek'

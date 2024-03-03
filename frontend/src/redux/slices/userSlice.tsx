@@ -2,62 +2,74 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { IUser } from '@models';
-import { getUser } from '../thunk/userThunk';
+import { userApi } from '@redux/services';
 
-interface UserState {
-  status: 'idle' | 'pending' | 'success' | 'failed';
-  payload: IUser;
-  isLoading: boolean;
-  isSaving: boolean;
-  error: string | null;
+export interface UserState {
+  data: IUser | null;
+  isAuthenticated: boolean, 
+  token: string | null,
+  isDemoAccount: boolean,
 }
 
 const initialState: UserState = {
-  status: 'idle',
-  payload: {
-    _id: undefined,
-    firstName: undefined,
-    lastName: undefined,
-    email: undefined,
-    phone: undefined,
-    location: undefined,
-    profilePicture: undefined,
-  },
-  isLoading: false,
-  isSaving: false,
-  error: null,
+  data: null,
+  isAuthenticated: false, 
+  token: null,
+  isDemoAccount: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
-    updateUserDetails: (state, action: PayloadAction<Partial<IUser>>) => {
-      state.payload = { ...state.payload, ...action.payload };
+    setLocale: (state, action) => {
+      if(state.data){
+        state.data.locale = action.payload;
+      }
+    },
+    updateUser: (state, action: PayloadAction<Partial<IUser> | null>) => {
+      if(state.data){
+        state.data = { ...state.data, ...action.payload };
+      }
+    },
+    updateUserField: (state, action: PayloadAction<{ key: keyof IUser, value: any }>) => {
+      if(state.data){
+        const { key, value } = action.payload;
+        if (key in state.data) {
+          state.data[key] = value;
+        }
+      }
+    },
+    setDemoUser(state, action) {
+      state.data = action.payload;
+      state.isAuthenticated = true;
+      state.token = 'YOUR_FAKE_JWT_TOKEN'; // Replace with your generated JWT token
+      state.isDemoAccount = action.payload.isDemo || false;
+    },
+    logoutUser(state) {
+      state.data = {} as IUser;
+      state.isAuthenticated = false;
+      state.token = null;
+      state.isDemoAccount = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getUser.pending, (state, action) => {
-        state.status = "pending";
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(getUser.fulfilled, (state, action: PayloadAction<IUser>) => {
-        // console.log("Fulfilled action:", action);
-        state.status = "success";
-        state.payload = action.payload;
-        state.isLoading = false;
-        state.error = null;
-      })
-      .addCase(getUser.rejected, (state, action) => {
-        state.status = "failed";
-        state.isLoading = false;
-        state.error = 'An error occurred';
-      });
+      .addMatcher(
+        userApi.endpoints.getUserDetails.matchFulfilled,
+        (state, { payload }) => {
+          state.data = payload;
+        }
+      );
   }
 });
 
-export const accountActions = userSlice.actions;
+export const { 
+  setDemoUser,
+  logoutUser,
+  setLocale,
+  updateUser,
+  updateUserField
+} = userSlice.actions;
 
 export default userSlice;

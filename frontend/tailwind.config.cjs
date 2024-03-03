@@ -19,13 +19,46 @@ module.exports = {
       "6xl": ['3.75rem', '4.25rem'],
       "7xl": ['4.5rem', '5.2rem'],
     },
-    
     extend:{
-			height:{
-        screenNav: "calc(100vh - 4rem)",
+      backgroundColor: {
+        primary: "#101010",
+        muted: "#212121",
+        ghost: "#303030",
+        secondary: "#fff",
+        "secondary-muted": "#d1d5db",
+        major: "#00FF00",
+        minor: "#7c3aed"
+      },
+      textColor: {
+        primary: "#fff",
+        muted: "#d1d5db",
+        secondary: "#101010",
+        disabled: "#666",
+        major: "#00FF00"
+      },
+      borderColor: {
+        primary: "#101010",
+        muted: "#212121",
+        ghost: "#303030",
+        major: "#00FF00",
+        minor: "#7c3aed",
+        secondary: "#fff",
+        "secondary-muted": "#fff",
+      },
+      ringColor: {
+        primary: "#fff",
+        muted: "#d1d5db",
+        ghost: "#666",
+        major: "#00FF00",
+        minor: "#7c3aed"
+      },
+      height: {
+        "screen-5rem": "calc(100vh - 5rem)",
+        "screen-4rem": "calc(100vh - 4rem)",
       },
 			minHeight:{
-        screenNav: "calc(100vh - 4rem)",
+        "screen-5rem": "calc(100vh - 5rem)",
+        "screen-4rem": "calc(100vh - 4rem)",
       },
 			fontFamily: {
         'sans': ['Arial']

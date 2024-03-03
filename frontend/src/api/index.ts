@@ -1,94 +1,104 @@
-import axios from 'axios';
-import { mockUser, mockTodos } from '@mocks';
+import axios, { AxiosRequestConfig } from 'axios';
+import MockAdapter from 'axios-mock-adapter';
+import { mockUsers, mockTodos, mockDays } from '@mocks';
 import type { ISuccessResult, IErrorResult } from '@models';
+import mockSQL from './mockSQL';
 
 const development = true; // !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 const useMockData = true;
 
-// Create an Axios instance
 const axiosInstance = axios.create({
-  baseURL: development ? "http://localhost:3000/" : "http://selfregulator.com/",
+  baseURL: development ? 'http://localhost:3000/' : 'http://selfregulator.com/',
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   },
   withCredentials: false,
 });
 
+const mockAxiosInstance = new MockAdapter(axiosInstance, { delayResponse: 2000 });
+
+if (useMockData) {
+  //==========================================================
+  // GET
+  //==========================================================
+  // TOODOOS
+  mockAxiosInstance.onGet('/todos').reply((config) => {
+    const { params } = config;
+
+    if (params && params.user_id && !params.todo_ids) {
+      return mockSQL.WHERE_MANY(mockTodos, "user_id", params.user_id)
+    }
+
+    if (params && params.user_id && params.todo_ids && params.start_date && params.end_date) {
+      return mockSQL.GET_DAYS_FOR_TODO_ID_LIST_BETWEEN_DATE_RANGE(params.user_id, params.todo_ids, params.start_date, params.end_date)
+    }
+
+    return [200, mockTodos];
+  });
+
+  //==========================================================
+  // POST
+  //==========================================================
+  mockAxiosInstance.onPost('/todo/days').reply((config) => {
+    console.log("post")
+    return [200, { success: true }];
+  })
+}
+
+// API
 const api = {
-  async get<T>(endpoint: string): Promise<ISuccessResult<T>> {
-    if (useMockData) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          switch (endpoint) {
-            case 'user':
-              resolve({ data: mockUser } as ISuccessResult<T>);
-              break;
-            case 'todos':
-              resolve({ data: mockTodos } as ISuccessResult<T>);
-              break;
-            default:
-              reject(new Error(`Mock data not found for endpoint: ${endpoint}`));
-          }
-        }, 500); // Simulated delay (optional)
-      });
-    } else {
-      // You can use axiosInstance for real API requests
-      try {
-        const response = await axiosInstance.get(endpoint);
-        return ({ data: response.data } as ISuccessResult<T>);
-      } catch (error: unknown) {
-        // Error from server
-        if (error instanceof Error && typeof error.message === 'string') {
-          throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
-        // Axios error
-        } else {
-          throw { message: 'Failed to fetch data from API' } as IErrorResult;
-        }
+  get: async <T>(
+    endpoint: string,
+    params?: any // Optional parameters for GET requests
+  ): Promise<ISuccessResult<T>> => {
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      url: endpoint,
+    };
+
+    if (params) {
+      config.params = params;
+    }
+
+    try {
+      const response = await axiosInstance.request(config);
+      return { data: response.data } as ISuccessResult<T>;
+    } catch (error) {
+      // Handle errors
+      if (error instanceof Error && typeof error.message === 'string') {
+        throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
+      } else {
+        throw { message: 'Failed to fetch data from API' } as IErrorResult;
       }
     }
   },
 
-  async post<T>(endpoint: string, data: any): Promise<ISuccessResult<T> | IErrorResult> {
-    if (useMockData) {
-      // Simulate a POST request with a delay
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          // You can add mock response logic here
-          resolve({ data: {"message": "post request made to mock"} } as ISuccessResult<T>);
-        }, 500); // Simulated delay (optional)
-      });
-    } else {
-      // You can use axiosInstance for real API POST requests
-      try {
-        const response = await axiosInstance.post(endpoint, data);
-        return ({ data: response.data } as ISuccessResult<T>);
-      } catch (error) {
-        // Error from server
-        if (error instanceof Error && typeof error.message === 'string') {
-          throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
-        // Axios Error
-        } else {
-          throw { message: 'Failed to fetch data from API' } as IErrorResult;
-        }
+  post: async <T>(
+    endpoint: string,
+    data?: any, // Data payload for POST requests
+  ): Promise<ISuccessResult<T>> => {
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: endpoint,
+    };
+
+    if (data) {
+      config.data = data;
+    }
+
+    try {
+      const response = await axiosInstance.request(config);
+      return { data: response.data } as ISuccessResult<T>;
+    } catch (error) {
+      // Handle errors
+      if (error instanceof Error && typeof error.message === 'string') {
+        throw { message: `Failed to fetch data from API: ${error.message}` } as IErrorResult;
+      } else {
+        throw { message: 'Failed to fetch data from API' } as IErrorResult;
       }
     }
   },
 };
 
-export default api
-
-// Mertle example
-// export const getErrorMessage = (e: unknown): string => {
-//   let message: string;
-//   if (axios.isAxiosError<ErrorResult>(e)) {
-//     if (e.response != null) {
-//       message = `Response from Server: ${e.response?.data.message}`;
-//     } else {
-//       message = `Axios Error: ${e.message}`;
-//     }
-//   } else {
-//     message = "An unexpected error occurred";
-//   }
-//   return message;
-// };
+export default api;

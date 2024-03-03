@@ -113,3 +113,15 @@ https://vite-pwa-org.netlify.app/guide/auto-update.html
       registerType: 'autoUpdate'
     }),
 ```
+
+### Emojis
+https://codesandbox.io/s/emoji-picker-react-4-z2gkzp
+https://www.npmjs.com/package/emoji-picker-react
+
+
+### Digital Badges 
+https://elearningindustry.com/why-online-course-creators-use-digital-badges
+https://webpages.tuni.fi/gamification/2018/09/20/badges-increase-user-activity-a-field-experiment-on-the-effects-of-gamification/
+
+## SVG
+https://www.freecodecamp.org/news/how-to-import-svgs-in-react-and-vite/
