@@ -25,7 +25,7 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 const PORT = process.env.PORT || 5000;
   
 // Use routes
-app.use(pageRoutes);
+// app.use(pageRoutes);
 app.use(apiRoutes);
 
 app.listen(PORT, () => {
