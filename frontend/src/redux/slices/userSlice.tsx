@@ -27,7 +27,7 @@ export const userSlice = createSlice({
         state.data.locale = action.payload;
       }
     },
-    updateUser: (state, action: PayloadAction<Partial<IUser>>) => {
+    updateUser: (state, action: PayloadAction<Partial<IUser> | null>) => {
       if(state.data){
         state.data = { ...state.data, ...action.payload };
       }

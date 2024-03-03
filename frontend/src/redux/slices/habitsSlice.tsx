@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { IHabit } from '@models';
 import { generateFakeObjectId } from '@utils';
+import { userApi } from '@redux/services';
 
 interface HabitsState {
-  data: IHabit[] | undefined;
+  data: IHabit[] | null;
 }
 
 const initialState: HabitsState = {
-  data: undefined,
+  data: null,
 };
 
 export const habitsSlice = createSlice({
@@ -30,6 +31,16 @@ export const habitsSlice = createSlice({
 
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        userApi.endpoints.getUserHabits.matchFulfilled,
+        (state, { payload }) => {
+          console.log("asdf")
+          state.data = payload;
+        }
+      );
+  }
 });
 
 export const { 

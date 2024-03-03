@@ -10,14 +10,24 @@ import { IDay } from "@models";
 import 'dayjs/locale/en-gb'; // Import the locale you want to use
 import { getWeekData } from "@utils";
 import SuccessAnimation from "@components/common/Success";
+import { useGetUserHabitsQuery } from "@redux/services";
 
 dayjs.locale('en-gb'); // Set the locale globally
 
 const Habits = (): ReactElement => {
   // const dispatch = useAppDispatch();
 
-  const todos = useAppSelector((state) => state.todos);
+  const user = useAppSelector((state) => state.user);
+  const habits = useAppSelector((state) => state.habits);
   const week = getWeekData()
+
+  console.log(habits)
+  console.log(user.data)
+
+  const {
+    isLoading: isLoadingProducts,
+    isSuccess: isSuccessProducts
+  } = useGetUserHabitsQuery({ user_id: "1" })
 
   // useEffect(() => {
   //   dispatch(getTodos({ user_id: '123456' }))
@@ -31,7 +41,6 @@ const Habits = (): ReactElement => {
   //     });
   // }, [week.data]); 
 
-  const todo_data = todos.data 
   const start_date = week.start_date
   const end_date = week.end_date
 
@@ -69,56 +78,55 @@ const Habits = (): ReactElement => {
   //   console.log(buildWeekArray(todo_data[3].days, start_date, end_date))
   // }
 
-  console.log(todo_data)
-
   return (
-    <div className="w-full mx-auto min-h-screenNav pt-8"> 
-      <div className="grid grid-col min-h-screenNav gap-8">
+    <h1>ok</h1>
+    // <div className="w-full mx-auto min-h-screenNav pt-8"> 
+    //   <div className="grid grid-col min-h-screenNav gap-8">
 
-      {todos.data ? (
+    //   {todos.data ? (
         
-        todos.data.map((todo) => (
-        <div key={todo._id} className="flex px-4" >
-          <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto">
+    //     todos.data.map((todo) => (
+    //     <div key={todo._id} className="flex px-4" >
+    //       <div className="flex flex-col md:flex-row w-full max-w-7xl mx-auto">
 
 
-              <div className="w-full md:w-[500px] flex items-center pt-2 md:py-4 ">
-                <h1 className="text-white font-bold text-[40px] md:text-5xl" style={{color: todo.color}}>
-                  {todo.title}
-                </h1>
-                <div className="h-6 w-6 rounded-full ml-auto border-2" style={{borderColor: todo.bgcolor}}></div>
-              </div>
+    //           <div className="w-full md:w-[500px] flex items-center pt-2 md:py-4 ">
+    //             <h1 className="text-white font-bold text-[40px] md:text-5xl" style={{color: todo.color}}>
+    //               {todo.title}
+    //             </h1>
+    //             <div className="h-6 w-6 rounded-full ml-auto border-2" style={{borderColor: todo.bgcolor}}></div>
+    //           </div>
 
 
-              <div className='grid grid-cols-7 h-full items-center justify-center w-full gap-x-2 mt-2'>
-              {dayLabels.map((day, index) => {
-                const [ isActive, setIsActive] = useState(false)
+    //           <div className='grid grid-cols-7 h-full items-center justify-center w-full gap-x-2 mt-2'>
+    //           {dayLabels.map((day, index) => {
+    //             const [ isActive, setIsActive] = useState(false)
 
-                return (
-                  <div
-                    onClick={() => setIsActive(prev => !prev)}
-                    key={index} 
-                    className='border-2 border-white/40 rounded-lg w-full aspect-square flex items-center justify-center cursor-pointer relative'
+    //             return (
+    //               <div
+    //                 onClick={() => setIsActive(prev => !prev)}
+    //                 key={index} 
+    //                 className='border-2 border-white/40 rounded-lg w-full aspect-square flex items-center justify-center cursor-pointer relative'
                     
-                  >
-                    {isActive ? 
-                    <SuccessAnimation isActive={isActive} />
-                    :
-                    <p className="text-gray-300/60">{day}</p>
-                    }
-                  </div>
-              )})}
-              </div>
+    //               >
+    //                 {isActive ? 
+    //                 <SuccessAnimation isActive={isActive} />
+    //                 :
+    //                 <p className="text-gray-300/60">{day}</p>
+    //                 }
+    //               </div>
+    //           )})}
+    //           </div>
 
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>loading...</p>
-      )}
+    //         </div>
+    //       </div>
+    //     ))
+    //   ) : (
+    //     <p>loading...</p>
+    //   )}
       
-      </div>
-    </div>
+    //   </div>
+    // </div>
   );
 };
 

@@ -1,57 +1,30 @@
 
-import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import storage from 'redux-persist/lib/storage';
-
-import {
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-  persistStore,
-} from 'redux-persist'
+import { configureStore } from '@reduxjs/toolkit'
 
 import {
   userSlice,
   habitsSlice,
-  todosSlice,
 } from "./slices"
 
 import { 
   userApi,
 } from "./services"
 
-const reducers = combineReducers({
-  user: userSlice.reducer,        
-  habits: habitsSlice.reducer,        
-  todos: todosSlice.reducer,        
-  [userApi.reducerPath]: userApi.reducer,
- });
- 
- const persistConfig = {
-  key: 'root',
-  storage,
-  version: 1
-};
-
-const persistedReducer = persistReducer(persistConfig, reducers);
- 
 export const store = configureStore({
-  reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== 'development' ? false : true,
+  reducer: {
+    user: userSlice.reducer,        
+    habits: habitsSlice.reducer,        
+    [userApi.reducerPath]: userApi.reducer,
+  },
+
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(userApi.middleware), // Add the middleware for Redux Toolkit Query
+    getDefaultMiddleware().concat(
+      userApi.middleware,
+      // make sure to also add more apis here
+    ), 
+    devTools: process.env.NODE_ENV !== 'development' ? false : true,
 });
   
-// Not required for persistance but gives us utility to purge the store
-export const persistor = persistStore(store);
-
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

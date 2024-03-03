@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { 
+  mockHabits,
   mockUsers,
 } from '@mocks';
 import mockSQL from './mockSQL';
@@ -34,6 +35,17 @@ if (useMockData) {
 
     if (user_id) {
       return mockSQL.WHERE_ONE(mockUsers, "_id", user_id)
+    }
+
+    return [204, { message: "User ID not provided" }];
+  });
+
+  // User Habits
+  mockAxiosInstance.onGet(`users/${user_id}/habits`).reply((config) => {
+    if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
+console.log("habbits")
+    if (user_id) {
+      return [200, mockHabits]//mockSQL.WHERE_ONE(mockHabits, "_id", user_id)
     }
 
     return [204, { message: "User ID not provided" }];

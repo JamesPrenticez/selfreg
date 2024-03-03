@@ -1,5 +1,4 @@
 import React, { useEffect, useState, ReactElement } from "react";
-import { persistor } from "@redux/store";
 import { Button } from "@components/common";
 import { ArrowLeftIcon, CrossIcon } from "@components/icons";
 import { Link, useLocation } from "react-router-dom";
@@ -102,9 +101,9 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
                   color="error"
                   className="w-full text-red-500"
                   onClick={() => { 
-                    persistor.purge().then(() => {
-                      window.location.reload();
-                    });
+                    // persistor.purge().then(() => {
+                    //   window.location.reload();
+                    // });
                   }}
                 >
                   DELETE YOUR DATA
