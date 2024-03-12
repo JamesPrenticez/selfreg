@@ -26,16 +26,9 @@ const NotFound = (): ReactElement  => <h1 className="text-primary">404 - Not Fou
 
 function App(): ReactElement {
   let location = useLocation();
-
-  // useEffect(() => {
-  //     const fetchedLocale = user.data?.locale; // e.g., fetch from an API or localStorage
-  //     dayjs.locale(fetchedLocale); // this must be set first before the dispatch
-  //     dispatch(setLocale(fetchedLocale));
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   dayjs.locale(user.data?.locale); // Update dayjs locale whenever the user's setting changes
-  // }, [user]);
+  const { isSuccess: isSuccessUser, isLoading: isLoadingUser } = useGetUserDetailsQuery();
+  const user = useAppSelector((state) => state.user.data)
+  console.log(user)
 
   return (
     <Suspense

@@ -3,22 +3,24 @@ import { IHabit, IUser } from '@models';
 import { updateUserField, userSlice } from '@redux/slices';
 import { RootState } from '@redux/store';
 import { axiosBaseQuery } from './axiosBaseQuery';
+import { getUserId } from './getUserId';
 
 // TODO typesafe url params with an interface
+const user_id = getUserId();
 
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    getUserDetails: builder.query<IUser, { user_id: string }>({
-      query: ({ user_id }) => ({ 
-        url: `users/${user_id}`,
+    getUserDetails: builder.query<IUser, void>({
+      query: () => ({ 
+        url: `user/${user_id}`,
         method: 'GET'
       })
     }), 
     getUserHabits: builder.query<IHabit[], { user_id: string }>({
       query: ({ user_id }) => ({ 
-        url: `users/${user_id}/habits`,
+        url: `user/${user_id}/habits`,
         method: 'GET'
       })
     }), 

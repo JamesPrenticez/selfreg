@@ -1,17 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { Button } from "@components/common";
+import { useEffect, useState } from "react";
 
 function Home() {
+  const [data, setData] = useState(null);
+
+  const getData = (): void => {
+    fetch("http://localhost:5000/api/users", {
+      method: "GET",
+      headers: {},
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+
+      console.log("done")
+  }
+
+
   return (
-    <div className="text-primary flex flex-col space-y-2">
-      <h1>Home</h1>
-      
-      {/* <Link to="/sign-in">Sign In</Link>
-      <Link to="/test" className="text-fuchsia-500">Test</Link>
-      <Link to="/calendar" className="text-cyan-500">Calendar</Link>
-      <Link to="/admin" className="text-yellow-400">Admin</Link> */}
+    <div className="text-[#0f0]">
+    <Button variant="link" onClick={() => getData()}>
+      fetch
+    </Button>
+    <div>{JSON.stringify(data)}</div>
     </div>
-  );
+  )
 }
 
 export default Home;
