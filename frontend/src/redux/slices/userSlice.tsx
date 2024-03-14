@@ -5,14 +5,19 @@ import type { IUser } from '@models';
 import { userApi } from '@redux/services';
 
 export interface UserState {
-  data: IUser | null;
+  data: IUser;
   isAuthenticated: boolean, 
   token: string | null,
   isDemoAccount: boolean,
 }
 
 const initialState: UserState = {
-  data: null,
+  data: {
+    id: "",
+    email: "",
+    dateCreated: "",
+    lastModified: ""
+  },
   isAuthenticated: false, 
   token: null,
   isDemoAccount: false,
@@ -58,7 +63,7 @@ export const userSlice = createSlice({
       .addMatcher(
         userApi.endpoints.getUserDetails.matchFulfilled,
         (state, { payload }) => {
-          state.data = payload;
+          state.data = payload.data;
         }
       );
   }

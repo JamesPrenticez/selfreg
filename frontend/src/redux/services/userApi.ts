@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
-import { IHabit, IUser } from '@models';
+import { IHabit, ISuccessResult, IUser } from '@models';
 import { updateUserField, userSlice } from '@redux/slices';
 import { RootState } from '@redux/store';
 import { axiosBaseQuery } from './axiosBaseQuery';
@@ -12,7 +12,7 @@ export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: axiosBaseQuery(),
   endpoints: (builder) => ({
-    getUserDetails: builder.query<IUser, void>({
+    getUserDetails: builder.query<ISuccessResult<IUser>, void>({
       query: () => ({ 
         url: `user/${user_id}`,
         method: 'GET'

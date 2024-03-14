@@ -1,5 +1,6 @@
-export * from './capitalizeWords'
 export * from './generateObjectId'
 export * from './getWeekDetails'
 export * from './userHasPermission'
 export * from './getInitials'
+export * from './capitalizeFirstLetter'
+export * from './formatDate'

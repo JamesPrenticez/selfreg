@@ -27,8 +27,6 @@ const NotFound = (): ReactElement  => <h1 className="text-primary">404 - Not Fou
 function App(): ReactElement {
   let location = useLocation();
   const { isSuccess: isSuccessUser, isLoading: isLoadingUser } = useGetUserDetailsQuery();
-  const user = useAppSelector((state) => state.user.data)
-  console.log(user)
 
   return (
     <Suspense

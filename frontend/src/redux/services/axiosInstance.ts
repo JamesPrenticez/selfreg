@@ -8,8 +8,8 @@ import mockSQL from './mockSQL';
 import { getUserId } from './getUserId';
 
 const development = true; // !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const useMockData = false; //window.location.hostname === 'localhost' && window.location.port === '3000' ? true : false;
-const log = true;
+const useMockData = true; //window.location.hostname === 'localhost' && window.location.port === '3000' ? true : false;
+const log = false;
 
 export const axiosInstance = axios.create({
   baseURL: development ? 'http://localhost:5000/api/' : 'prod url',

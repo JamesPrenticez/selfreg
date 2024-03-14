@@ -1,5 +1,5 @@
 export interface IUser {
-  _id: string,
+  id: string,
   email: string;
   firstName?: string;
   lastName?: string;
@@ -8,8 +8,15 @@ export interface IUser {
   locale?: string;
   country?: string;
   permissions?: IUserPermissions[];
+  subscription?: IUserSubscription;
+  dateCreated: string;
+  lastModified: string;
 }
 
 export enum IUserPermissions {
   ADMIN = 'ADMIN',
+}
+
+export enum IUserSubscription {
+  FREE = 'FREE',
 }
