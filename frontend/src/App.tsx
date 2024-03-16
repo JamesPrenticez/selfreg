@@ -18,6 +18,7 @@ import { useGetUserDetailsQuery } from "@redux/services";
 import RequiresAuth from "@components/auth/RequiresAuth";
 import Test from "@pages/Test";
 import Calendar from "@pages/Calendar";
+import UserSettings from "@components/user/UserSettings";
 const Timer = lazy(() => import("./pages/Timer"));
 const Stats = lazy(() => import("./pages/Stats"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -26,7 +27,7 @@ const NotFound = (): ReactElement  => <h1 className="text-primary">404 - Not Fou
 
 function App(): ReactElement {
   let location = useLocation();
-  const { isSuccess: isSuccessUser, isLoading: isLoadingUser } = useGetUserDetailsQuery();
+  // const { isSuccess: isSuccessUser, isLoading: isLoadingUser } = useGetUserDetailsQuery();
 
   return (
     <Suspense
@@ -42,6 +43,7 @@ function App(): ReactElement {
           
           <Route path="/home" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/settigns" element={<UserSettings />} />
 
           {/* <Route path="/404" element={<NotFound />} />
           <Route path="/*" element={<Navigate to="/404" state={{ from: location }} replace />} /> */}

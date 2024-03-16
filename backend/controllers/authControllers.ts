@@ -18,7 +18,12 @@ export const signIn = async (req: Request, res: Response): Promise<any> => {
     if (user && await verifyPassword(password, user.passwordHash)) {
       // Generate a JWT token
       const token = jwt.sign({ username: user.email, userId: user.id }, "your_secret_key_goes_here", { expiresIn: '1h' });
-      return res.json({ token });
+      return res.status(200).cookie('JWT_TOKEN', `Bearer ${token}`, {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'strict'
+      }).send("well done");
+      // return res.status(200).json({ token });
     } else {
       return res.status(401).json({ error: 'Invalid credentials' });
     }

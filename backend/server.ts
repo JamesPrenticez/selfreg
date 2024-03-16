@@ -6,29 +6,15 @@ import apiRoutes from '@routes/api';
 
 import swaggerUi from "swagger-ui-express"
 import swaggerFile from './public/swagger.json';
+import cookieParser from 'cookie-parser'
+
 
 // Initialize express
 const app = express();
 
-// Middleware to verify JWT token
-// this comes from utils nows
-// verifyToken middleware checks if a valid JWT token is present in the Authorization header. If the token is valid, the route handler (/logout) responds with a success message.
-// const verifyToken = (req, res, next) => {
-//   const token = req.headers.authorization;
+// Allow express to understand cookies (required for HttpOnly)
+app.use(cookieParser());
 
-//   if (!token) {
-//     return res.status(401).json({ error: 'Unauthorized' });
-//   }
-
-//   jwt.verify(token, secretKey, (err, decoded) => {
-//     if (err) {
-//       return res.status(401).json({ error: 'Unauthorized' });
-//     }
-
-//     req.user = decoded;
-//     next();
-//   });
-// };
 
 // // Sign-out route
 // app.post('/logout', verifyToken, (req, res) => {
@@ -44,7 +30,8 @@ app.use(express.json());
 
 // Cross Origin
 app.use(cors({
-  origin: 'http://localhost:3000'
+  origin: 'http://localhost:3000',
+  credentials: true
 }));
 
 // Set JSON formatting

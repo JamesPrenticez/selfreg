@@ -8,10 +8,9 @@ import { twMerge } from 'tailwind-merge'
 
 
 const InputText = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     return (
       <input
-        type={type}
         className={twMerge(
           ` flex 
             h-10

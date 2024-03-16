@@ -1,9 +1,9 @@
-import UserSettings from "@components/user/UserSettings";
+import SignIn from "./SignIn";
 
 function Home() {
 
   return (
-    <UserSettings />
+    <SignIn />
   )
 }
 

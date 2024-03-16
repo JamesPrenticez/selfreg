@@ -4,6 +4,8 @@ import { User } from '@prisma/client';
 
 // Get all users
 export const getUser = async (req: Request, res: Response): Promise<void> => {
+
+  console.log("here")
   const { id } = req.params;
 
   try {

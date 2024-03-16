@@ -1,8 +1,6 @@
 import React from "react";
 import { useAppSelector } from "@redux/hooks";
-import user from "../../assets/images/user.svg";
 import { capitalizeFirstLetter, formatDate } from "@utils";
-import { IUserSubscription } from "@models";
 import { Button } from "@components/common";
 
 function UserSettings() {

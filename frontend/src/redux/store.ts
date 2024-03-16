@@ -7,6 +7,7 @@ import {
 } from "./slices"
 
 import { 
+  authApi,
   userApi,
 } from "./services"
 
@@ -14,11 +15,13 @@ export const store = configureStore({
   reducer: {
     user: userSlice.reducer,        
     habits: habitsSlice.reducer,        
+    [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
+      authApi.middleware,
       userApi.middleware,
       // make sure to also add more apis here
     ), 
