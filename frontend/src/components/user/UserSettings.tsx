@@ -2,16 +2,21 @@ import React from "react";
 import { useAppSelector } from "@redux/hooks";
 import { capitalizeFirstLetter, formatDate } from "@utils";
 import { Button } from "@components/common";
+import { useGetUserQuery } from "@redux/services";
 
 function UserSettings() {
   const user = useAppSelector((state) => state.user.data);
+
+  // TODO fix rtk query chache??
+  useGetUserQuery(undefined, {
+    skip: true
+  });
 
   return (
     <div className="text-primary px-4">
       <div className="flex flex-col max-w-7xl w-full mx-auto mt-4 space-y-4 ">
 
         <div className="grid grid-cols-[128px_1fr] md:grid-cols-[192px_1fr] bg-ghost p-4 rounded-md">
-
           <div
             className="w-full aspect-square rounded-full border-major border-2"
             style={{

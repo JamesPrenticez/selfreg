@@ -7,22 +7,15 @@ import { Button } from "@components/common";
 import { ArrowLeftIcon, InfoIcon } from "@components/icons";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { createValidationSchema, resolver, v } from "@utils/formValidation";
-import { IUser } from "@models";
+import { Paths } from "@models";
 import useForm from "@utils/formValidation/useForm";
 import ErrorMessage from "@components/ui/ErrorMessage";
 import { ILoginDeatils } from "@models/auth";
 import { useSignInMutation } from "@redux/services/authApi";
-import axios from "axios";
-import { axiosInstance } from "@redux/services/axiosInstance";
-import { setJWTCookie } from "@utils";
-import { useGetUserDetailsQuery } from "@redux/services";
 
 function SignIn() {
   const navigate = useNavigate();
-  const [signIn, mutationResult] = useSignInMutation();
-
-  const [shit, setSHit] = useState(true)
-  const { isSuccess: isSuccessUser, isLoading: isLoadingUser, refetch: refetchUserDetails } = useGetUserDetailsQuery(undefined, { skip: shit });
+  const [signIn] = useSignInMutation();
 
   const validationSchema = createValidationSchema({
     email: v.required().email().minLength(3),
@@ -50,14 +43,11 @@ function SignIn() {
   async function handleSignIn() {
     try {
       const result = await signIn(formData)
-      console.log(result)
-      // redirect
+      navigate(Paths.SETTINGS);
     } catch (error: any) {
-
       if(error.status === 401){
         return console.log(error.message)
       }
-
       return console.log("An unexpected error has occured")
     }
   }
@@ -68,22 +58,9 @@ function SignIn() {
     setFieldValue("password", "password123");
   }
 
-  
-  // function deleteRTK() {
-  //   console.log("fuck rtk")
-  
-  //   axiosInstance.get(`http://localhost:5000/api/user/${getUserId()}`)
-  //   .then(response => {
-  //     // Log the response data
-  //     console.log(response.data);
-  //   })
-  //   .catch(error => {
-  //     // Log any errors
-  //     console.error('Error fetching data:', error);
-  //   });
-  // }
-
   return (
+
+    // TODO auto redirect if already signed in
     <div className="h-screen-4rem md:h-screen-5rem full flex justify-center text-muted">
       <div className="w-full max-w-[460px] border bg-ghost border-major/50 rounded md:my-12 p-6">
         <div className="flex items-center justify-center h-[120px] full-rounded">
@@ -167,9 +144,8 @@ function SignIn() {
           <Button 
             color="minor"
             className="w-full mt-6"
-            onClick={() => { console.log("asdf"), setSHit(false) }}
           >
-            get user
+            Sub
           </Button>
       </div>
     </div>

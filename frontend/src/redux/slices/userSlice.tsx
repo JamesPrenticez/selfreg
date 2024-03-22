@@ -2,13 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { IUser } from '@models';
-import { userApi } from '@redux/services';
+import { authApi, userApi } from '@redux/services';
 
 export interface UserState {
   data: IUser;
-  isAuthenticated: boolean, 
-  token: string | null,
-  isDemoAccount: boolean,
 }
 
 const initialState: UserState = {
@@ -18,9 +15,6 @@ const initialState: UserState = {
     dateCreated: "",
     lastModified: ""
   },
-  isAuthenticated: false, 
-  token: null,
-  isDemoAccount: false,
 };
 
 export const userSlice = createSlice({
@@ -45,32 +39,26 @@ export const userSlice = createSlice({
         }
       }
     },
-    setDemoUser(state, action) {
-      state.data = action.payload;
-      state.isAuthenticated = true;
-      state.token = 'YOUR_FAKE_JWT_TOKEN'; // Replace with your generated JWT token
-      state.isDemoAccount = action.payload.isDemo || false;
-    },
     logoutUser(state) {
       state.data = {} as IUser;
-      state.isAuthenticated = false;
-      state.token = null;
-      state.isDemoAccount = false;
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addMatcher(
-        userApi.endpoints.getUserDetails.matchFulfilled,
-        (state, { payload }) => {
-          state.data = payload.data;
-        }
-      );
-  }
+    builder.addMatcher(
+      (action) => {
+        return (
+          userApi.endpoints.getUser.matchFulfilled(action) ||
+          authApi.endpoints.signIn.matchFulfilled(action)
+        );
+      },
+      (state, action) => {
+        state.data = action.payload.data;
+      }
+    );
+  },
 });
 
 export const { 
-  setDemoUser,
   logoutUser,
   setLocale,
   updateUser,

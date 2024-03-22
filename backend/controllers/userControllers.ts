@@ -4,8 +4,7 @@ import { User } from '@prisma/client';
 
 // Get all users
 export const getUser = async (req: Request, res: Response): Promise<void> => {
-
-  console.log("here")
+  console.log("user")
   const { id } = req.params;
 
   try {
@@ -21,19 +20,23 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
     // Everything except the password hash
     const { firstName, lastName, email, phone, profilePicture, locale, country, permissions, subscription, dateCreated, lastModified } = user;
 
+    const userData = {
+      firstName: firstName ?? '',
+      lastName: lastName ?? '',
+      email,
+      phone: phone ?? '',
+      profilePicture: profilePicture ?? '',
+      locale: locale ?? '',
+      country: country ?? '',
+      permissions: permissions ?? [],
+      subscription: subscription ?? '',
+      dateCreated: dateCreated ?? '',
+      lastModified: lastModified ?? ''
+    };
+
     res.status(200).json({
       data: {
-        firstName,
-        lastName,
-        email,
-        phone,
-        profilePicture,
-        locale,
-        country,
-        permissions,
-        subscription,
-        dateCreated,
-        lastModified,
+        userData
       },
     });
   } catch (err) {

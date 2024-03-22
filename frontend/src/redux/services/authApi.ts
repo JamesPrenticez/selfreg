@@ -1,13 +1,9 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { axiosBaseQuery } from './axiosBaseQuery';
-import { ILoginDeatils } from '@models/auth';
-import { IErrorResult, ISuccessResult } from '@models';
+import { baseApi } from './baseApi';
+import { ISuccessResult, ILoginDeatils, IUser } from '@models';
 
-export const authApi = createApi({
-  reducerPath: 'authApi',
-  baseQuery: axiosBaseQuery(),
+export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    signIn: builder.mutation<{ token: string }, ILoginDeatils>({
+    signIn: builder.mutation<ISuccessResult<IUser>, ILoginDeatils>({
       query: ({ email, password }) => ({
         url: '/signIn',
         method: 'POST',
@@ -15,6 +11,8 @@ export const authApi = createApi({
           email: email,
           password: password
         },
+        queryKey: 'getUser',
+        providesTags: ['User']
       }),
     }),
   }),

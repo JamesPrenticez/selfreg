@@ -23,7 +23,8 @@ export const axiosBaseQuery = ({ baseUrl }: { baseUrl: string } = { baseUrl: '' 
         params,
         headers,
       })
-      return { data: result.data, meta: result.status }
+      
+      return { data: result.data }
     } catch (axiosError) {
       const err = axiosError as AxiosError
       return {
