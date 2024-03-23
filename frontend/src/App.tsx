@@ -18,6 +18,10 @@ import { useGetUserDetailsQuery } from "@redux/services";
 import RequiresAuth from "@components/auth/RequiresAuth";
 import Test from "@pages/Test";
 import Calendar from "@pages/Calendar";
+import UserSettings from "@components/user/UserSettings";
+import { Paths } from '@models'
+import Fetch from "@pages/Fetch";
+
 const Timer = lazy(() => import("./pages/Timer"));
 const Stats = lazy(() => import("./pages/Stats"));
 const Settings = lazy(() => import("./pages/Settings"));
@@ -26,16 +30,7 @@ const NotFound = (): ReactElement  => <h1 className="text-primary">404 - Not Fou
 
 function App(): ReactElement {
   let location = useLocation();
-
-  // useEffect(() => {
-  //     const fetchedLocale = user.data?.locale; // e.g., fetch from an API or localStorage
-  //     dayjs.locale(fetchedLocale); // this must be set first before the dispatch
-  //     dispatch(setLocale(fetchedLocale));
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   dayjs.locale(user.data?.locale); // Update dayjs locale whenever the user's setting changes
-  // }, [user]);
+  // const { isSuccess: isSuccessUser, isLoading: isLoadingUser } = useGetUserDetailsQuery();
 
   return (
     <Suspense
@@ -45,33 +40,27 @@ function App(): ReactElement {
     >
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/calendar" element={<Calendar />} />
+          <Route path={Paths.HOME} element={<Home />} />
+          <Route path={Paths.TEST} element={<Test />} />
+          <Route path='/fetch' element={<Fetch />} />
           
-          <Route path="/home" element={<Home />} />
-          <Route path="/sign-in" element={<SignIn />} />
+          <Route path={Paths.SIGN_IN} element={<SignIn />} />
 
-          {/* <Route path="/404" element={<NotFound />} />
-          <Route path="/*" element={<Navigate to="/404" state={{ from: location }} replace />} /> */}
-
+          <Route path={Paths.SETTINGS} element={
+            // <RequiresAuth>
+              <UserSettings />
+            // </RequiresAuth>
+            } 
+          />
 
           <Route path="user/:_id/habits" element={
             <RequiresAuth>
+              <Route path="/calendar" element={<Calendar />} />
               <Habits />
             </RequiresAuth>
           }/>
 
-          {/* 
-          <Route path="/timer" element={
-            <RequiresAuth>
-              <Timer />
-            </RequiresAuth>
-          } />
-          <Route path="/stats" element={<Stats />} />
-          <Route path="/settings" element={<Settings />} />
-  
-        */}
+
         <Route path="/admin" element={<Admin />} />
 
         </Routes>
@@ -81,3 +70,19 @@ function App(): ReactElement {
 };
 
 export default App;
+
+          {/* <Route path="/404" element={<NotFound />} />
+          <Route path="/*" element={<Navigate to="/404" state={{ from: location }} replace />} /> */}
+
+                    {/* 
+          <Route path="/timer" element={
+            <RequiresAuth>
+              <Timer />
+            </RequiresAuth>
+          } />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/settings" element={<Settings />} />
+
+          
+  
+        */}

@@ -1,23 +1,23 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, HttpStatusCode } from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { 
   mockHabits,
   mockUsers,
 } from '@mocks';
 import mockSQL from './mockSQL';
+import { getUserId } from './getUserId';
 
 const development = true; // !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const useMockData = true;
-const log = false // quickly toggle all console.logs on/off
+const useMockData = false; //window.location.hostname === 'localhost' && window.location.port === '3000' ? true : false;
+const log = false;
 
-// https://dummyjson.com/docs/users
 export const axiosInstance = axios.create({
-  baseURL: development ? 'http://localhost:3000/bin/portal' : '/bin/portal',
+  baseURL: development ? 'http://localhost:5000/api/' : 'prod url',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
-  withCredentials: false,
+  withCredentials: true, // this enables us to send a HTTPOnly cookie automagically
 });
 
 if (useMockData) {
@@ -27,33 +27,34 @@ if (useMockData) {
   //============================================
   // GET
   //============================================
-  const user_id = '1';
-  
   // User Details
-  mockAxiosInstance.onGet(`users/${user_id}`).reply((config) => {
+  const user_id = getUserId();
+
+  mockAxiosInstance.onGet(`user/${user_id}`).reply((config) => {
     if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
-
-    if (user_id) {
-      return mockSQL.WHERE_ONE(mockUsers, "_id", user_id)
-    }
-
-    return [204, { message: "User ID not provided" }];
+    // const user = mockSQL.WHERE_ONE(mockUsers, "_id", config.params.user_id)
+    // return [204, { message: "No user found" }];
+    return [200, {data: mockUsers[0]}]
   });
 
   // User Habits
-  mockAxiosInstance.onGet(`users/${user_id}/habits`).reply((config) => {
-    if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
-console.log("habbits")
-    if (user_id) {
-      return [200, mockHabits]//mockSQL.WHERE_ONE(mockHabits, "_id", user_id)
-    }
+  // mockAxiosInstance.onGet(`user/${user_id}/habits`).reply((config) => {
+  //   if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
+  //   if (user_id) {
+  //     return [200, mockHabits]//mockSQL.WHERE_ONE(mockHabits, "_id", user_id)
+  //   }
 
-    return [204, { message: "User ID not provided" }];
-  });
+  //   return [204, { message: "User ID not provided" }];
+  // });
 
   //============================================
   // POST
   //============================================
+  mockAxiosInstance.onPost('/signIn').reply((config) => {
+    console.log(`Login request made with ${config.data}!`)
+    return [200, { message: "success" }];
+  })
+
   mockAxiosInstance.onPost('/user').reply((config) => {
     console.log("mock POST request made!")
     return [200, { message: "success" }];

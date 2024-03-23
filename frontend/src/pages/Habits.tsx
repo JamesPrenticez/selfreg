@@ -2,7 +2,6 @@ import React, { useEffect, useState, type ReactElement } from "react";
 import { NavLink } from "react-router-dom";
 import TodoLayout from "@components/todos/TodoLayout";
 import { useAppDispatch, useAppSelector } from "@redux/hooks";
-import { getTodos, getDaysForTodos } from "@redux/thunk/todosThunk";
 import dayjs from "dayjs";
 import { dayLabels } from '@constants'
 import { IDay } from "@models";
@@ -10,7 +9,7 @@ import { IDay } from "@models";
 import 'dayjs/locale/en-gb'; // Import the locale you want to use
 import { getWeekData } from "@utils";
 import SuccessAnimation from "@components/common/Success";
-import { useGetUserHabitsQuery } from "@redux/services";
+import { useGetHabitsQuery } from "@redux/services";
 
 dayjs.locale('en-gb'); // Set the locale globally
 
@@ -27,7 +26,7 @@ const Habits = (): ReactElement => {
   const {
     isLoading: isLoadingProducts,
     isSuccess: isSuccessProducts
-  } = useGetUserHabitsQuery({ user_id: "1" })
+  } = useGetHabitsQuery()
 
   // useEffect(() => {
   //   dispatch(getTodos({ user_id: '123456' }))

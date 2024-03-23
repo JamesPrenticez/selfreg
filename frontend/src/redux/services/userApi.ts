@@ -1,25 +1,20 @@
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { IHabit, IUser } from '@models';
+import { ISuccessResult, IUser } from '@models';
 import { updateUserField, userSlice } from '@redux/slices';
 import { RootState } from '@redux/store';
-import { axiosBaseQuery } from './axiosBaseQuery';
+import { getUserId } from './getUserId';
+import { baseApi } from '@redux/services/baseApi';
 
 // TODO typesafe url params with an interface
+const user_id = getUserId();
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: axiosBaseQuery(),
+export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getUserDetails: builder.query<IUser, { user_id: string }>({
-      query: ({ user_id }) => ({ 
-        url: `users/${user_id}`,
-        method: 'GET'
-      })
-    }), 
-    getUserHabits: builder.query<IHabit[], { user_id: string }>({
-      query: ({ user_id }) => ({ 
-        url: `users/${user_id}/habits`,
-        method: 'GET'
+    getUser: builder.query<ISuccessResult<IUser>, void>({
+      query: () => ({ 
+        url: `user/${user_id}`,
+        method: 'GET',
+        queryKey: 'getUser',
+        providesTags: ['User']
       })
     }), 
     updateUserDetails: builder.mutation<IUser, Partial<IUser> | { key: keyof IUser, value: any }>({
@@ -58,7 +53,6 @@ export const userApi = createApi({
 });
 
 export const { 
-  useGetUserDetailsQuery,
-  useGetUserHabitsQuery,
+  useGetUserQuery,
   useUpdateUserDetailsMutation
 } = userApi;

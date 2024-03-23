@@ -4,7 +4,7 @@ import { Button } from '@components/common'
 import Body from '@components/layout/Body'
 import EmojiSelector from '@components/emoji/EmojiSelector'
 import EmojiWrapper from '@components/emoji/EmojiWrapper'
-import User from '@components/user/User'
+import User from '@components/user/UserSettings'
 
 
 const Settings = () => {

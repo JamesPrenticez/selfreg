@@ -9,12 +9,14 @@ interface Props extends LabelHTMLAttributes<HTMLLabelElement> {
 
 const Label = forwardRef<HTMLLabelElement, Props>(({ value, className, children, ...props }, ref) => {
   return (
-    <label ref={ref} {...props} className={twMerge(`mb-4`, className )}>
-      <h5 className="text-muted text-sm mb-[8px] ">
-        {value}
-      </h5>
-      {children}
-    </label>
+    <div className="pb-4 relative">
+      <label ref={ref} {...props} className={twMerge('' , className )}>
+        <h5 className='text-muted text-sm mt-2 mb-[2px] ml-[2px] font-bold'>
+          {value}
+        </h5>
+        {children}
+      </label>
+    </div>
   );
 });
 

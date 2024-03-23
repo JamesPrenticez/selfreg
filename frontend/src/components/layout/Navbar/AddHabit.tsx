@@ -16,7 +16,8 @@ import {
 import Tabs from '@components/ui/Tabs';
 import { useAppDispatch } from '@redux/hooks';
 import { type IHabit } from '@models';
-import { createNewHabit } from '@redux/slices';
+
+// import { createNewHabit } from '@redux/slices';
 
 type AddHabitTypes = "yes/no" | "mesurable" | "range"
 
@@ -80,7 +81,7 @@ function AddHabitModal({isOpen, setIsOpen}: AddHabitModal) {
   const handleSave = (habit: Partial<IHabit>): void => {
     console.log("save")
     console.log(habit)
-    dispatch(createNewHabit(habit))
+    // dispatch(createNewHabit(habit)) // should be a mutation with optimistic updates
 
     // setIsShowYesNo(false)
     // setIsShowMesurable(false)
