@@ -6,7 +6,12 @@ name: Build and deploy Node.js app to Azure Web App - selfregulator
 on:
   push:
     branches:
-      - master
+      - prod/be
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - prod/be
+
   workflow_dispatch:
 
 jobs:
@@ -22,13 +27,6 @@ jobs:
         with:
           node-version: '18.x'
 
-      # Build frontend
-      - name: Build frontend
-        run: |
-          cd frontend
-          npm install
-          npm run build --if-present
-
       # Build backend
       - name: Build backend
         run: |
@@ -36,20 +34,9 @@ jobs:
           npm install
           npm run build --if-present
 
-      # Zip frontend artifact for deployment
-      - name: Zip frontend artifact
-        run: zip frontend-release.zip frontend/* -r
-
       # Zip backend artifact for deployment
       - name: Zip backend artifact
         run: zip backend-release.zip backend/* -r
-
-      # Upload frontend artifact for deployment job
-      - name: Upload frontend artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: frontend-app
-          path: frontend-release.zip
 
       # Upload backend artifact for deployment job
       - name: Upload backend artifact
@@ -68,21 +55,11 @@ jobs:
       id-token: write # This is required for requesting the JWT
 
     steps:
-      # Download frontend artifact from build job
-      - name: Download frontend artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: frontend-app
-
       # Download backend artifact from build job
       - name: Download backend artifact from build job
         uses: actions/download-artifact@v3
         with:
           name: backend-app
-
-      # Unzip frontend artifact for deployment
-      - name: Unzip frontend artifact for deployment
-        run: unzip frontend-release.zip
 
       # Unzip backend artifact for deployment
       - name: Unzip backend artifact for deployment
@@ -95,15 +72,6 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E85D517F38C04D0A8B00ADD6F0F92D40 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3424EA59EFA74C68B17B211A8EB091E4 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_721D8DEB07A349FA9F08ED456112428D }}
-
-      # Deploy frontend to Azure Web App
-      - name: Deploy frontend to Azure Web App
-        id: deploy-frontend-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'selfregulator'
-          slot-name: 'Production'
-          package: ./frontend
 
       # Deploy backend to Azure Web App
       - name: Deploy backend to Azure Web App
