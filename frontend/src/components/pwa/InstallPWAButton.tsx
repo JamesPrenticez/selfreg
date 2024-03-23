@@ -54,9 +54,9 @@ function InstallPWAButton(): ReactElement {
     <div>
       {installPromptEvent && (
         <Button
-          variant="success"
+          variant="filled"
           onClick={handleInstallClick}
-          csx="w-full mt-4"
+          className="w-full mt-4"
         >
           Install App
         </Button>

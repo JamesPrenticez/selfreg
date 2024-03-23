@@ -4,15 +4,9 @@ import RightNav from "./RightNav";
 import Hamburger from "./Hamburger";
 import CompanyLogo from "./CompanyLogo";
 import WeekNumber from "./WeekNumber";
-import { project } from "@constants";
-import { useAppSelector } from "@redux/hooks";
-import { PlusCircleIcon } from "@components/icons";
-import AddHabit from "./AddHabit";
 
-function Navbar() {
+function Navbar(): ReactElement {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isCreateModalOpen, setIsOpen] = useState(false)
-  const user = useAppSelector(state => state.user)
 
   return (
     <>
@@ -21,19 +15,8 @@ function Navbar() {
           <CompanyLogo onClick={() => setIsMenuOpen(false)}/>
 
           <WeekNumber />
-          {/* { !user.isAuthenticated ? (
-            <WeekNumber />
-          ) : (
-            <h1 className="text-muted text-3xl md:text-5xl">
-              {project.name}
-            </h1>
-          )} */}
 
           <div className="flex space-x-4">
-            {user.isAuthenticated &&
-              <AddHabit />
-            }
-          
             <Hamburger 
               isMenuOpen={isMenuOpen}
               setIsMenuOpen={() => { setIsMenuOpen((prevState) => !prevState) }}

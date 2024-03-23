@@ -1,11 +1,9 @@
-import React, { useEffect, useState, ReactElement } from "react";
+import React from "react";
 import { Button } from "@components/common";
-import { ArrowLeftIcon, CrossIcon } from "@components/icons";
 import { Link, useLocation } from "react-router-dom";
 import { INavigationItem } from "@models";
 import Avatar from "./Avatar";
 import { useAppSelector } from "@redux/hooks";
-import { useGetSlug } from "@hooks/useGetSlug";
 
 interface Props {
   isMenuOpen: boolean;
@@ -48,7 +46,7 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
             <div className="pt-6 select-none">
               {menuItems
 
-              .filter((item: INavigationItem) => !item.requiresAuth || (user.isAuthenticated && item.requiresAuth))
+              .filter((item: INavigationItem) => !item.requiresAuth || (user.data.email !== "" && item.requiresAuth))
               .map((item: INavigationItem, index: any) => {
 
                 let slug 
@@ -56,7 +54,7 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
 
                 if(user.data){
                   if (item.requiresAuth) {
-                    slug = `/user/${user.data._id}/${item.slug}`;
+                    slug = `/user/${user.data.id}/${item.slug}`;
                   } 
                 } 
 
@@ -82,9 +80,8 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
             </div>
           </div>
 
-          {/* TODO - convert to button */}
           <div>
-              {!user.isAuthenticated ? (
+              {user.data.email !== "" ? (
                 <Link to="/sign-in">
                   <Button 
                     variant="outlined"
@@ -113,8 +110,6 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
           </div>
         </div>
       </div>
-
-
   )
 };
 
