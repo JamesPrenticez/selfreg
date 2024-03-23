@@ -10,8 +10,8 @@ interface LoadingProps {
 }
 
 export default function Loading({
-  height = "100px",
-  width = "100px",
+  height = "50px",
+  width = "50px",
   backgroundColor = "transparent",
   fontSize = "1rem",
   text = "Loading",
@@ -45,17 +45,17 @@ export default function Loading({
           x2="100%"
           y2="0%"
         >
-          <stop offset="0%" stopColor="#51c5cf" />
-          <stop offset="100%" stopColor="#38bdf8" />
+          <stop offset="0%" stopColor="#a3ff84" />
+          <stop offset="100%" stopColor="#0f0" />
         </linearGradient>
         <circle
           cx="50"
           cy="50"
-          r="48"
+          r="45"
           fill="none"
           // stroke="currentColor"
           stroke="url(#linear_gradient_spinner)"
-          strokeWidth={4}
+          strokeWidth={10}
           strokeDasharray="165 100"
           strokeLinecap="round"
         >
@@ -63,7 +63,7 @@ export default function Loading({
             attributeName="transform"
             type="rotate"
             repeatCount="indefinite"
-            dur="1s"
+            dur="1.5s"
             values="0 50 50;360 50 50"
             keyTimes="0;1"
           ></animateTransform>
@@ -71,14 +71,14 @@ export default function Loading({
         <text
           x="50%"
           y="50%"
-          fontWeight={400}
+          fontWeight={600}
           fontSize={fontSize}
           textAnchor="middle"
           stroke="none"
-          fill="black"
+          fill="#d1d5db"
           dy=".3em"
         >
-          {text}
+          {/* {text} */}
         </text>
       </svg>
     </div>
