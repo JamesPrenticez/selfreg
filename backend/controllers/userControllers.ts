@@ -1,10 +1,9 @@
 import { type Request, type Response } from 'express';
-import prisma from '@/prisma';
 import { User } from '@prisma/client';
+import prisma from '../prisma';
 
 // Get all users
 export const getUser = async (req: Request, res: Response): Promise<void> => {
-  console.log("user")
   const { id } = req.params;
 
   try {
@@ -48,7 +47,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
-  try {
+try {
     const users: User[] = await prisma.user.findMany();
     res.status(200).json({
       data: {

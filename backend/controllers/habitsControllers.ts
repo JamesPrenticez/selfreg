@@ -1,7 +1,5 @@
 import { type Request, type Response } from 'express';
 
-
-// Test Route
 export const getUserHabits = async (req: Request, res: Response): Promise<void> => {
   console.log(req.query)
 

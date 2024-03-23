@@ -1,7 +1,7 @@
 import express from 'express';
-import * as userController from "@controllers/userControllers";
-import * as habitsController from "@controllers/habitsControllers";
-import { validateJWT } from '@/utils';
+import * as userController from "../controllers/userControllers";
+import * as habitsController from "../controllers/habitsControllers";
+import { validateJWT } from '../utils';
 
 const router = express.Router();
 
