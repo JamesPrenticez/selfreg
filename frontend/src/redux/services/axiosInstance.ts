@@ -7,11 +7,14 @@ import {
 
 const useMockData = import.meta.env.VITE_ENV === "development" ? true : false;
 const log = false;
+const env = import.meta.env.VITE_BASE_URL
 
-console.log(import.meta.env.VITE_BASE_URL)
+console.log(import.meta.env.VITE_ENV)
+console.log(useMockData)
+console.log(env)
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: "https://selfregulator.azurewebsites.net/api/",
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
