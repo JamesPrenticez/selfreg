@@ -8,6 +8,8 @@ import {
 const useMockData = import.meta.env.VITE_ENV === "development" ? true : false;
 const log = false;
 
+console.log(import.meta.env.VITE_BASE_URL)
+
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
