@@ -6,9 +6,24 @@ import { useState } from "react";
 function Home() {
 
   const [toggle, setToggle] = useState(false)
-  const {data, isLoading, isError, error} = useGetHabitsQuery(undefined, {skip: toggle});
+  const {data: habitsData, isLoading, isError, error} = useGetHabitsQuery(undefined, {skip: toggle});
 
-  console.log(data)
+  const [data, setData] = useState(null);
+
+  const getData = (): void => {
+    fetch("https://selfregulator.azurewebsites.net/api/habits", {
+      method: "GET",
+      headers: {},
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+
+      console.log("done")
+  }
 
   return (
     <div className="text-primary max-w-7xl mx-auto w-full mt-12">
@@ -18,8 +33,14 @@ function Home() {
         <Loading />
       )}
 
-      {data && JSON.stringify(data)}
+      {habitsData && JSON.stringify(data)}
       {isError && JSON.stringify(error)}
+
+      <Button variant="link" onClick={() => getData()}>
+        Fetch
+      </Button>
+
+      {data && JSON.stringify(data)}
 
     </div>
   )
