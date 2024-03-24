@@ -48,7 +48,7 @@ export const userSlice = createSlice({
       (action) => {
         return (
           userApi.endpoints.getUser.matchFulfilled(action) ||
-          authApi.endpoints.signIn.matchFulfilled(action)
+          authApi.endpoints.login.matchFulfilled(action)
         );
       },
       (state, action) => {

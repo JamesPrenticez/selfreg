@@ -9,7 +9,7 @@ import Layout from "./components/layout/Layout";
 import Loading from "./components/common/Loading";
 
 import Home from "@pages/Home";
-import SignIn from "@pages/SignIn";
+import Login from "@pages/auth/Login";
 import Test from "@pages/Test";
 import UserSettings from "@components/user/UserSettings";
 
@@ -21,7 +21,7 @@ function App(): ReactElement {
       <Layout>
         <Routes>
           <Route path={Paths.HOME} element={<Home />} />
-          <Route path={Paths.SIGN_IN} element={<SignIn />} />
+          <Route path={Paths.LOGIN} element={<Login />} />
           <Route path={Paths.SETTINGS} element={<UserSettings />} />
           <Route path={Paths.TEST} element={<Test />} />
         </Routes>

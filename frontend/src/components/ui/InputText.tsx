@@ -17,8 +17,8 @@ const InputText = React.forwardRef<HTMLInputElement, InputProps>(
             w-full 
             rounded-md
             border 
-            bg-primary
-            text-muted
+            bg-tarantula
+            text-[#90a299]
             px-3
             py-2
             text-sm

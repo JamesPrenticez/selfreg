@@ -13,7 +13,7 @@ interface IUseForm<T> {
 
 type IValidationResult = { isValid: boolean; errorMessage?: string | null };
 
-function useForm<T>({
+export function useForm<T>({
   initialState,
   validationSchema,
   validatorFn,
@@ -93,8 +93,6 @@ function useForm<T>({
     handleSubmit,
   };
 }
-
-export default useForm;
 
 // Don't show validation errors for fields that are initially empty, but you will show errors for fields that have initial values that fail validation
 // We don't need to type safe this function because it just an abstraction from above for readability
