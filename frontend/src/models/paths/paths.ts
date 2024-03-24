@@ -6,4 +6,7 @@ export enum Paths {
   LOGIN = '/login',
   REGISTER = '/register',
   PASSWORD_RESET = '/password-reset',
+
+  TERMS_OF_SERVICE = '/terms-of-service',
+  PRIVACY_POLICY = '/privacy-policy'
 }

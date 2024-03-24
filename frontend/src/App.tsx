@@ -12,6 +12,7 @@ import Home from "@pages/Home";
 import Login from "@pages/auth/Login";
 import Test from "@pages/Test";
 import UserSettings from "@components/user/UserSettings";
+import Register from "@pages/auth/Register";
 
 
 function App(): ReactElement {
@@ -22,6 +23,7 @@ function App(): ReactElement {
         <Routes>
           <Route path={Paths.HOME} element={<Home />} />
           <Route path={Paths.LOGIN} element={<Login />} />
+          <Route path={Paths.REGISTER} element={<Register />} />
           <Route path={Paths.SETTINGS} element={<UserSettings />} />
           <Route path={Paths.TEST} element={<Test />} />
         </Routes>

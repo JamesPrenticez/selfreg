@@ -45,6 +45,11 @@ if (useMockData) {
     return [200, {data: mockUsers[0]}];
   })
 
+  mockAxiosInstance.onPost('/register').reply((config) => {
+    console.log(`Register request made with ${config.data}!`)
+    return [200, {data: mockUsers[0]}];
+  })
+
   mockAxiosInstance.onPost('/user').reply((config) => {
     console.log("mock POST request made!")
     return [200, { message: "success" }];

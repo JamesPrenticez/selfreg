@@ -8,16 +8,16 @@ import {
   ErrorMessage
 } from "@components/ui";
 import { ArrowLeftIcon, EyeClosedIcon, EyeOpenIcon, InfoIcon } from "@components/icons";
+
 import { useForm, createValidationSchema, resolver, v } from "@utils/formValidation";
-
 import { useAppSelector } from "@redux/hooks";
-import { useLoginMutation } from "@redux/services/authApi";
+import { useRegisterMutation } from "@redux/services/authApi";
 
-import { Paths, ILoginDeatils } from "@models";
+import { Paths, IRegisterDeatils } from "@models";
 
-function Login() {
+function Register() {
   const navigate = useNavigate();
-  const [login] = useLoginMutation();
+  const [register] = useRegisterMutation();
   const user = useAppSelector((state) => state.user.data);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -37,15 +37,16 @@ function Login() {
     handleChange,
     setFieldValue,
     handleSubmit
-  } = useForm<ILoginDeatils>({
+  } = useForm<IRegisterDeatils>({
     initialState: initialState, 
     validationSchema: validationSchema,
     validatorFn: resolver,
-    onSubmit: handleLogin
+    onSubmit: handleRegister
   });
 
-  async function handleLogin() {
-    await login(formData)
+  //TODO
+  async function handleRegister() {
+    await register(formData)
       .then(() => {
         navigate(Paths.SETTINGS);
       })
@@ -81,8 +82,8 @@ function Login() {
           <div className="absolute bg-gradient-to-r from-fern to-moss opacity-80 inset-0"/> 
 
           <div className="relative w-full h-full flex flex-col items-center justify-center">
-            <h1 className="text-2xl font-bold text-white">Welcome Back!</h1>
-            <p className="">Sign in to continue your journey!</p>
+            <h1 className="text-2xl font-bold text-white">Register</h1>
+            <p className="">Start your self improvement journey today!</p>
             <div className="flex items-center justify-center w-[80px] h-[80px] rounded-full bg-shadow absolute bottom-[-40px]">
               <Link to="/" className="w-[60%] h-[60%]">
                 <div className="rounded-full">
@@ -112,11 +113,6 @@ function Login() {
           </Label>
 
           <Label value="Password:" htmlFor="password" className="relative">
-            <Link to="/password-reset" className="w-[60%] h-[60%]">
-              <p className="absolute top-[2px] right-0 text-[11px] text-mist hover:text-sage">
-                Forgot password?
-              </p>
-            </Link>
             <InputText 
               id="password"
               type={showPassword ? "text" : "password"}
@@ -140,25 +136,48 @@ function Login() {
           </Label>
 
           <Button 
-            color="success"
-            className="w-full mt-2 bg-green-600"
+            color="minor"
+            className="w-full mt-2"
             onClick={handleSubmit}
           >
-            Sign In
+            Sign Up
           </Button>
 
+          <div className="mt-4 text-[12px] text-center">
+            <p>By registering you agree to our&nbsp;
+              <NavLink to={Paths.TERMS_OF_SERVICE}>
+                <Button 
+                  variant="link"
+                  className="inline-flex p-0 items-center text-sage hover:text-sage/50 font-bold"
+                >
+                  Terms of Service
+                </Button>
+              </NavLink>
+              &nbsp;and our&nbsp;
+              <NavLink to={Paths.PRIVACY_POLICY}>
+                <Button 
+                  variant="link"
+                  className="inline-flex p-0 items-center text-sage hover:text-sage/50 font-bold"
+                >
+                  Privacy Policy
+                </Button>
+              </NavLink>
+            </p>
+          </div>
+
           <div className="text-center mt-4 flex items-center justify-center flex-col">
-            <p>Dont have an account?</p>
-            <NavLink to={Paths.REGISTER}>
+            <p>Already have an account?</p>
+            <NavLink to={Paths.LOGIN}>
               <Button 
                 variant="link"
                 className="flex items-center text-sage font-bold"
               >
-                Register now
+                Login
                 <ArrowLeftIcon width={18} strokeWidth={2} className="ml-2 rotate-[120deg]"/>
               </Button>
             </NavLink>
           </div>
+
         </form> 
 
       </div>
@@ -166,4 +185,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Register;

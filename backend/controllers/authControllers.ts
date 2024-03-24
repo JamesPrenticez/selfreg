@@ -6,7 +6,7 @@ import { createHashedPassword, verifyPassword } from '../utils';
 
 // const secret = process.env.SECRET_KEY 
 
-export const signIn = async (req: Request, res: Response): Promise<any> => {
+export const signIn = async (req: Request, res: Response): Promise<any> => {  
   const { email, password } = req.body;
 
   try {
