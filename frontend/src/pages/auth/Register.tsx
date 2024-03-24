@@ -20,6 +20,7 @@ function Register() {
   const [register] = useRegisterMutation();
   const user = useAppSelector((state) => state.user.data);
   const [showPassword, setShowPassword] = useState(false);
+  const [emailAlreadyExists, setEmailAlreadyExists] = useState(false)
 
   const validationSchema = createValidationSchema({
     email: v.required().email().minLength(3),
@@ -46,19 +47,17 @@ function Register() {
 
   //TODO
   async function handleRegister() {
-    await register(formData)
-      .then(() => {
-        navigate(Paths.SETTINGS);
-      })
-      .catch((error: any) => {
-        if (error.status === 401) {
-          // TODO handle message "this user already exists - login instead?"
-          console.log(error.message);
-        } else {
-          console.error("An unexpected error occurred:", error);
-        }
-      });
-  }
+    try {
+      await register(formData).unwrap();
+      navigate(Paths.SETTINGS);
+      console.log('Registration successful. Redirecting...');
+    } catch (error: any) {
+      if(error.status === 400){
+        setEmailAlreadyExists(true)
+      }
+      console.error('Error during registration:', error);
+    }
+  };
   
   // TODO remove this!
   function autoFillDetails(){
@@ -112,7 +111,7 @@ function Register() {
             <ErrorMessage message={formErrors.email.errorMessage}/>
           </Label>
 
-          <Label value="Password:" htmlFor="password" className="relative">
+          <Label value="Password:" htmlFor="password">
             <InputText 
               id="password"
               type={showPassword ? "text" : "password"}
@@ -121,7 +120,7 @@ function Register() {
               onChange={handleChange}
             />
             <div 
-              className="absolute cursor-pointer right-[10px] bottom-[8px] text-disabled hover:text-mist"
+              className="absolute cursor-pointer right-[10px] bottom-[24px] text-disabled hover:text-mist"
               onMouseDown={() => setShowPassword(true)}
               onMouseUp={() => setShowPassword(false)}
               onMouseLeave={() => setShowPassword(false)} 
@@ -176,6 +175,9 @@ function Register() {
                 <ArrowLeftIcon width={18} strokeWidth={2} className="ml-2 rotate-[120deg]"/>
               </Button>
             </NavLink>
+
+            {/* TODO - add modal for this */}
+            <ErrorMessage message={emailAlreadyExists ? "Email address already in user" : ""}/>
           </div>
 
         </form> 

@@ -5,9 +5,10 @@ import {
   mockUsers,
 } from '@mocks';
 
-const useMockData = import.meta.env.VITE_ENV === "development" ? true : false;
+const useMockData = false //import.meta.env.VITE_ENV === "development" ? true : false;
 const log = false;
 const env = import.meta.env.VITE_ENV
+console.log(env)
 
 export const axiosInstance = axios.create({
   baseURL: env === "development" ? "http://localhost:5000/api/" : "https://selfregulator.azurewebsites.net/api/",

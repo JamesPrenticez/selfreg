@@ -13,13 +13,14 @@ import { useForm, createValidationSchema, resolver, v } from "@utils/formValidat
 import { useAppSelector } from "@redux/hooks";
 import { useLoginMutation } from "@redux/services/authApi";
 
-import { Paths, ILoginDeatils } from "@models";
+import { Paths, ILoginDeatils, IErrorResult } from "@models";
 
 function Login() {
   const navigate = useNavigate();
   const [login] = useLoginMutation();
   const user = useAppSelector((state) => state.user.data);
   const [showPassword, setShowPassword] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false)
 
   const validationSchema = createValidationSchema({
     email: v.required().email().minLength(3),
@@ -45,20 +46,18 @@ function Login() {
   });
 
   async function handleLogin() {
-    await login(formData)
-      .then(() => {
-        navigate(Paths.SETTINGS);
-      })
-      .catch((error: any) => {
-        if (error.status === 401) {
-          // TODO handle message "this user already exists - login instead?"
-          console.log(error.message);
-        } else {
-          console.error("An unexpected error occurred:", error);
-        }
-      });
-  }
-  
+    try {
+      await login(formData).unwrap();
+      navigate(Paths.SETTINGS);
+      console.log('Login successful. Redirecting...');
+    } catch (error: any) {
+      if(error.status === 401){
+        setInvalidCredentials(true)
+      }
+      console.error('Error during login:', error);
+    }
+  };
+
   // TODO remove this!
   function autoFillDetails(){
     setFieldValue("email", "jamesprenticez@gmail.com");
@@ -74,7 +73,6 @@ function Login() {
 
   return (
     <div className="h-screen-4rem md:h-screen-5rem text-muted p-12 bg-night">
-      
       <div className="w-full max-w-[460px] bg-shadow rounded mx-auto overflow-hidden">
 
         <div className="h-[180px]  relative bg-[url('/bg.jpeg')] bg-cover">
@@ -111,8 +109,8 @@ function Login() {
             <ErrorMessage message={formErrors.email.errorMessage}/>
           </Label>
 
-          <Label value="Password:" htmlFor="password" className="relative">
-            <Link to="/password-reset" className="w-[60%] h-[60%]">
+          <Label value="Password:" htmlFor="password">
+            <Link to="/password-reset" tabIndex={-1}>
               <p className="absolute top-[2px] right-0 text-[11px] text-mist hover:text-sage">
                 Forgot password?
               </p>
@@ -125,7 +123,7 @@ function Login() {
               onChange={handleChange}
             />
             <div 
-              className="absolute cursor-pointer right-[10px] bottom-[8px] text-disabled hover:text-mist"
+              className="absolute cursor-pointer right-[10px] bottom-[24px] text-disabled hover:text-mist"
               onMouseDown={() => setShowPassword(true)}
               onMouseUp={() => setShowPassword(false)}
               onMouseLeave={() => setShowPassword(false)} 
@@ -158,6 +156,9 @@ function Login() {
                 <ArrowLeftIcon width={18} strokeWidth={2} className="ml-2 rotate-[120deg]"/>
               </Button>
             </NavLink>
+
+            {/* TODO - add modal for this */}
+            <ErrorMessage message={invalidCredentials ? "Invalid email or password" : ""}/>
           </div>
         </form> 
 
