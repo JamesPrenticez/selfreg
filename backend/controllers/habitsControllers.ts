@@ -1,8 +1,6 @@
 import { type Request, type Response } from 'express';
 
 export const getUserHabits = async (req: Request, res: Response): Promise<void> => {
-  console.log(req.query)
-
   try {
     res.status(200).json({
       data: 

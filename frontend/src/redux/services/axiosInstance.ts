@@ -5,16 +5,13 @@ import {
   mockUsers,
 } from '@mocks';
 
-const useMockData = import.meta.env.VITE_ENV === "development" ? true : false;
+const useMockData = false //import.meta.env.VITE_ENV === "development" ? true : false;
 const log = false;
-const env = import.meta.env.VITE_BASE_URL
-
-console.log(import.meta.env.VITE_ENV)
-console.log(useMockData)
+const env = import.meta.env.VITE_ENV
 console.log(env)
 
 export const axiosInstance = axios.create({
-  baseURL: "https://selfregulator.azurewebsites.net/api/",
+  baseURL: env === "development" ? "http://localhost:5000/api/" : "https://selfregulator.azurewebsites.net/api/",
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
@@ -44,9 +41,14 @@ if (useMockData) {
   //============================================
   // POST
   //============================================
-  mockAxiosInstance.onPost('/signIn').reply((config) => {
+  mockAxiosInstance.onPost('/login').reply((config) => {
     console.log(`Login request made with ${config.data}!`)
-    return [200, { message: "success" }];
+    return [200, {data: mockUsers[0]}];
+  })
+
+  mockAxiosInstance.onPost('/register').reply((config) => {
+    console.log(`Register request made with ${config.data}!`)
+    return [200, {data: mockUsers[0]}];
   })
 
   mockAxiosInstance.onPost('/user').reply((config) => {

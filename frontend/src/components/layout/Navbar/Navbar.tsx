@@ -10,7 +10,7 @@ function Navbar(): ReactElement {
 
   return (
     <>
-      <div className="h-[4rem] md:h-[5rem] bg-primary text-muted flex font-semibold px-4">
+      <div className="h-[4rem] md:h-[5rem] bg-[#111815] text-muted flex font-semibold px-4">
         <div className="flex justify-between items-center max-w-7xl w-full mx-auto">
           <CompanyLogo onClick={() => setIsMenuOpen(false)}/>
 

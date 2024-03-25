@@ -1,11 +1,23 @@
 import { baseApi } from './baseApi';
-import { ISuccessResult, ILoginDeatils, IUser } from '@models';
+import { ISuccessResult, ILoginDeatils, IUser, IRegisterDeatils } from '@models';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    signIn: builder.mutation<ISuccessResult<IUser>, ILoginDeatils>({
+    login: builder.mutation<ISuccessResult<IUser>, ILoginDeatils>({
       query: ({ email, password }) => ({
-        url: '/signIn',
+        url: '/login',
+        method: 'POST',
+        data: {
+          email: email,
+          password: password
+        },
+        queryKey: 'getUser',
+        providesTags: ['User']
+      }),
+    }),
+    register: builder.mutation<ISuccessResult<IUser>, IRegisterDeatils>({
+      query: ({ email, password }) => ({
+        url: '/register',
         method: 'POST',
         data: {
           email: email,
@@ -19,5 +31,6 @@ export const authApi = baseApi.injectEndpoints({
 });
 
 export const { 
-  useSignInMutation
+  useLoginMutation,
+  useRegisterMutation,
 } = authApi;
