@@ -7,7 +7,7 @@ interface Props {
   defaultActiveValue?: string;
 }
 
-function Tabs({ items, onClick, defaultActiveValue }: Props) {
+export function Tabs({ items, onClick, defaultActiveValue }: Props) {
   const [active, setActive] = useState<string | null>(defaultActiveValue ? defaultActiveValue : null )
 
   return (
@@ -32,5 +32,3 @@ function Tabs({ items, onClick, defaultActiveValue }: Props) {
     </div>
   );
 }
-
-export default Tabs;
