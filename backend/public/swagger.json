@@ -16,7 +16,7 @@
   "schemes": [],
   "securityDefinitions": {},
   "paths": {
-    "/api/signUp": {
+    "/api/register": {
       "post": {
         "description": "",
         "parameters": [
@@ -49,7 +49,7 @@
         }
       }
     },
-    "/api/signIn": {
+    "/api/login": {
       "post": {
         "description": "",
         "parameters": [
