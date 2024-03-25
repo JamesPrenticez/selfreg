@@ -12,8 +12,8 @@ import {
   InputText,
   InputTextArea,
   Button,
+  Tabs
 } from '@components/ui'; 
-import Tabs from '@components/ui/Tabs';
 import { useAppDispatch } from '@redux/hooks';
 import { type IHabit } from '@models';
 
