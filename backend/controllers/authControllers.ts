@@ -1,9 +1,12 @@
 
 import { type Request, type Response } from 'express';
-import prisma from '../prisma';
+// import prisma from '../prisma';
 import jwt  from 'jsonwebtoken'
 import { createHashedPassword, verifyPassword } from '../utils';
+import { PrismaClient } from '@prisma/client';
 
+
+const prisma = new PrismaClient();
 // const secret = process.env.SECRET_KEY 
 
 export const login = async (req: Request, res: Response): Promise<any> => {  
@@ -54,12 +57,15 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 // SignUp
 export const register = async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
+  console.log(email, password)
 
   try {
     // Check if the username is already taken
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
+
+    console.log(0)
 
     if (existingUser) {
       return res.status(400).json({ error: 'Email is already taken' });
