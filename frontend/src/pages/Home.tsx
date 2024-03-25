@@ -33,7 +33,7 @@ function Home() {
         <Loading />
       )}
 
-      {habitsData && JSON.stringify(data)}
+      {habitsData && JSON.stringify(habitsData)}
       {isError && JSON.stringify(error)}
 
       <Button variant="link" onClick={() => getData()}>
