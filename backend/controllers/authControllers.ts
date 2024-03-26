@@ -1,12 +1,9 @@
 
 import { type Request, type Response } from 'express';
-// import prisma from '../prisma';
+import prisma from '../prisma';
 import jwt  from 'jsonwebtoken'
 import { createHashedPassword, verifyPassword } from '../utils';
-import { PrismaClient } from '@prisma/client';
 
-
-const prisma = new PrismaClient();
 // const secret = process.env.SECRET_KEY 
 
 export const login = async (req: Request, res: Response): Promise<any> => {  

@@ -1,9 +1,9 @@
 import React from "react";
-import { Button } from "@components/common";
 import { Link, useLocation } from "react-router-dom";
 import { INavigationItem } from "@models";
 import Avatar from "./Avatar";
 import { useAppSelector } from "@redux/hooks";
+import { Button } from "@components/ui";
 
 interface Props {
   isMenuOpen: boolean;
@@ -46,16 +46,14 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
             <div className="pt-6 select-none">
               {menuItems
 
-              .filter((item: INavigationItem) => !item.requiresAuth || (user.data.email !== "" && item.requiresAuth))
+              .filter((item: INavigationItem) => (user.data.email !== ""))
               .map((item: INavigationItem, index: any) => {
 
                 let slug 
-                slug = `/${item.slug}`;
+                slug = `/${item.path}`;
 
                 if(user.data){
-                  if (item.requiresAuth) {
-                    slug = `/user/${user.data.id}/${item.slug}`;
-                  } 
+                  slug = `/user/${user.data.id}/${item.path}`;
                 } 
 
                 return (
@@ -65,7 +63,6 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
                     onClick={setIsMenuOpen}
                     className={`flex space-x-4 py-2 hover:text-white font-medium
                       ${location.pathname === slug ? 'text-major hover:text-major' : 'text-muted'}
-                      ${item.requiresAuth ? 'bg-red-500' : ''}
                     `}
                   >
                     <span className="flex items-center text-major">

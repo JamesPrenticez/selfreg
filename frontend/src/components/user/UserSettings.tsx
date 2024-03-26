@@ -1,8 +1,8 @@
 import React from "react";
 import { useAppSelector } from "@redux/hooks";
 import { capitalizeFirstLetter, formatDate } from "@utils";
-import { Button } from "@components/common";
 import { useGetUserQuery } from "@redux/services";
+import { Button } from "@components/ui";
 
 function UserSettings() {
   const user = useAppSelector((state) => state.user.data);

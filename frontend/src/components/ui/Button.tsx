@@ -2,7 +2,7 @@ import React, { forwardRef, type ReactNode, type ButtonHTMLAttributes } from "re
 import { twMerge } from 'tailwind-merge'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: "primary" | "secondary" | "success" | "error" | "info" | "major" | "minor";
+  color?: "primary" | "secondary" | "success" | "error" | "info" | "major" | "minor" | "cta" | "muted";
   variant?: "outlined" | "filled" | "link";
   asChild?: boolean; // TODO do we have a use for this prop?
   children: ReactNode;
@@ -24,7 +24,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     },
     secondary: {
       outlined: "border-2 border-secondary",
-      filled: "bg-secondary hover:bg-secondary/80"
+      filled: "bg-secondary text-secondary hover:bg-secondary/80"
+    },
+    muted: {
+      outlined: "border-2 border-secondary",
+      filled: "bg-secondary text-muted hover:bg-secondary/80",
+      link: "text-muted hover:text-white transistion-all ease-in-out duration-200"
     },
     success: {
       outlined: "border-2 border-green-600",
@@ -46,6 +51,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       outlined: "border-2 border-blue-600",
       filled: "bg-blue-600 hover:bg-blue-600/80"
     },
+    cta: {
+      outlined: "border-2",
+      filled: "bg-gradient-to-br from-sage to-major hover:from-sage/110 hover:to-major/110 text-tarantula"
+    },
   };
 
   return (
@@ -53,10 +62,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       className={twMerge(`
         px-8
         py-2
-        rounded-md
+        rounded-sm
         cursor-pointer 
         text-primary 
-        font-medium
         `, options[color][variant], className
       )}
       ref={ref}
