@@ -100,7 +100,9 @@ module.exports = {
         "screen-4rem": "calc(100vh - 4rem)",
       },
 			fontFamily: {
-        'sans': ['Arial']
+        'sans': ['Arial'],
+        'outfit': ['Outfit'],
+        'inter': ['Inter']
       },
       gridTemplateColumns: {
         'todos': '1fr repeat(7, 32px)',

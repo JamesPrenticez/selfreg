@@ -47,7 +47,7 @@ function Navbar(): ReactElement {
             </Button>
           </NavLink>
           <NavLink to={Paths.REGISTER}>
-            <Button color="cta" className="px-4 font-[500]">
+            <Button color="cta" className="px-4 ">
               Get Started
             </Button>
           </NavLink>
@@ -87,7 +87,7 @@ interface NavbarWrapperProps {
 
 const NavbarWrapper = ({children}: NavbarWrapperProps) => {
   return (
-    <div className="h-[4rem] md:h-[5rem] bg-tarantula flex font-[inter] font-[400] text-[16px] px-4">
+    <div className="h-[4rem] md:h-[5rem] bg-tarantula flex font-[400] text-[16px] px-4">
       <div className="flex items-center justify-between max-w-7xl w-full mx-auto">
         {children}
       </div>
