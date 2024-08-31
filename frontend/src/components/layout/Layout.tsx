@@ -8,9 +8,9 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps): ReactElement => {
   return (
-    <div className="relative">
+    <div className="relative font-outfit">
       <Navbar />
-      <main className="h-screen-4rem md:h-screen-5rem overflow-y-auto flex flex-col bg-muted relative">
+      <main className="h-screen-4rem md:h-screen-5rem overflow-y-auto flex flex-col bg-shadow relative">
         {children}
       </main>
       <Footer />

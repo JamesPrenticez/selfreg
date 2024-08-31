@@ -1,16 +1,41 @@
-import type { INavigationItem } from "@models";
+import { Paths, type INavigationItem } from "@models";
 import { CrossIcon } from "@components/icons"
 
 export const project = {
   name: "Self Regulator",
+  hero1: "Unlock your potential!",
+  hero2: "Record success, crush goals, and level up!"
 };
 
-export const pages: INavigationItem[] = [
-  { _id: "a797adfakjh76875asdjka87", name: "ABOUT", slug: "about", icon: <CrossIcon width={18} />, requiresAuth: false },
-  { _id: "368c7813e77094c1c589bbb0", name: "HABITS", slug: "habits", icon: <CrossIcon width={18} />, requiresAuth: true },
-  { _id: "e811754ef3a3ed7d620b8cf4", name: "TIMER", slug: "timer", icon: <CrossIcon width={18} />, requiresAuth: true },
-  { _id: "35dcbb753572a64db0d12b49", name: "STATS", slug: "stats", icon: <CrossIcon width={18} />, requiresAuth: true },
-  { _id: "fab685582e4644ec97138a96", name: "SIGN OUT", slug: "sign-out", icon: <CrossIcon width={18} />, requiresAuth: true },
+export const navigationItemsForHomepage: INavigationItem[] = [
+  { name: "pricing", path: Paths.PRICING, icon: <CrossIcon width={18} /> },
+  { name: "resources", path: Paths.RESOURCES, icon: <CrossIcon width={18} /> },
+  { name: "forum", path: Paths.FORUM, icon: <CrossIcon width={18} /> },
+  { name: "shop", path: Paths.SHOP, icon: <CrossIcon width={18} /> },
+];
+
+export const navigationItemsForAuthenticedUsers: INavigationItem[] = [
+  { name: "habits", path: Paths.HABITS, icon: <CrossIcon width={18} /> },
 ];
 
 export const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+// "Level up"
+// "Own your day!"
+// "Hit milestones"
+// "Count wins"
+// "See results"
+// "Reach higher"
+// "Track victories"
+// "Capture progress"
+// "Record success"
+// "Keep score"
+// "Monitor growth"
+// "Hit targets"
+// "Stay ahead"
+// "Chase success"
+// "Reflect growth"
+// "Clock achievements"
+// "Show progress"
+// "Break records"
+// "Crush goals"

@@ -1,9 +1,8 @@
 import type { ReactNode } from "react";
+import { Paths } from "@models/paths";
 
 export interface INavigationItem {
-  _id: string;
   name: string;
-  slug: string;
-  requiresAuth: boolean;
+  path: Paths;
   icon: ReactNode;
 }

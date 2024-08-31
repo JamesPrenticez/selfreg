@@ -81,6 +81,13 @@ module.exports = {
         moss: "#2d422d ",
       },
       gradientColorStops: {
+        major: "#00FF00",
+        minor: "#7c3aed",
+        sage: "#a3ff84",
+        mist: "#90a299",
+        tarantula: "#111815",
+        night: " #16221a",
+        shadow: "#1c281f",
         fern: "#1f422d",
         moss: "#2d422d ",
       },
@@ -93,7 +100,9 @@ module.exports = {
         "screen-4rem": "calc(100vh - 4rem)",
       },
 			fontFamily: {
-        'sans': ['Arial']
+        'sans': ['Arial'],
+        'outfit': ['Outfit'],
+        'inter': ['Inter']
       },
       gridTemplateColumns: {
         'todos': '1fr repeat(7, 32px)',

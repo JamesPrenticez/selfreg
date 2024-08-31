@@ -1,12 +1,9 @@
 
 import { type Request, type Response } from 'express';
-// import prisma from '../prisma';
+import prisma from '../prisma';
 import jwt  from 'jsonwebtoken'
 import { createHashedPassword, verifyPassword } from '../utils';
-import { PrismaClient } from '@prisma/client';
 
-
-const prisma = new PrismaClient();
 // const secret = process.env.SECRET_KEY 
 
 export const login = async (req: Request, res: Response): Promise<any> => {  
@@ -19,8 +16,12 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
     if (user && await verifyPassword(password, user.passwordHash)) {
       // Generate a JWT token
+      // TODO 
+      // accessToken 
+      // refreshToken
+      // SPAToken?
       const token = jwt.sign({ username: user.email, userId: user.id }, "your_secret_key_goes_here", { expiresIn: '1h' });
-      
+
       // Destructure user object and replace null values with empty strings
       const { firstName, lastName, phone, profilePicture, locale, country, permissions, subscription, dateCreated, lastModified } = user || {};
       
@@ -51,6 +52,22 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
   } catch (err) {
     return res.status(500).json({ message: 'Internal server error'});
+  }
+};
+
+// Logout
+export const logout = async (req: Request, res: Response): Promise<any> => {  
+  // Clear the JWT token cookie by setting it with an empty value and an expiration date in the past
+  try {
+    res.cookie('JWT_TOKEN', '', {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'strict',
+      expires: new Date(0)
+    });
+    return res.status(200).json({ data: null });
+  } catch (err) {
+    return res.status(500).json({ message: 'Internal server error' });
   }
 };
 

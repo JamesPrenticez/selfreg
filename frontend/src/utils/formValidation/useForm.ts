@@ -80,6 +80,7 @@ export function useForm<T>({
   
     if (isFormValid && onSubmit) {
       onSubmit();
+      setFormErrors(initialErrors);
     } 
 
     return

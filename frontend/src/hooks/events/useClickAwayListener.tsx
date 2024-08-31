@@ -1,6 +1,9 @@
 import { useEffect, useState, RefObject } from 'react';
 
-export function useClickAwayListener(ref: RefObject<HTMLElement>): boolean {
+export function useClickAwayListener(
+  ref: RefObject<HTMLElement>,
+  onClickAway: () => void
+): boolean {
   const [isClickedAway, setIsClickedAway] = useState(false);
 
   useEffect(() => {
@@ -14,6 +17,7 @@ export function useClickAwayListener(ref: RefObject<HTMLElement>): boolean {
       }
 
       setIsClickedAway(true);
+      onClickAway(); // Call the callback function when clicked away
     }
 
     // Bind the event listener
@@ -25,7 +29,7 @@ export function useClickAwayListener(ref: RefObject<HTMLElement>): boolean {
       document.removeEventListener('mousedown', handleClickAway);
       document.removeEventListener('touchstart', handleClickAway);
     };
-  }, [ref]);
+  }, [ref, onClickAway]);
 
   return isClickedAway;
 }

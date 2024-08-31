@@ -48,6 +48,7 @@ function Login() {
   async function handleLogin() {
     try {
       await login(formData).unwrap();
+      // set cookie
       navigate(Paths.SETTINGS);
       console.log('Login successful. Redirecting...');
     } catch (error: any) {
@@ -66,7 +67,7 @@ function Login() {
 
   // Redirect if user already logged in
   useEffect(() => {
-    if (user.email !== "") {
+    if (user.email) {
       navigate(Paths.SETTINGS);
     }
   }, [user.email, navigate]);

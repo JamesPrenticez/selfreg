@@ -1,7 +1,7 @@
 import React from 'react';
 import { downloadCSV, uploadCSV, useLocalStorage } from '@hooks/useLocalStorage';
 import { mockHabits } from '@mocks';
-import { Button } from '@components/common';
+import { Button } from '@components/ui';
 
 const MyComponent = () => {
   const [name, setName] = useLocalStorage<string>('name', '');
