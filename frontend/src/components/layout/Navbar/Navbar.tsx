@@ -1,21 +1,21 @@
-import React, { Children, ReactNode, useState, type ReactElement } from "react";
+import React, { ReactNode, useState, type ReactElement } from "react";
 import { navigationItemsForAuthenticedUsers, navigationItemsForHomepage } from "@constants";
 import RightNav from "./RightNav";
 import Hamburger from "./Hamburger";
 import CompanyLogo from "./CompanyLogo";
 import WeekNumber from "./WeekNumber";
 import { NavLink, useLocation } from "react-router-dom";
-import { project } from "@constants";
 import CompanyName from "./CompanyName";
 import { Button } from "@components/ui";
 import { Paths } from "@models";
 import { capitalizeFirstLetter } from "@utils";
-
-
+import { useAppSelector } from "@redux/hooks";
+import { LogoutButton } from "@components/auth";
 
 function Navbar(): ReactElement {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const userEmail = useAppSelector((state) => state.user.data.email);
 
   // TODO isAuth not home...
   if(location.pathname === "/"){
@@ -38,19 +38,31 @@ function Navbar(): ReactElement {
           ))}
         </ul>
 
-        <div
-        //  className="ml-auto"
-        >
-          <NavLink to={Paths.LOGIN}>
-            <Button variant="link" color="muted" className="ml-auto px-4">
-              Login
-            </Button>
-          </NavLink>
-          <NavLink to={Paths.REGISTER}>
-            <Button color="cta" className="px-4 ">
-              Get Started
-            </Button>
-          </NavLink>
+        <div>
+            {userEmail ? (
+              <>
+                <NavLink to={Paths.SETTINGS}>
+                  <Button variant="link" color="muted" className="ml-auto px-4">
+                    {userEmail}
+                  </Button>
+                </NavLink>
+                <LogoutButton/>
+              </>
+            )
+            : (
+              <>
+                <NavLink to={Paths.LOGIN}>
+                  <Button variant="link" color="muted" className="ml-auto px-4">
+                    Login
+                  </Button>
+                </NavLink>
+                <NavLink to={Paths.REGISTER}>
+                  <Button color="cta" className="px-4 ">
+                    Get Started
+                  </Button>
+                </NavLink>
+              </>
+            )}
         </div>
       </NavbarWrapper>
     )

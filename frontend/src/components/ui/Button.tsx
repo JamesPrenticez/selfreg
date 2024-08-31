@@ -62,7 +62,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       className={twMerge(`
         px-8
         py-2
-        rounded-sm
+        rounded-md
         cursor-pointer 
         text-primary 
         `, options[color][variant], className

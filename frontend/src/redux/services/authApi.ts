@@ -1,5 +1,6 @@
 import { baseApi } from './baseApi';
 import { ISuccessResult, ILoginDeatils, IUser, IRegisterDeatils } from '@models';
+import { logoutUser } from '@redux/slices';
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -14,6 +15,22 @@ export const authApi = baseApi.injectEndpoints({
         queryKey: 'getUser',
         providesTags: ['User']
       }),
+    }),
+    logout: builder.mutation<ISuccessResult<null>, void>({
+      query: () => ({
+        url: '/logout',
+        method: 'POST',
+      }),
+      invalidatesTags: ['User'],
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+          // After logout succeeds, reset the user state to null
+          dispatch(logoutUser());
+        } catch(error: any) {
+          console.log("Error during logout", error)
+        }
+      },
     }),
     register: builder.mutation<ISuccessResult<IUser>, IRegisterDeatils>({
       query: ({ email, password }) => ({
@@ -32,5 +49,6 @@ export const authApi = baseApi.injectEndpoints({
 
 export const { 
   useLoginMutation,
+  useLogoutMutation,
   useRegisterMutation,
 } = authApi;
