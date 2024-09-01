@@ -39,6 +39,7 @@ module.exports = {
       textColor: {
         primary: "#fff",
         muted: "#d1d5db",
+        ghost: "#303030",
         secondary: "#101010",
         disabled: "#666",
         major: "#00FF00",
