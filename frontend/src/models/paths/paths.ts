@@ -15,6 +15,7 @@ export enum Paths {
   PASSWORD_RESET = '/password-reset',
 
   HABITS='/habits',
+  COUNTDOWN='/countdown',
   TIMER='/timer',
   STATS='/stats',
 

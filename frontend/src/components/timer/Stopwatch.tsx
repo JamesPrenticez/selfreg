@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactElement, type Dispatch, type SetStateAction } from 'react';
 import { useKeyPressed } from '../../hooks';
-import { Button } from '@components/common';
 import { PauseIcon, PlayIcon } from '@components/icons';
+import { Button } from '@components/ui';
 
 type Timer = ReturnType<typeof setTimeout>;
 
@@ -12,7 +12,7 @@ interface Props {
 
 function Stopwatch({ play: playProp, setPlay: setPlayProp }: Props): ReactElement {
   const [play, setPlay] = useState<boolean>(playProp || false);
-  const [elapsedTime, setElapsedTime] = useState<number>(59);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
   
   const [timer, setTimer] = useState<Timer>();
   
@@ -116,9 +116,9 @@ function Stopwatch({ play: playProp, setPlay: setPlayProp }: Props): ReactElemen
         </div>
 
         <div className="flex items-end space-x-2 ">
-          {/* <Button csx="bg-orange-500 px-[10px]" onClick={resetTimer}>
+          <Button className="bg-orange-500 px-[10px]" onClick={resetTimer}>
             RESET
-          </Button> */}
+          </Button>
 
           <div className='text-gray-300 w-[40px] cursor-pointer hover:text-gray-200'>
             {play ? 

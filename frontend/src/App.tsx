@@ -14,6 +14,8 @@ import Test from "@pages/Test";
 import UserSettings from "@components/user/UserSettings";
 import Register from "@pages/auth/Register";
 import NotFound from "@pages/errors/NotFound";
+import Timer from "@pages/Timer";
+import CountdownTimer from "@components/timer/CountdownTimer";
 
 
 function App(): ReactElement {
@@ -27,6 +29,8 @@ function App(): ReactElement {
           <Route path={Paths.REGISTER} element={<Register />} />
           <Route path={Paths.SETTINGS} element={<UserSettings />} />
           <Route path={Paths.TEST} element={<Test />} />
+          <Route path={Paths.TIMER} element={<Timer />} />
+          <Route path={Paths.COUNTDOWN} element={<CountdownTimer />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
