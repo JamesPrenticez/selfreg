@@ -1,20 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { IHabit } from '@models';
-import { generateFakeObjectId } from '@utils';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { IHabit, ILabelAndValue } from '@models';
 import { habitsApi } from '@redux/services';
 
 interface HabitsState {
-  data: IHabit[] | null;
+  data: IHabit[];
+  activeHabit: ILabelAndValue | null;
 }
 
 const initialState: HabitsState = {
-  data: null,
+  data: [],
+  activeHabit: null
 };
 
 export const habitsSlice = createSlice({
   name: 'habits',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setActiveHabit: (state, action: PayloadAction<ILabelAndValue | null>) => {
+      if(state.data){
+        state.activeHabit =  action.payload;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addMatcher(
       habitsApi.endpoints.getHabits.matchFulfilled,
@@ -26,6 +33,7 @@ export const habitsSlice = createSlice({
 });
 
 export const { 
+  setActiveHabit
 } = habitsSlice.actions;
 
 export default habitsSlice;

@@ -46,14 +46,15 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
             <div className="pt-6 select-none">
               {menuItems
 
-              .filter((item: INavigationItem) => (user.data.email !== ""))
+              .filter((item: INavigationItem) => (user.data.email !== "")) // what??
               .map((item: INavigationItem, index: any) => {
 
                 let slug 
                 slug = `/${item.path}`;
 
                 if(user.data){
-                  slug = `/user/${user.data.id}/${item.path}`;
+                  slug = `${item.path}`;
+                  // slug = `/user/${user.data.id}/${item.path}`;
                 } 
 
                 return (

@@ -6,7 +6,7 @@ import { axiosBaseQuery } from './axiosBaseQuery'
 export const baseApi = createApi({
   baseQuery: axiosBaseQuery(),
   endpoints: () => ({}),
-  tagTypes: ['User'], // Define your tag types here
+  tagTypes: ['User', 'Habits'], // Define your tag types here
 })
 
 // Why we do this.

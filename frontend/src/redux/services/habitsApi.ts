@@ -3,11 +3,11 @@ import { ISuccessResult, IHabit } from '@models'
 
 export const habitsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getHabits: builder.query<ISuccessResult<IHabit[]>, void>({
+    getHabits: builder.query<ISuccessResult<IHabit[]>, void>({ // Notice the `IHabit[]` inside ISuccessResult
       query: () => ({
         url: `habits`,
         method: 'GET',
-        queryKey: 'getHabits',
+        queryKey: 'Habits',
       }),
     }),
   }),

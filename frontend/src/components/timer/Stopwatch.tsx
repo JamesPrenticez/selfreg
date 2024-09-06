@@ -1,59 +1,48 @@
-import React, { useState, useEffect, ReactElement, type Dispatch, type SetStateAction } from 'react';
-import { useKeyPressed } from '../../hooks';
-import { PauseIcon, PlayIcon } from '@components/icons';
-import { Button } from '@components/ui';
+import React, { useRef, useState, useEffect, ReactElement } from 'react';
+import { 
+  // CogIcon,
+  PauseIcon,
+  PlayIcon,
+  // ResetIcon
+} from '@components/icons';
+import { observeIntersection } from '@utils';
 
-type Timer = ReturnType<typeof setTimeout>;
+type Timer = ReturnType<typeof setInterval>;
 
-interface Props {
-  play?: boolean;
-  setPlay?: Dispatch<SetStateAction<boolean>>;
-}
+function Stopwatch(): ReactElement {
+  const [play, setPlay] = useState<boolean>(false);
+  const [elapsedTime, setElapsedTime] = useState<number>(7200);
+  const [milliseconds, setMilliseconds] = useState<number>(0);
+  const [timer, setTimer] = useState<Timer | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-function Stopwatch({ play: playProp, setPlay: setPlayProp }: Props): ReactElement {
-  const [play, setPlay] = useState<boolean>(playProp || false);
-  const [elapsedTime, setElapsedTime] = useState<number>(0);
-  
-  const [timer, setTimer] = useState<Timer>();
-  
-  const isEnterKeyPressed = useKeyPressed("enter")
-
-  const setPlayHandler = (value: boolean) => {
-    if (setPlayProp) {
-      setPlay(value);
-      setPlayProp(value);
-    } else {
-      setPlay(value);
-    }
-  };
-
-  const togglePlay = () => {
-    console.log("here")
-    const updatedPlay = !play;
-    setPlayHandler(updatedPlay);
-  };
 
   const startTimer = () => {
-    const startTime = Date.now() - elapsedTime * 1000; // Multiply by 1000 to convert seconds to milliseconds
+    const startTime = Date.now() - (elapsedTime * 1000 + milliseconds);
     const timerId = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
-      setElapsedTime(Math.round(elapsed / 1000)); // Round the elapsed time to whole seconds
-    }, 1000);
+      const seconds = Math.floor(elapsed / 1000);
+      const remainingMilliseconds = elapsed % 1000;
+      setElapsedTime(seconds);
+      setMilliseconds(remainingMilliseconds);
+    }, 10); // Update every 10 milliseconds to display milliseconds accurately
     setTimer(timerId);
-    setPlayHandler(true);
+    setPlay(true);
   };
 
   const stopTimer = () => {
     if (timer) {
       clearInterval(timer);
-      setPlayHandler(false);
+      setTimer(null);
+      setPlay(false);
     }
   };
 
   const resetTimer = () => {
     stopTimer();
     setElapsedTime(0);
+    setMilliseconds(0);
   };
 
   useEffect(() => {
@@ -67,94 +56,114 @@ function Stopwatch({ play: playProp, setPlay: setPlayProp }: Props): ReactElemen
     };
   }, [play]);
 
-  const formatElapsedTime = (time: number): ReactElement => {
+  const handleSpacebar = (e: any) => {
+    if (e.key !== " ") return; // SPACE " "
+    e.preventDefault();
+    setPlay((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (containerRef.current) {
+      observeIntersection(containerRef.current, (e) => handleSpacebar(e), "keydown");
+    }
+  }, []);
+
+  const formatElapsedTime = (time: number, milliseconds: number): ReactElement => {
     const hours = Math.floor(time / 3600);
     const minutes = Math.floor((time % 3600) / 60);
     const seconds = time % 60;
+    const formattedMilliseconds = milliseconds.toString().padStart(3, '0').slice(0, 2); // Display only first 2 digits
+  
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const formattedSeconds = seconds.toString().padStart(2, '0');
 
-    const style = "mx-auto"
-
-    const hoursDigits = hours.toString().split('').map((digit, index) => (
-      <span key={index}>{digit}</span>
-    ));
-
-    const formattedMinutes = (hours > 0 && minutes < 10) ? `0${minutes}` : minutes; // add leading zero
-    const minutesDigits = formattedMinutes.toString().split('').map((digit, index) => (
-      <span key={index}>{digit}</span>
-    ));
-
-    const formattedSeconds = ((minutes > 0 || hours > 0) && seconds < 10) ? `0${seconds}` : seconds; // add leading zero
-    const secondDigits = formattedSeconds.toString().split('').map((digit, index) => (
-      <span key={index} className={style}>{digit}</span>
-    ));
+    // todo fix only show relevant
+    document.title = `${formattedHours}:${formattedMinutes}:${formattedSeconds} - Self Regulator`;
 
     return (
-      <>
-        {hours > 0 && (
+      <div className={`${!(minutes > 0 || hours > 0) ? "ml-[4.4rem]" : "ml-[1.9rem]"}`}>
+        {hours > 0 &&
           <>
-            {hoursDigits}
-            <span className='mr-2 mt-auto mb-2'>h</span>
+            <DigitWrapper value={formattedHours} unit="h" />
+            <DigitWrapper value={formattedMinutes} unit="m" />
           </>
-        )}
-        {minutes > 0 && (
-          <>
-            {minutesDigits}
-            <span className='mr-2 ml-1 text-sm mt-auto mb-2'>m</span>
-          </>
-        )}
-        {secondDigits}
-        <span className='text-sm ml-1 mt-auto mb-2'>s</span>
-      </>
+        }
+        {(hours < 0 && minutes > 0) &&
+          <DigitWrapper value={formattedMinutes} unit="m" />
+        }
+
+        <DigitWrapper value={formattedSeconds} unit="s" />
+
+        { !(minutes > 0 || hours > 0) &&
+          <DigitWrapper value={formattedMilliseconds} unit="ms" />
+        }
+      </div>
     );
   };
 
- return (
-    <div className="flex flex-col items-center justify-center h-screen">
 
-        <div className="flex rounded-md p-2 font-bold text-5xl text-gray-100">
-          {formatElapsedTime(elapsedTime)}
+
+
+  return (
+    <div ref={containerRef} className="flex flex-col items-center justify-center w-full ">
+      <div>
+        {formatElapsedTime(elapsedTime, milliseconds)}
+      </div>
+      <div className="flex space-x-2 ">
+        <div className='text-gray-300 w-[50px] h-[50px] cursor-pointer hover:text-white bg-black/50 rounded-full flex items-center justify-center mt-auto'>
+          <PlayIcon onClick={resetTimer} />
         </div>
-
-        <div className="flex items-end space-x-2 ">
-          <Button className="bg-orange-500 px-[10px]" onClick={resetTimer}>
-            RESET
-          </Button>
-
-          <div className='text-gray-300 w-[40px] cursor-pointer hover:text-gray-200'>
-            {play ? 
-              <PauseIcon onClick={togglePlay}/>
-              : 
-              <PlayIcon onClick={togglePlay}/>
-            }
-          </div>
-          {/* <button 
-            className={`py-2 px-8 rounded-md font-bold tracking-wide text-white w-32 cursor-pointer ${play ? "bg-red-500" : "bg-blue-500  "}`}
-            // onClick={() => setPlayHandler((prev: boolean) => !prev)} // you cant pass a function to a boolean
-            onClick={togglePlay}
-
-          >
-           
-          </button> */}
+        <div className='text-gray-300 w-[70px] cursor-pointer hover:text-white bg-black/50 rounded-full'>
+          {play ?
+            <PauseIcon onClick={() => setPlay(false)} />
+            :
+            <PlayIcon onClick={() => setPlay(true)} />
+          }
         </div>
+        {/* Maybe save */}
+        <div className='text-gray-300 w-[50px] h-[50px] cursor-pointer hover:text-white bg-black/50 rounded-full flex items-center justify-center mt-auto'>
+          <PlayIcon />
+        </div>
+      </div>
     </div>
   );
 }
 
-export default Stopwatch;
+interface DigitWrapperProps {
+  value: string;
+  unit?: string;
+}
 
-// with milli seconds
-// const [milliseconds, setMilliseconds] = useState<number>(0);
-// const startTimer = () => {
-//   const startTime = Date.now() - (elapsedTime * 1000 + milliseconds);
-//   const timerId = setInterval(() => {
-//     const now = Date.now();
-//     const elapsed = now - startTime;
-//     const seconds = Math.floor(elapsed / 1000);
-//     const remainingMilliseconds = elapsed % 1000;
-//     setElapsedTime(seconds);
-//     setMilliseconds(remainingMilliseconds);
-//   }, 10); // Update every 10 milliseconds to display milliseconds accurately
-//   setTimer(timerId);
-//   setIsRunning(true);
-// };
-// {elapsedTime}.{milliseconds.toString().padStart(3, '0').slice(0, 2)}
+const DigitWrapper = ({ value, unit }: DigitWrapperProps): ReactElement => {
+  const digits = value.split('');
+
+  return (
+    <div className="inline-block font-semibold text-primary">
+      <span className="inline-block ">
+        {digits.map((digit, index) => (
+          <span key={index} className={`inline-block  text-center 
+              ${unit === "ms" ? "w-[12px] text-[18px]" 
+              // : unit === "s"  ? "w-[22px] text-[32px]" 
+              : "w-[40px] text-[56px]"}
+            `}
+          >
+            {digit}
+          </span>
+        ))}
+      </span>
+      {unit &&
+        <span className={`text-sage/80 font-[300] inline-block mt-auto pr-2
+            ${unit === "ms" ? "text-[12px] pl-[0.1rem]"  
+            : unit === "s" ? "text-[32px]" : 
+            "text-[30px] "}
+          `}
+        >
+          {unit}
+        </span>
+      }
+    </div>
+  );
+};
+
+export default Stopwatch;

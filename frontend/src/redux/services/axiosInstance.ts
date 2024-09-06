@@ -5,7 +5,7 @@ import {
   mockUsers,
 } from '@mocks';
 
-const useMockData = false //import.meta.env.VITE_ENV === "development" ? true : false;
+const useMockData = true //import.meta.env.VITE_ENV === "development" ? true : false;
 const log = false;
 const env = import.meta.env.VITE_ENV
 console.log(env)
@@ -35,7 +35,7 @@ if (useMockData) {
   // User Habits
   mockAxiosInstance.onGet('habits').reply((config) => {
     if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
-    return [200, mockHabits]
+    return [200, {data: mockHabits}]
   });
 
   //============================================
