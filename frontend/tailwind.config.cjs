@@ -24,6 +24,7 @@ module.exports = {
         primary: "#101010",
         muted: "#212121",
         ghost: "#303030",
+        glass: "rgba(16, 18, 27, 0.4)",
         secondary: "#fff",
         "secondary-muted": "#d1d5db",
         major: "#00FF00",

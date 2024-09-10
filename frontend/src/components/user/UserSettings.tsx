@@ -16,7 +16,7 @@ function UserSettings() {
     <div className="text-primary px-4">
       <div className="flex flex-col max-w-7xl w-full mx-auto mt-4 space-y-4 ">
 
-        <div className="grid grid-cols-[128px_1fr] md:grid-cols-[192px_1fr] bg-ghost p-4 rounded-md">
+        <div className="grid grid-cols-[128px_1fr] md:grid-cols-[192px_1fr] bg-glass p-4 rounded-md">
           <div
             className="w-full aspect-square rounded-full border-major border-2"
             style={{
@@ -38,7 +38,7 @@ function UserSettings() {
 
         <div className="flex flex-col md:flex-row md:justify-between gap-4">
 
-          <div className="w-full bg-ghost rounded-md p-4">  
+          <div className="w-full bg-glass rounded-md p-4">  
             <h1 className="text-3xl text-muted mb-4 font-bold">Details</h1>
 
             <div className='grid grid-cols-2  text-2xl gap-4 '>
@@ -47,7 +47,11 @@ function UserSettings() {
                 <p className="text-gray-400 flex">
                   {user.subscription}
                 </p>
-                <Button className="bg-green-600 hover:bg-green-500 ml-auto text-sm px-[6px] py-[4px]">
+                <Button 
+                  variant="filled"
+                  color="success"
+                  className="ml-auto text-sm px-[6px] py-[4px]"
+                >
                   Upgrade
                 </Button>
               </div>
@@ -63,7 +67,7 @@ function UserSettings() {
             </div>
           </div>
 
-          <div className="w-full md:mt-0 bg-ghost rounded-md p-4">  
+          <div className="w-full md:mt-0 bg-glass rounded-md p-4">  
             <h1 className="text-3xl text-muted mb-4 font-bold">Settings</h1>
 
             <div className='grid grid-cols-2 text-2xl gap-4 '>

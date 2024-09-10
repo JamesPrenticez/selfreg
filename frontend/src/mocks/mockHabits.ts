@@ -13,7 +13,6 @@ export const mockHabits: IHabit[] = [
     successIcon: "1f4a4",
     errorIcon: "1f440",
     created_at: "2023-09-08T12:34:56Z",
-    days: undefined
   },
   {
     _id: "d746d674af5d9ca20be219e0",
@@ -30,7 +29,6 @@ export const mockHabits: IHabit[] = [
     successIcon: "1f3c6",
     errorIcon: "1f922",
     created_at: "2023-09-08T12:34:56Z",
-    days: undefined
   },
   {
     _id: "29f8424c32b86011633c0a6e",
@@ -44,7 +42,6 @@ export const mockHabits: IHabit[] = [
     successIcon: "1f607",
     errorIcon: "1f608",
     created_at: "2023-09-08T12:34:56Z",
-    days: undefined
   },
   {
     _id: "38f8427c32ba50112633d0f9b",
@@ -58,6 +55,6 @@ export const mockHabits: IHabit[] = [
     successIcon: "1f680",
     errorIcon: "1f4a9",
     created_at: "2023-09-08T12:34:56Z",
-    days: undefined
   }
 ]
+

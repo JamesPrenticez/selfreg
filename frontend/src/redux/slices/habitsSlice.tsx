@@ -3,12 +3,12 @@ import type { IHabit, ILabelAndValue } from '@models';
 import { habitsApi } from '@redux/services';
 
 interface HabitsState {
-  data: IHabit[];
+  data: Record<string, IHabit>;
   activeHabit: ILabelAndValue | null;
 }
 
 const initialState: HabitsState = {
-  data: [],
+  data: {},
   activeHabit: null
 };
 
@@ -26,7 +26,23 @@ export const habitsSlice = createSlice({
     builder.addMatcher(
       habitsApi.endpoints.getHabits.matchFulfilled,
       (state, { payload }) => {
-        state.data = payload.data;
+        state.data = payload;
+      }
+    );
+
+    // Handle the getDays query success and merge the days with the habit
+    builder.addMatcher(
+      habitsApi.endpoints.getDays.matchFulfilled,
+      (state, { payload, meta }) => {
+        const { habit_id } = meta.arg.originalArgs;
+        const habit = state.data[habit_id];
+    
+        if (habit) {
+          state.data[habit_id] = {
+            ...habit,
+            days: payload.data || habit.days,
+          };
+        }
       }
     );
   }

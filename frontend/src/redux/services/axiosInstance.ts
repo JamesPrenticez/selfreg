@@ -1,6 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { 
+  mockDaysRecord,
   mockHabits,
   mockUsers,
 } from '@mocks';
@@ -36,6 +37,11 @@ if (useMockData) {
   mockAxiosInstance.onGet('habits').reply((config) => {
     if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
     return [200, {data: mockHabits}]
+  });
+
+  mockAxiosInstance.onGet('days').reply((config) => {
+    if (log) console.table({method: config.method, endpoint: config.url, params: config.params})
+    return [200, {data: mockDaysRecord}]
   });
 
   //============================================

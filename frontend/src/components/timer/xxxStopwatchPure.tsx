@@ -9,24 +9,12 @@ import { observeIntersection } from '@utils';
 
 type Timer = ReturnType<typeof setInterval>;
 
-interface Props {
-  accumulatedTime: number;
-}
-
-function Stopwatch({
-  accumulatedTime
-}: Props): ReactElement {
-
+function Stopwatch(): ReactElement {
   const [play, setPlay] = useState<boolean>(false);
-  const [elapsedTime, setElapsedTime] = useState<number>(accumulatedTime);
+  const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [milliseconds, setMilliseconds] = useState<number>(0);
   const [timer, setTimer] = useState<Timer | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setElapsedTime(accumulatedTime);
-    setMilliseconds(0);
-  }, [accumulatedTime]);
 
   const startTimer = () => {
     const startTime = Date.now() - (elapsedTime * 1000 + milliseconds);
@@ -65,7 +53,7 @@ function Stopwatch({
     return () => {
       stopTimer();
     };
-  }, [play, accumulatedTime]);
+  }, [play]);
 
   const handleSpacebar = (e: any) => {
     if (e.key !== " ") return; // SPACE " "

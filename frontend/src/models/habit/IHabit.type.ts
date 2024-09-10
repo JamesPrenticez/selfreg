@@ -10,13 +10,26 @@ export interface IHabit {
   errorIcon?: string;
   description?: string;
   created_at?: string;
-  days?: IDays[] | undefined;
+  days?: IDays;
   frequency?: string;
 }
 
-export interface IDays {
+export type IDays = Record<string, IDay>;;
+
+export interface IDay {
   _id: string;
-  todo_id: string;
-  date: string;
-  status: boolean | null;
+  habit_id: string;
+  date: Date;
+   
+  status?: boolean | null;
+
+  measurement?: {
+    quantity: number;
+    unit: Unit;
+  }
+}
+
+export enum Unit {
+  TIME="time",
+  COUNT="count"
 }

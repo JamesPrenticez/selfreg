@@ -1,1 +1,1 @@
-export * from './IHabit'
+export * from './IHabit.type'

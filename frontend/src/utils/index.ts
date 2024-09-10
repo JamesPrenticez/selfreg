@@ -1,4 +1,5 @@
 export * from './generateObjectId'
+export * from './getWeekDateArray'
 export * from './getWeekDetails'
 export * from './userHasPermission'
 export * from './getInitials'

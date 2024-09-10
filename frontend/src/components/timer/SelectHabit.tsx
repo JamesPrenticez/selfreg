@@ -6,13 +6,12 @@ import { useGetHabitsQuery } from "@redux/services";
 import { setActiveHabit } from "@redux/slices";
 
 function SelectHabit() {
-  useGetHabitsQuery();
   const { data: habitsData, activeHabit } = useAppSelector((state) => state.habits);
   const dispatch = useAppDispatch();
 
-  const habitsOptions: ILabelAndValue[] = habitsData.map((habit) => ({
+  const habitsOptions: ILabelAndValue[] = Object.values(habitsData).map((habit) => ({
     label: habit.title,
-    value: habit.title,
+    value: habit._id,
   }));
 
   return (
