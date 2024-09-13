@@ -34,7 +34,6 @@ const Timer = () => {
     
     // Check if the measurement's unit is of type "time"
     if (measurement.unit === Unit.TIME) {
-      console.log("here")
       return measurement.quantity;
     }
     
@@ -47,19 +46,15 @@ const Timer = () => {
     setTime(getAccumulatedTimeRecord());
   }, [data, activeHabit, habitsData]); // Added habitsData to dependencies
 
-  console.log(time)
-
-  const test = () => {
-    if (!activeHabit || !habitsData[activeHabit.value]) return {};
-
-    const habit = habitsData[activeHabit.value];
-    return habit
-  }
-
   return (
     <div className='relative flex grow'>
       <SelectHabit />
-      <Stopwatch accumulatedTime={time}/>
+      {/* TODO 
+        add update state to stopwatch
+        and a reset
+        fix title setting
+      */}
+      <Stopwatch accumulatedTime={time} /> 
     </div>
   )
 }

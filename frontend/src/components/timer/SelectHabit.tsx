@@ -20,6 +20,7 @@ function SelectHabit() {
         options={habitsOptions}
         value={activeHabit?.label ?? "No option selected"}
         onChange={(newValue: ILabelAndValue) => {
+          console.log(newValue)
           dispatch(setActiveHabit(newValue));
         }}
       />

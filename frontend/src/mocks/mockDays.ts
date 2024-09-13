@@ -22,9 +22,9 @@ const nextWeek = getWeekDateArray(currentWeekNumber);
 // ]);
 
 export const mockDaysRecord: IHabit["days"] = {
-  [`${thisWeek[0]}`]: {_id: "f391e3a9cdf72083a718ae95", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 1, unit: Unit.TIME}},
+  [`${thisWeek[0]}`]: {_id: "f391e3a9cdf72083a718ae95", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 99, unit: Unit.TIME}},
   [`${thisWeek[1]}`]: {_id: "797f4ce34401fbc485610f48", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 15654, unit: Unit.TIME}},
-  [`${thisWeek[2]}`]: {_id: "e8f1d2127596ab17d08b6eae", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 0, unit: Unit.TIME}},
+  [`${thisWeek[2]}`]: {_id: "e8f1d2127596ab17d08b6eae", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 99, unit: Unit.TIME}},
   [`${thisWeek[3]}`]: {_id: "953cb8033975f8189773b0c3", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 8885, unit: Unit.TIME}},
   [`${thisWeek[4]}`]: {_id: "fa02e1379f414312024f88c8", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 360, unit: Unit.TIME}},
   [`${thisWeek[5]}`]: {_id: "ca6c5e0cad52ac0313fbbebe", habit_id: "29f8424c32b86011633c0a6e", date: thisWeek[0], measurement: {quantity: 54, unit: Unit.TIME}},

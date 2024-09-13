@@ -17,7 +17,6 @@ export function Autocomplete({
   onChange,
   placeholder,
   renderIcon,
-  ...props
 }: Props) {
 
   let icon = null //renderIcon()
@@ -41,7 +40,6 @@ export function Autocomplete({
     setFilteredArray(filteredArr);
   };
 
-  // Quick fix - if there is no data on when component mounts
   useEffect(() => {
     setFilteredArray(options);
   }, [options]);
@@ -63,41 +61,41 @@ export function Autocomplete({
     switch (e.key) {
       case 'ArrowUp':
         e.preventDefault()
-        setActiveIndex(activeIndex === 0 ? filteredArray.length - 1 : activeIndex - 1) // If the index goes below 0, send to the bottom
+        setActiveIndex(activeIndex === 0 ? filteredArray.length - 1 : activeIndex - 1); // If the index goes below 0, send to the bottom
         scrollIntoView('up')
         break
       case 'ArrowDown':
-        e.preventDefault()
-        setActiveIndex(activeIndex === filteredArray.length - 1 ? 0 : activeIndex + 1) // If the index goes above the length of the array, send to top
-        scrollIntoView('down')
+        e.preventDefault();
+        setActiveIndex(activeIndex === filteredArray.length - 1 ? 0 : activeIndex + 1); // If the index goes above the length of the array, send to top
+        scrollIntoView('down');
         break
       case 'Enter':
-        e.preventDefault()
-        onChange(filteredArray[activeIndex])
-        setSearchValue('')
-        setFilteredArray(options)
-        setIsOpen(false)
+        e.preventDefault();
+        onChange(filteredArray[activeIndex]);
+        setSearchValue('');
+        setFilteredArray(options);
+        setIsOpen(false);
         if (inputRef.current) {
-          inputRef.current.blur()
+          inputRef.current.blur();
         }
         break
       case 'Escape':
-        e.preventDefault()
-        setIsOpen(false)
-        setSearchValue('')
-        setFilteredArray(options)
+        e.preventDefault();
+        setIsOpen(false);
+        setSearchValue('');
+        setFilteredArray(options);
         if (inputRef.current) {
-          inputRef.current.blur()
+          inputRef.current.blur();
         }
         break
-    }
-  }
+    };
+  };
 
   const handleUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setActiveIndex(0)
-    setSearchValue(e.target.value)
-    updateFilteredArray(e.target.value)
-  }
+    setActiveIndex(0);
+    setSearchValue(e.target.value);
+    updateFilteredArray(e.target.value);
+  };
 
   return (
     <>
@@ -166,19 +164,15 @@ export function Autocomplete({
               filteredOptions.map((item, index) => {
                 return (
                   <div
-                    key={index}
+                    key={item.label + " - " + index}
                     ref={(el) => (itemsRef.current[index] = el)}
-                    className={`flex justify-start items-center w-full px-4 py-2 cursor-pointer focus:outline-none ${
-                      activeIndex === index
-                        ? 'bg-blue-500 text-white'
-                        : 'text-black'
-                    }`}
-                    onMouseMove={() => setActiveIndex(index)}
+                    className="flex justify-start items-center w-full px-4 py-2 cursor-pointer focus:outline-none hover:bg-blue-500 hover:text-white text-black"
                     onMouseDown={() => {
-                      onChange(filteredArray[activeIndex])
-                      setSearchValue('')
-                      setFilteredArray(options)
-                      setIsOpen(false)
+                      setActiveIndex(index);
+                      onChange(filteredArray[index]);
+                      setSearchValue('');
+                      setFilteredArray(options);
+                      setIsOpen(false);
                     }}
                   >
                     <span>{item.label}</span>
@@ -189,7 +183,7 @@ export function Autocomplete({
               <div className='px-4 py-2'>No options found</div>
             )}
           </div>
-        ) : null}
+        ) : null};
       </div>
     </>
   )
