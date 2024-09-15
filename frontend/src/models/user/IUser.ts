@@ -7,16 +7,22 @@ export interface IUser {
   profilePicture?: string;
   locale?: string;
   country?: string;
-  permissions?: IUserPermissions[];
-  subscription?: IUserSubscription;
-  dateCreated: string;
-  lastModified: string;
+  permissions?: UserPermissions[];
+  subscription?: UserSubscription;
+  dateCreated: string | null;
+  lastModified: string | null;
+  type: AccountType | null;
 }
 
-export enum IUserPermissions {
+export enum AccountType {
+  ONLINE = 'ONLINE',
+  OFFLINE = 'OFFLINE',
+}
+
+export enum UserPermissions {
   ADMIN = 'ADMIN',
 }
 
-export enum IUserSubscription {
+export enum UserSubscription {
   FREE = 'FREE',
 }

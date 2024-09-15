@@ -3,6 +3,7 @@
 import type { BaseQueryFn } from '@reduxjs/toolkit/query'
 import type { AxiosRequestConfig, AxiosError } from 'axios'
 import { axiosInstance } from './axiosInstance'
+import { getFromLocalStorage } from '@utils/handleLocalStorage'
 
 export const axiosBaseQuery = ({ baseUrl }: { baseUrl: string } = { baseUrl: '' }): BaseQueryFn<{
       url: string
@@ -16,6 +17,16 @@ export const axiosBaseQuery = ({ baseUrl }: { baseUrl: string } = { baseUrl: '' 
   > =>
   async ({ url, method, data, params, headers }) => {
     try {
+      
+      // Add SPA token to headers if it exists
+      const spaToken = getFromLocalStorage('spaToken');
+      if (spaToken) {
+        headers = {
+          ...headers,
+          'x-spa-token': spaToken, // Use a custom header for the SPA token
+        };
+      }
+
       const result = await axiosInstance({
         url: baseUrl + url,
         method,

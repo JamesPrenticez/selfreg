@@ -8,6 +8,7 @@ import 'dayjs/locale/en-gb'
 import Layout from "./components/layout/Layout";
 import Loading from "./components/common/Loading";
 
+import { ProtectedRoute } from "@components/auth";
 import Home from "@pages/Home";
 import Login from "@pages/auth/Login";
 import Test from "@pages/Test";
@@ -24,14 +25,18 @@ function App(): ReactElement {
     <Suspense fallback={<Loading fullScreen={true} backgroundColor="#F0F" />}>
       <Layout>
         <Routes>
-          <Route path={Paths.HOME} element={<Home />} />
-          <Route path={Paths.LOGIN} element={<Login />} />
-          <Route path={Paths.REGISTER} element={<Register />} />
-          <Route path={Paths.SETTINGS} element={<UserSettings />} />
-          <Route path={Paths.TEST} element={<Test />} />
-          <Route path={Paths.TIMER} element={<Timer />} />
-          <Route path={Paths.COUNTDOWN} element={<CountdownTimer />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path={Paths.HOME} element={<Home/>} />
+          <Route path={Paths.LOGIN} element={<Login/>} />
+          <Route path={Paths.REGISTER} element={<Register/>} />
+          <Route path={Paths.SETTINGS} element={
+            <ProtectedRoute>
+              <UserSettings/>
+            </ProtectedRoute>
+          } />
+          <Route path={Paths.TEST} element={<Test/>} />
+          <Route path={Paths.TIMER} element={<Timer/>} />
+          <Route path={Paths.COUNTDOWN} element={<CountdownTimer/>} />
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       </Layout>
     </Suspense>

@@ -1,4 +1,5 @@
-import { IUserSubscription, IUserPermissions, type IUser } from "@models";
+import { UserSubscription, UserPermissions, AccountType, type IUser } from "@models";
+import dayjs from "dayjs";
 
 export const mockUsers: IUser[] = [
   {
@@ -10,9 +11,10 @@ export const mockUsers: IUser[] = [
     profilePicture: "https://images.unsplash.com/photo-1568162603664-fcd658421851?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8M3x8fGVufDB8fHx8fA%3D%3D",
     country: "New Zealand",
     locale: "en-gb",
-    permissions: [IUserPermissions.ADMIN],
-    subscription: IUserSubscription.FREE,
-    dateCreated: "2024-03-13T21:39:06.947Z",
-    lastModified: "2024-03-13T21:39:06.947Z"
+    permissions: [UserPermissions.ADMIN],
+    subscription: UserSubscription.FREE,
+    dateCreated: dayjs().toISOString(),
+    lastModified: dayjs().toISOString(),
+    type: AccountType.ONLINE
   }
 ]

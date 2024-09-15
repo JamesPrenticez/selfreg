@@ -1,9 +1,10 @@
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { INavigationItem } from "@models";
+import { INavigationItem, LocalStorageKey } from "@models";
 import Avatar from "./Avatar";
-import { useAppSelector } from "@redux/hooks";
+import { useAppSelector, useAppDispatch } from "@redux/hooks";
 import { Button } from "@components/ui";
+import { getFromLocalStorage, removeFromLocalStorage } from "@utils";
+import { logoutUser } from "@redux/slices";
 
 interface Props {
   isMenuOpen: boolean;
@@ -14,6 +15,7 @@ interface Props {
 function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
   const location = useLocation();
   const user = useAppSelector(state => state.user)
+  const dispatch = useAppDispatch();
 
   return (
     <div 
@@ -79,7 +81,7 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
           </div>
 
           <div>
-              {user.data.email !== "" ? (
+              {/* {!getFromLocalStorage(LocalStorageKey.SPA_TOKEN) ? (
                 <Link to="/sign-in">
                   <Button 
                     variant="outlined"
@@ -90,21 +92,23 @@ function RightNav({ isMenuOpen, setIsMenuOpen, menuItems }: Props) {
                     Sign In
                   </Button>
                 </Link>
-              ) : (
+              ) : ( */}
                 <Button
                   variant="outlined"
                   color="error"
                   className="w-full text-red-500"
                   onClick={() => { 
-                    // persistor.purge().then(() => {
-                    //   window.location.reload();
-                    // });
+                    // TODO - are you sure? pop up
+                    dispatch(logoutUser())
+                    removeFromLocalStorage(LocalStorageKey.USER_DATA)
+                    removeFromLocalStorage(LocalStorageKey.SPA_TOKEN)
+                    alert("Data deleted") // TOOD toast
                   }}
                 >
                   DELETE YOUR DATA
                 </Button>
-              )
-            }
+              {/* )
+            } */}
           </div>
         </div>
       </div>

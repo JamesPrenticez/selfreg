@@ -1,4 +1,3 @@
-import React from "react";
 import { useAppSelector } from "@redux/hooks";
 import { capitalizeFirstLetter, formatDate } from "@utils";
 import { useGetUserQuery } from "@redux/services";
@@ -57,7 +56,7 @@ function UserSettings() {
               </div>
 
               <h4 className="font-bold">Joined:</h4>
-              <p>{formatDate(user.dateCreated)}</p>
+              <p>{formatDate(user.dateCreated ?? "")}</p>
 
               <h4 className="font-bold">Location:</h4>
               <p>{user.country}</p>
