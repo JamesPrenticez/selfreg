@@ -47,6 +47,9 @@ function Login() {
 
   async function handleLogin() {
     try {
+
+      // TODO OFFLINE MODE 
+      
       await login(formData).unwrap();
       // set cookie
       navigate(Paths.SETTINGS);
@@ -66,11 +69,11 @@ function Login() {
   }
 
   // Redirect if user already logged in
-  useEffect(() => {
-    if (user.email) {
-      navigate(Paths.SETTINGS);
-    }
-  }, [user.email, navigate]);
+  // useEffect(() => {
+  //   if (user.email) {
+  //     navigate(Paths.SETTINGS);
+  //   }
+  // }, [user.email, navigate]);
 
   return (
     <div className="h-screen-4rem md:h-screen-5rem text-muted p-12 bg-night">

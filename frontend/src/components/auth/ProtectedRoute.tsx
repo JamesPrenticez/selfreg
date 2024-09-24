@@ -6,6 +6,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const spaToken = useAppSelector((state) => state.user.spaToken);
 
   if (!spaToken) {
+    console.log("No SPA token")
     return <Navigate to="/login" replace />;
   }
 

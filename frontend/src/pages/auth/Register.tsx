@@ -24,8 +24,6 @@ function Register() {
   const navigate = useNavigate();
   
   const [register] = useRegisterMutation();
-
-  const user = useAppSelector((state) => state.user.data);
   const dispatch = useAppDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
